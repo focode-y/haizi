@@ -1,0 +1,413 @@
+{
+  "grade4": [
+    {
+      "id": "g4-en-1",
+      "subj": "english",
+      "icon": "🔤",
+      "name": "アルファベット・あいさつ",
+      "nameZh": "字母与问候",
+      "lesson": {
+        "point": "アルファベット26文字（大文字・小文字）を覚えましょう。基本的なあいさつも練習します。\n学习26个英文字母（大写小写）和基本问候语。",
+        "formula": "Hello / Hi　こんにちは\nGood morning　おはよう\nGood bye / Bye　さようなら\nThank you　ありがとう\nYou're welcome　どういたしまして",
+        "example": "A:Hello! I'm Yuki. What's your name?\nB:Hi! I'm Mei. Nice to meet you!\nA:Nice to meet you too!\n\nA：你好！我是Yuki，你叫什么名字？\nB：嗨！我是Mei，很高兴认识你！",
+        "tip": "大文字と小文字をセットで覚えよう！\nA→a, B→b, C→c... Z→z\n大写和小写要配对记忆！"
+      },
+      "questions": [
+        {
+          "type": "choice",
+          "q_ja": "「おはようございます」を英語で言うと？",
+          "q_zh": "「早上好」用英语怎么说？",
+          "options": [
+            "Good night",
+            "Good morning",
+            "Good evening",
+            "Hello"
+          ],
+          "answer": "Good morning",
+          "explain_ja": "朝のあいさつはGood morning",
+          "explain_zh": "早上的问候语是Good morning"
+        },
+        {
+          "type": "choice",
+          "q_ja": "「ありがとう」を英語で言うと？",
+          "q_zh": "「谢谢」用英语怎么说？",
+          "options": [
+            "Sorry",
+            "Please",
+            "Thank you",
+            "Welcome"
+          ],
+          "answer": "Thank you",
+          "explain_ja": "Thank youがありがとうの意味",
+          "explain_zh": "Thank you表示谢谢"
+        },
+        {
+          "type": "fill",
+          "q_ja": "「さようなら」を英語で？（最初の大文字1語）",
+          "q_zh": "「再见」用英语一个词怎么说？",
+          "answer": "Goodbye",
+          "explain_ja": "Goodbye（またはBye）がさようなら",
+          "explain_zh": "再见是Goodbye或Bye"
+        },
+        {
+          "type": "choice",
+          "q_ja": "アルファベットは全部で何文字？",
+          "q_zh": "英文字母一共有多少个？",
+          "options": [
+            "24",
+            "25",
+            "26",
+            "27"
+          ],
+          "answer": "26",
+          "explain_ja": "A〜Zまでの26文字",
+          "explain_zh": "从A到Z共26个字母"
+        },
+        {
+          "type": "choice",
+          "q_ja": "自己紹介：「私はケンです」を英語で？",
+          "q_zh": "自我介绍：「我叫Ken」英语怎么说？",
+          "options": [
+            "I like Ken",
+            "I am Ken",
+            "My Ken",
+            "Ken I"
+          ],
+          "answer": "I am Ken",
+          "explain_ja": "「I am ～」または「I'm ～」で自己紹介",
+          "explain_zh": "用「I am ～」或「I'm ～」自我介绍"
+        },
+        {
+          "type": "choice",
+          "q_ja": "「どうぞよろしく」を英語で？",
+          "q_zh": "「请多关照」英语怎么说？",
+          "options": [
+            "How are you?",
+            "Nice to meet you",
+            "Good job",
+            "See you"
+          ],
+          "answer": "Nice to meet you",
+          "explain_ja": "初めて会うときはNice to meet you",
+          "explain_zh": "初次见面说Nice to meet you"
+        },
+        {
+          "type": "fill",
+          "q_ja": "「What's your name?」の意味は？（日本語で）",
+          "q_zh": "「What's your name?」是什么意思？",
+          "answer": "あなたの名前は何ですか",
+          "explain_ja": "お名前は何ですか？という質問",
+          "explain_zh": "问对方叫什么名字"
+        },
+        {
+          "type": "choice",
+          "q_ja": "「Good evening」はいつ使う？",
+          "q_zh": "「Good evening」什么时候用？",
+          "options": [
+            "朝",
+            "昼",
+            "夜（夕方）",
+            "深夜"
+          ],
+          "answer": "夜（夕方）",
+          "explain_ja": "Good eveningは夕方・夜のあいさつ",
+          "explain_zh": "Good evening是傍晚和晚上的问候"
+        },
+        {
+          "type": "choice",
+          "q_ja": "「I'm fine, thank you.」の意味は？",
+          "q_zh": "「I'm fine, thank you.」是什么意思？",
+          "options": [
+            "お腹が空いた",
+            "元気です、ありがとう",
+            "どういたしまして",
+            "初めまして"
+          ],
+          "answer": "元気です、ありがとう",
+          "explain_ja": "I'm fine=元気です、thank you=ありがとう",
+          "explain_zh": "I'm fine=我很好，thank you=谢谢"
+        },
+        {
+          "type": "fill",
+          "q_ja": "「How are you?」への返事：「I'm ____, thank you.」（1語）",
+          "q_zh": "「How are you?」的回答填空",
+          "answer": "fine",
+          "explain_ja": "I'm fine, thank you.が定番の返し方",
+          "explain_zh": "标准回答是I'm fine, thank you"
+        }
+      ]
+    }
+  ],
+  "grade5": [
+    {
+      "id": "g5-en-1",
+      "subj": "english",
+      "icon": "🌏",
+      "name": "国・言語・食べ物",
+      "nameZh": "国家语言食物",
+      "lesson": {
+        "point": "世界の国名・言語・食べ物を英語で言えるようにしましょう。\n用英语说出世界各国的国家名、语言和食物。",
+        "formula": "Japan → Japanese（国語）→ sushi, ramen（食べ物）\nChina → Chinese → dumplings\nFrance → French → croissant\nUSA → English → hamburger",
+        "example": "A:What country do you want to visit?\nB:I want to visit France. They have great croissants!\nA:Cool! Can you speak French?\nB:A little!\n\n你想去哪个国家？我想去法国，他们有好吃的可颂！",
+        "tip": "国名と言語名の関係を覚えよう：\nJapan→Japanese, China→Chinese, France→French\nただしEnglandの言語はEnglishなど不規則もある！\n注意不规则变化！"
+      },
+      "questions": [
+        {
+          "type": "choice",
+          "q_ja": "日本語を英語で言うと？",
+          "q_zh": "日语用英语怎么说？",
+          "options": [
+            "Japan",
+            "Japanese",
+            "Japanish",
+            "Japanian"
+          ],
+          "answer": "Japanese",
+          "explain_ja": "日本はJapan、日本語はJapanese",
+          "explain_zh": "日本是Japan，日语是Japanese"
+        },
+        {
+          "type": "choice",
+          "q_ja": "「すし」を英語で？",
+          "q_zh": "「寿司」用英语怎么说？",
+          "options": [
+            "sushi",
+            "ramen",
+            "tempura",
+            "sashimi"
+          ],
+          "answer": "sushi",
+          "explain_ja": "寿司はそのままsushi",
+          "explain_zh": "寿司的英语就是sushi"
+        },
+        {
+          "type": "fill",
+          "q_ja": "フランス語を英語で？（大文字始まり）",
+          "q_zh": "法语用英语怎么说？",
+          "answer": "French",
+          "explain_ja": "フランスはFrance、フランス語はFrench",
+          "explain_zh": "法国是France，法语是French"
+        },
+        {
+          "type": "choice",
+          "q_ja": "「I want to visit Italy.」の意味は？",
+          "q_zh": "「I want to visit Italy.」是什么意思？",
+          "options": [
+            "イタリアが好き",
+            "イタリアに住んでいる",
+            "イタリアに行きたい",
+            "イタリアから来た"
+          ],
+          "answer": "イタリアに行きたい",
+          "explain_ja": "want to visit=行きたい",
+          "explain_zh": "want to visit=想去"
+        },
+        {
+          "type": "choice",
+          "q_ja": "中国語を英語で？",
+          "q_zh": "中文用英语怎么说？",
+          "options": [
+            "China",
+            "Chinian",
+            "Chinese",
+            "Chinish"
+          ],
+          "answer": "Chinese",
+          "explain_ja": "中国はChina、中国語はChinese",
+          "explain_zh": "中国是China，中文是Chinese"
+        },
+        {
+          "type": "fill",
+          "q_ja": "「ハンバーガー」を英語で？（小文字で）",
+          "q_zh": "「汉堡」用英语怎么说？",
+          "answer": "hamburger",
+          "explain_ja": "ハンバーガーはhamburger",
+          "explain_zh": "汉堡是hamburger"
+        },
+        {
+          "type": "choice",
+          "q_ja": "「What food do you like?」への答えは？",
+          "q_zh": "「What food do you like?」怎么回答？",
+          "options": [
+            "I like soccer.",
+            "I like sushi.",
+            "I am fine.",
+            "I want Japan."
+          ],
+          "answer": "I like sushi.",
+          "explain_ja": "What food=何の食べ物、I like ～で答える",
+          "explain_zh": "What food问食物，用I like ～回答"
+        },
+        {
+          "type": "choice",
+          "q_ja": "「クロワッサン」はどの国の食べ物？",
+          "q_zh": "「可颂」是哪国的食物？",
+          "options": [
+            "イタリア",
+            "ドイツ",
+            "フランス",
+            "スペイン"
+          ],
+          "answer": "フランス",
+          "explain_ja": "クロワッサン（croissant）はフランスの食べ物",
+          "explain_zh": "可颂（croissant）是法国食物"
+        },
+        {
+          "type": "fill",
+          "q_ja": "「I come from Japan.」の意味は？（日本語で）",
+          "q_zh": "「I come from Japan.」是什么意思？",
+          "answer": "私は日本から来ました",
+          "explain_ja": "come from ～=～出身・～から来た",
+          "explain_zh": "come from ～=来自～"
+        },
+        {
+          "type": "choice",
+          "q_ja": "韓国語を英語で？",
+          "q_zh": "韩语用英语怎么说？",
+          "options": [
+            "Korea",
+            "Korean",
+            "Koreaish",
+            "Korish"
+          ],
+          "answer": "Korean",
+          "explain_ja": "韓国はKorea、韓国語はKorean",
+          "explain_zh": "韩国是Korea，韩语是Korean"
+        }
+      ]
+    }
+  ],
+  "grade6": [
+    {
+      "id": "g6-en-1",
+      "subj": "english",
+      "icon": "💬",
+      "name": "英語で自己紹介・夢",
+      "nameZh": "英语自我介绍与梦想",
+      "lesson": {
+        "point": "自分の名前・好きなこと・将来の夢を英語で話せるようにしましょう。\n用英语介绍自己的名字、爱好和将来的梦想。",
+        "formula": "My name is ～. 私の名前は～です\nI like ～. 私は～が好きです\nI want to be a ～. 私は～になりたい\nI can ～. 私は～ができます",
+        "example": "Hi! My name is Hana.\nI like soccer and music.\nI'm good at cooking.\nI want to be a chef in the future.\n\n你好！我叫Hana，我喜欢足球和音乐，我将来想当厨师。",
+        "tip": "職業の英単語を覚えよう！\ndoctor（医者）/ teacher（先生）/ engineer（エンジニア）\npilot（パイロット）/ chef（料理人）/ athlete（スポーツ選手）\n记住职业单词！"
+      },
+      "questions": [
+        {
+          "type": "choice",
+          "q_ja": "「私は医者になりたい」を英語で？",
+          "q_zh": "「我想成为医生」用英语怎么说？",
+          "options": [
+            "I am a doctor.",
+            "I want to be a doctor.",
+            "I like doctor.",
+            "I can be doctor."
+          ],
+          "answer": "I want to be a doctor.",
+          "explain_ja": "want to be ～=～になりたい",
+          "explain_zh": "want to be ～=想成为～"
+        },
+        {
+          "type": "fill",
+          "q_ja": "「先生」を英語で？（小文字1語）",
+          "q_zh": "「老师」用英语怎么说？",
+          "answer": "teacher",
+          "explain_ja": "先生はteacher",
+          "explain_zh": "老师是teacher"
+        },
+        {
+          "type": "choice",
+          "q_ja": "「I'm good at swimming.」の意味は？",
+          "q_zh": "「I'm good at swimming.」是什么意思？",
+          "options": [
+            "水泳が嫌い",
+            "水泳が得意",
+            "水泳がしたい",
+            "水泳を習っている"
+          ],
+          "answer": "水泳が得意",
+          "explain_ja": "be good at ～=～が得意",
+          "explain_zh": "be good at ～=擅长～"
+        },
+        {
+          "type": "choice",
+          "q_ja": "「パイロット」を英語で？",
+          "q_zh": "「飞行员」用英语怎么说？",
+          "options": [
+            "pilot",
+            "player",
+            "police",
+            "painter"
+          ],
+          "answer": "pilot",
+          "explain_ja": "パイロットはpilot",
+          "explain_zh": "飞行员是pilot"
+        },
+        {
+          "type": "fill",
+          "q_ja": "「I like _____ and music.」（サッカーと音楽が好き）の空白は？",
+          "q_zh": "「I like _____ and music.」填什么（足球和音乐）？",
+          "answer": "soccer",
+          "explain_ja": "サッカーはsoccer（またはfootball）",
+          "explain_zh": "足球是soccer"
+        },
+        {
+          "type": "choice",
+          "q_ja": "「What do you want to be?」への答えは？",
+          "q_zh": "「What do you want to be?」怎么回答？",
+          "options": [
+            "I am fine.",
+            "I want to be an engineer.",
+            "I like sports.",
+            "I go to school."
+          ],
+          "answer": "I want to be an engineer.",
+          "explain_ja": "What do you want to be=将来何になりたい？",
+          "explain_zh": "What do you want to be=你将来想做什么？"
+        },
+        {
+          "type": "fill",
+          "q_ja": "「料理人・シェフ」を英語で？",
+          "q_zh": "「厨师」用英语怎么说？",
+          "answer": "chef",
+          "explain_ja": "料理人・シェフはchef",
+          "explain_zh": "厨师是chef"
+        },
+        {
+          "type": "choice",
+          "q_ja": "「I can speak Japanese.」の意味は？",
+          "q_zh": "「I can speak Japanese.」是什么意思？",
+          "options": [
+            "日本語が話したい",
+            "日本語が話せる",
+            "日本語を勉強中",
+            "日本語が好き"
+          ],
+          "answer": "日本語が話せる",
+          "explain_ja": "can ～=～ができる",
+          "explain_zh": "can ～=能够～、会～"
+        },
+        {
+          "type": "choice",
+          "q_ja": "「エンジニア」を英語で？",
+          "q_zh": "「工程师」用英语怎么说？",
+          "options": [
+            "engineer",
+            "manager",
+            "designer",
+            "programmer"
+          ],
+          "answer": "engineer",
+          "explain_ja": "エンジニアはengineer",
+          "explain_zh": "工程师是engineer"
+        },
+        {
+          "type": "fill",
+          "q_ja": "「スポーツ選手」を英語で？（1語）",
+          "q_zh": "「运动员」用英语怎么说？（1个词）",
+          "answer": "athlete",
+          "explain_ja": "スポーツ選手はathlete（またはplayer）",
+          "explain_zh": "运动员是athlete"
+        }
+      ]
+    }
+  ]
+}

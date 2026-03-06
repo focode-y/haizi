@@ -1,0 +1,4550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>まなびルーム · 学习小屋</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue:#0ea5e9; --blue-dark:#0369a1; --sky:#e0f2fe; --sky-mid:#7dd3fc;
+  --orange:#f97316; --yellow:#facc15; --yellow-bg:#fef9c3;
+  --green:#22c55e; --green-dark:#16a34a; --green-bg:#f0fdf4;
+  --red:#ef4444; --red-bg:#fff1f2;
+  --purple:#8b5cf6; --purple-bg:#f5f3ff;
+  --bg:#f0f9ff; --card:#fff; --text:#0c4a6e; --muted:#64748b;
+  --radius:20px; --shadow:0 4px 24px rgba(14,165,233,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito','Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* HEADER */
+header{background:linear-gradient(135deg,#0ea5e9,#38bdf8,#7dd3fc);padding:18px 16px 0;position:relative;overflow:hidden}
+header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='6' fill='%23fff' fill-opacity='.07'/%3E%3C/svg%3E")}
+.header-top{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.logo{color:#fff;font-size:1.1rem;font-weight:900;line-height:1.2}
+.logo small{display:block;font-size:.68rem;opacity:.85;font-weight:600}
+.grade-select-wrap select{background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.4);color:#fff;font-family:inherit;font-size:.8rem;font-weight:700;padding:6px 12px;border-radius:12px;cursor:pointer;-webkit-appearance:none;appearance:none;padding-right:28px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+.grade-select-wrap select option{color:#0c4a6e;background:#fff}
+
+/* TABS */
+.tabs{position:relative;z-index:1;display:flex;gap:0}
+.tab-btn{flex:1;padding:11px 4px 13px;background:transparent;border:none;color:rgba(255,255,255,.7);font-family:inherit;font-size:.72rem;font-weight:700;cursor:pointer;transition:.2s;display:flex;flex-direction:column;align-items:center;gap:2px;border-radius:14px 14px 0 0}
+.tab-btn .tab-icon{font-size:1.25rem}
+.tab-btn.active{background:var(--bg);color:var(--blue-dark)}
+.tab-btn:hover:not(.active){color:#fff;background:rgba(255,255,255,.12)}
+
+/* MAIN */
+main{max-width:680px;margin:0 auto;padding:18px 14px 80px}
+
+/* PAGE */
+.page{display:none;animation:fadeIn .2s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTION TITLE */
+.sec-title{font-size:1.05rem;font-weight:900;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+
+/* TOPIC CARDS */
+.topic-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.topic-card{background:var(--card);border:2px solid #e0f2fe;border-radius:16px;padding:14px;cursor:pointer;transition:.2s;text-align:left;position:relative;overflow:hidden}
+.topic-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(14,165,233,.04),transparent);opacity:0;transition:.2s}
+.topic-card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:var(--shadow)}
+.topic-card:hover::after{opacity:1}
+.topic-card:active{transform:scale(.97)}
+.topic-card .t-icon{font-size:1.75rem;margin-bottom:6px}
+.topic-card .t-name{font-size:.82rem;font-weight:800;color:var(--text);line-height:1.35}
+.topic-card .t-ja{font-size:.68rem;color:var(--muted);margin-top:3px}
+.topic-card .t-grade{font-size:.62rem;background:var(--sky);color:var(--blue-dark);padding:2px 7px;border-radius:8px;display:inline-block;margin-top:5px;font-weight:700}
+.topic-card .t-src{font-size:.6rem;background:#f0fdf4;color:var(--green-dark);padding:2px 7px;border-radius:8px;display:inline-block;margin-top:3px;margin-left:3px;font-weight:700}
+
+/* LESSON PANEL */
+#lessonPanel{display:none}
+.lesson-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:14px}
+.lesson-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:10px}
+.lesson-title{font-size:1rem;font-weight:900;color:var(--text);line-height:1.35}
+.back-btn{background:none;border:1.5px solid #e0f2fe;border-radius:10px;padding:5px 12px;font-size:.75rem;font-weight:700;color:var(--muted);cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0}
+.back-btn:hover{border-color:var(--blue);color:var(--blue)}
+.lesson-content{font-size:.88rem;line-height:1.9;color:#1e3a5f}
+.lesson-content h4{font-size:.9rem;font-weight:800;color:var(--blue-dark);margin:14px 0 6px;display:flex;align-items:center;gap:5px}
+.lesson-content .formula-box{background:var(--sky);border-left:4px solid var(--blue);border-radius:10px;padding:10px 14px;margin:10px 0;font-weight:700;font-size:.88rem}
+.lesson-content .example-box{background:#fff7ed;border-left:4px solid var(--orange);border-radius:10px;padding:10px 14px;margin:10px 0;font-size:.84rem}
+.lesson-content .tip-box{background:var(--yellow-bg);border-left:4px solid var(--yellow);border-radius:10px;padding:10px 14px;margin:10px 0;font-size:.84rem}
+.drill-link-box{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #86efac;border-radius:14px;padding:12px 14px;margin-top:14px;display:flex;align-items:center;gap:10px}
+.drill-link-box .dl-icon{font-size:1.5rem;flex-shrink:0}
+.drill-link-box .dl-info{flex:1}
+.drill-link-box .dl-title{font-size:.8rem;font-weight:800;color:var(--green-dark)}
+.drill-link-box .dl-sub{font-size:.68rem;color:var(--muted);margin-top:2px}
+.drill-link-box a{display:inline-flex;align-items:center;gap:4px;background:var(--green-dark);color:#fff;padding:6px 12px;border-radius:10px;font-size:.75rem;font-weight:800;text-decoration:none;flex-shrink:0;transition:.15s}
+.drill-link-box a:hover{background:var(--green);transform:scale(1.03)}
+.loading-inline{text-align:center;padding:28px;color:var(--muted);font-size:.88rem}
+.spinner-sm{display:inline-block;width:26px;height:26px;border:3px solid #e0f2fe;border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* SUBJECT PILLS */
+.subj-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.subj-pill{background:var(--card);border:2px solid #e0f2fe;border-radius:20px;padding:7px 14px;font-size:.78rem;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit;color:var(--text)}
+.subj-pill:hover{border-color:var(--sky-mid);background:var(--sky)}
+.subj-pill.selected{border-color:var(--blue);background:var(--sky);color:var(--blue-dark)}
+.subj-pill:active{transform:scale(.95)}
+
+/* GEN BTN */
+.gen-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;font-size:.95rem;font-weight:900;border:none;border-radius:var(--radius);cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(139,92,246,.3);transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px}
+.gen-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 28px rgba(139,92,246,.35)}
+.gen-btn:disabled{background:#cbd5e1;box-shadow:none;cursor:not-allowed;transform:none}
+
+/* QUIZ */
+.quiz-card{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-bottom:14px;animation:fadeIn .25s ease}
+.quiz-num{font-size:.7rem;font-weight:800;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.quiz-progress{flex:1;height:4px;background:#e2e8f0;border-radius:4px;overflow:hidden}
+.quiz-progress-bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--sky-mid));border-radius:4px;transition:.4s}
+.quiz-q{font-size:.93rem;font-weight:700;color:var(--text);margin-bottom:14px;line-height:1.65}
+.quiz-options{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{background:var(--bg);border:2px solid #e0f2fe;border-radius:12px;padding:11px 14px;font-size:.87rem;font-weight:600;cursor:pointer;transition:.15s;text-align:left;font-family:inherit;color:var(--text);display:flex;align-items:center;gap:8px}
+.quiz-opt::before{content:'';width:18px;height:18px;border-radius:50%;border:2px solid #cbd5e1;flex-shrink:0;transition:.15s}
+.quiz-opt:hover:not(:disabled){border-color:var(--sky-mid);background:var(--sky)}
+.quiz-opt:hover:not(:disabled)::before{border-color:var(--blue)}
+.quiz-opt:active:not(:disabled){transform:scale(.98)}
+.quiz-opt.selected{border-color:var(--blue);background:var(--sky)}
+.quiz-opt.selected::before{border-color:var(--blue);background:var(--blue)}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-bg);color:var(--green-dark)}
+.quiz-opt.correct::before{border-color:var(--green);background:var(--green)}
+.quiz-opt.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red)}
+.quiz-opt.wrong::before{border-color:var(--red);background:var(--red)}
+.quiz-input{width:100%;border:2px solid #e0f2fe;border-radius:12px;padding:11px 14px;font-size:.9rem;font-family:inherit;color:var(--text);background:var(--bg);transition:.15s}
+.quiz-input:focus{outline:none;border-color:var(--blue);background:#fff}
+.quiz-input.correct{border-color:var(--green);background:var(--green-bg)}
+.quiz-input.wrong{border-color:var(--red);background:var(--red-bg)}
+.check-btn{margin-top:10px;padding:10px 22px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-size:.83rem;font-weight:800;cursor:pointer;font-family:inherit;transition:.15s}
+.check-btn:hover{background:var(--blue-dark)}
+.feedback-box{margin-top:10px;padding:11px 14px;border-radius:12px;font-size:.82rem;line-height:1.75;animation:fadeIn .2s ease}
+.feedback-box.ok{background:var(--green-bg);border-left:4px solid var(--green);color:var(--green-dark)}
+.feedback-box.ng{background:var(--red-bg);border-left:4px solid var(--red);color:#991b1b}
+
+/* SCORE */
+.score-banner{background:linear-gradient(135deg,#fef9c3,#fde68a);border-radius:var(--radius);padding:22px;text-align:center;margin-bottom:14px;animation:fadeIn .3s ease}
+.score-banner .big-score{font-size:2.4rem;font-weight:900;color:#92400e;margin:8px 0 4px}
+.score-banner p{font-size:.83rem;color:#78350f;margin-top:4px}
+.score-stars{font-size:1.4rem;letter-spacing:2px}
+
+/* HOMEWORK */
+.hw-step{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:10px;border:2px solid transparent;transition:.2s}
+.hw-step.active{border-color:var(--blue)}
+.hw-step-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.hw-num{width:30px;height:30px;background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;border-radius:50%;font-size:.82rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hw-label{font-size:.9rem;font-weight:800}
+.hw-sub{font-size:.7rem;color:var(--muted);margin-top:1px}
+
+.upload-area{border:2.5px dashed var(--sky-mid);border-radius:14px;padding:26px 16px;text-align:center;cursor:pointer;background:var(--bg);transition:.2s;position:relative}
+.upload-area:hover,.upload-area.drag-over{border-color:var(--blue);background:var(--sky)}
+.upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:2rem;margin-bottom:6px}
+.upload-text{font-size:.86rem;font-weight:700}
+.upload-hint{font-size:.7rem;color:var(--muted);margin-top:3px}
+#hwPreviewWrap{display:none;margin-top:12px}
+#hwPreviewWrap img{max-width:100%;max-height:220px;border-radius:12px;border:2px solid var(--sky-mid)}
+.change-btn{background:none;border:none;color:var(--blue);font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:6px}
+
+.notes-ta{width:100%;border:2px solid #e0f2fe;border-radius:12px;padding:10px 13px;font-size:.85rem;font-family:inherit;color:var(--text);background:var(--bg);resize:vertical;min-height:70px;transition:.15s}
+.notes-ta:focus{outline:none;border-color:var(--blue);background:#fff}
+
+.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;font-size:1rem;font-weight:900;border:none;border-radius:var(--radius);cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(249,115,22,.3);transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.submit-btn:hover:not(:disabled){transform:translateY(-2px)}
+.submit-btn:disabled{background:#cbd5e1;box-shadow:none;cursor:not-allowed;transform:none}
+
+.loading-card{display:none;background:linear-gradient(135deg,var(--blue),var(--blue-dark));border-radius:var(--radius);padding:30px;text-align:center;color:#fff;margin-bottom:12px}
+.loading-card .spinner{width:44px;height:44px;margin:0 auto 14px;border:4px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+
+/* RESULT */
+.result-wrap{display:none;margin-bottom:12px;animation:fadeIn .3s ease}
+.result-head{border-radius:var(--radius) var(--radius) 0 0;padding:16px 18px;display:flex;align-items:center;gap:12px}
+.result-head.ok{background:linear-gradient(135deg,#dcfce7,#bbf7d0)}
+.result-head.mid{background:linear-gradient(135deg,#fef9c3,#fde68a)}
+.result-head.ng{background:linear-gradient(135deg,#fee2e2,#fecaca)}
+.result-emoji{font-size:2.2rem}
+.result-score{font-size:1.45rem;font-weight:900}
+.result-head.ok .result-score{color:var(--green-dark)}
+.result-head.mid .result-score{color:#92400e}
+.result-head.ng .result-score{color:var(--red)}
+.result-verdict{font-size:.76rem;color:var(--muted);margin-top:2px}
+.result-body{background:#fff;border:2px solid #e0f2fe;border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:16px 18px}
+.r-label{display:inline-flex;align-items:center;gap:5px;background:var(--sky);color:var(--blue-dark);font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:20px;margin-bottom:8px}
+.r-block{margin-bottom:16px}
+.r-content{font-size:.86rem;line-height:1.85;color:#1e3a5f;background:var(--bg);border-radius:12px;padding:11px 13px}
+.prob-item{border-radius:12px;padding:11px 13px;margin-bottom:8px;border:2px solid}
+.prob-item.wrong{border-color:#fca5a5;background:var(--red-bg)}
+.prob-item.right{border-color:#86efac;background:var(--green-bg)}
+.prob-tag{font-size:.62rem;font-weight:800;padding:1px 8px;border-radius:12px;color:#fff;display:inline-block;margin-bottom:5px}
+.prob-tag.w{background:var(--red)}
+.prob-tag.r{background:var(--green-dark)}
+.prob-text{font-size:.84rem;line-height:1.65;color:var(--text)}
+.prob-ans{font-size:.78rem;margin-top:8px;padding-top:8px;border-top:1px dashed #e2e8f0;color:var(--muted);line-height:1.7}
+.cheer-wrap{background:linear-gradient(135deg,#fef9c3,#fde68a);border-radius:14px;padding:13px 15px;margin-top:12px;display:flex;gap:10px;align-items:flex-start}
+.cheer-icon{font-size:1.5rem;flex-shrink:0}
+.cheer-text{font-size:.84rem;line-height:1.7;color:#78350f;font-weight:600}
+.retry-btn{width:100%;padding:13px;background:#fff;color:var(--blue-dark);font-size:.88rem;font-weight:800;border:2.5px solid var(--blue);border-radius:var(--radius);cursor:pointer;font-family:inherit;margin-top:12px;transition:.15s}
+.retry-btn:hover{background:var(--sky)}
+
+/* MISTAKES */
+.mistakes-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.mistakes-stats{display:flex;gap:8px;margin-bottom:14px}
+.stat-chip{background:var(--card);border:2px solid #e0f2fe;border-radius:12px;padding:8px 14px;text-align:center;flex:1}
+.stat-chip .stat-num{font-size:1.4rem;font-weight:900;color:var(--blue-dark)}
+.stat-chip .stat-label{font-size:.65rem;color:var(--muted);margin-top:2px}
+.empty-state{text-align:center;padding:48px 20px;color:var(--muted)}
+.empty-icon{font-size:3rem;margin-bottom:10px}
+.empty-text{font-size:.9rem;font-weight:700}
+.empty-sub{font-size:.76rem;margin-top:4px}
+.mistake-card{background:var(--card);border:2px solid #fca5a5;border-radius:16px;padding:13px 15px;margin-bottom:10px;position:relative}
+.mistake-meta{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.mistake-tag{font-size:.62rem;font-weight:800;padding:2px 9px;border-radius:10px}
+.tag-subj{background:var(--sky);color:var(--blue-dark)}
+.tag-date{background:#f1f5f9;color:var(--muted)}
+.mistake-q{font-size:.86rem;font-weight:700;color:var(--text);margin-bottom:6px;line-height:1.6}
+.mistake-ans{font-size:.8rem;color:var(--muted);line-height:1.7}
+.mistake-ans strong{color:var(--blue-dark)}
+.mistake-del{position:absolute;top:10px;right:12px;background:none;border:none;font-size:.9rem;cursor:pointer;opacity:.4;transition:.15s;padding:4px}
+.mistake-del:hover{opacity:1;transform:scale(1.2)}
+.clear-btn{background:none;border:1.5px solid #fca5a5;border-radius:10px;padding:5px 12px;font-size:.74rem;font-weight:700;color:var(--red);cursor:pointer;font-family:inherit}
+.clear-btn:hover{background:var(--red-bg)}
+
+/* BOTTOM STREAK BAR */
+.streak-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid #e0f2fe;padding:8px 16px;display:flex;align-items:center;justify-content:center;gap:12px;z-index:100}
+.streak-item{display:flex;align-items:center;gap:5px;font-size:.75rem;font-weight:800;color:var(--muted)}
+.streak-item .si-val{color:var(--text);font-size:.88rem}
+.streak-divider{width:1px;height:20px;background:#e0f2fe}
+
+/* ERROR */
+.error-card{display:none;background:var(--red-bg);border:2px solid #fca5a5;border-radius:var(--radius);padding:14px;text-align:center;margin-bottom:12px}
+.error-card p{font-size:.84rem;color:#991b1b}
+
+/* DRILL SECTION */
+.drill-section{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:16px;padding:14px 16px;margin-bottom:14px;border:2px solid #bfdbfe}
+.drill-section-title{font-size:.8rem;font-weight:800;color:#1d4ed8;margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.drill-links{display:flex;flex-direction:column;gap:7px}
+.drill-link{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #bfdbfe;border-radius:10px;padding:9px 12px;text-decoration:none;color:var(--text);font-size:.8rem;font-weight:700;transition:.15s}
+.drill-link:hover{border-color:#3b82f6;background:#eff6ff;transform:translateX(3px)}
+.drill-link .dl-badge{font-size:.62rem;padding:2px 7px;border-radius:8px;font-weight:800;flex-shrink:0}
+.dl-badge.math{background:#dbeafe;color:#1d4ed8}
+.dl-badge.japanese{background:#fce7f3;color:#9d174d}
+.dl-badge.english{background:#ecfdf5;color:#065f46}
+.dl-badge.science{background:#fef3c7;color:#92400e}
+.dl-badge.social{background:#f3e8ff;color:#6b21a8}
+
+/* TOPIC SOURCE BADGE */
+.source-badge{display:inline-flex;align-items:center;gap:3px;font-size:.58rem;background:#dcfce7;color:#15803d;padding:2px 6px;border-radius:6px;font-weight:700;margin-left:4px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="logo">
+      📚 まなびルーム
+      <small>学习小屋 · 小4〜6年生</small>
+    </div>
+    <div class="grade-select-wrap">
+      <select id="gradeSelect" onchange="setGrade(this.value)">
+        <option value="4">4年生 / 四年级</option>
+        <option value="5" selected>5年生 / 五年级</option>
+        <option value="6">6年生 / 六年级</option>
+      </select>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showPage('learn',this)">
+      <span class="tab-icon">📖</span>学習
+    </button>
+    <button class="tab-btn" onclick="showPage('practice',this)">
+      <span class="tab-icon">✏️</span>練習
+    </button>
+    <button class="tab-btn" onclick="showPage('homework',this)">
+      <span class="tab-icon">📷</span>採点
+    </button>
+    <button class="tab-btn" onclick="showPage('mistakes',this)">
+      <span class="tab-icon">📋</span>間違い
+    </button>
+  </div>
+</header>
+
+<main>
+
+<!-- ===== LEARN PAGE ===== -->
+<div class="page active" id="page-learn">
+  <div class="sec-title">📖 知識ポイントを学ぶ · 学知识点</div>
+
+  <div id="topicList">
+    <div style="margin-bottom:12px">
+      <div class="subj-row" id="learnSubjRow">
+        <button class="subj-pill selected" onclick="filterLearnSubj('all',this)" data-s="all">すべて · 全部</button>
+        <button class="subj-pill" onclick="filterLearnSubj('math',this)" data-s="math">🔢 算数</button>
+        <button class="subj-pill" onclick="filterLearnSubj('japanese',this)" data-s="japanese">📖 国語</button>
+        <button class="subj-pill" onclick="filterLearnSubj('english',this)" data-s="english">🔤 英語</button>
+        <button class="subj-pill" onclick="filterLearnSubj('science',this)" data-s="science">🔬 理科</button>
+        <button class="subj-pill" onclick="filterLearnSubj('social',this)" data-s="social">🗾 社会</button>
+      </div>
+    </div>
+    <div class="topic-grid" id="topicGrid"></div>
+
+    <!-- Drill Section -->
+    <div class="drill-section" id="drillSection">
+      <div class="drill-section-title">📥 ちびむすドリル · 真实练习题（happylilac.net）</div>
+      <div class="drill-links" id="drillLinks"></div>
+    </div>
+  </div>
+
+  <div id="lessonPanel">
+    <div class="lesson-card">
+      <div class="lesson-header">
+        <div class="lesson-title" id="lessonTitle"></div>
+        <button class="back-btn" onclick="backToTopics()">← 戻る</button>
+      </div>
+      <div id="lessonBody"><div class="loading-inline"><div class="spinner-sm"></div><br>読み込み中… / 加载中…</div></div>
+    </div>
+    <div id="lessonDrillWrap"></div>
+    <button class="gen-btn" onclick="goToPracticeFromLesson()" style="background:linear-gradient(135deg,var(--green),var(--green-dark));box-shadow:0 6px 20px rgba(34,197,94,.3)">
+      <span>✏️</span><span>この単元を練習する · 练习这个单元</span>
+    </button>
+  </div>
+</div>
+
+<!-- ===== PRACTICE PAGE ===== -->
+<div class="page" id="page-practice">
+  <div class="sec-title">✏️ AI練習問題 · AI出题练习</div>
+
+  <div id="practiceSetup">
+    <div style="margin-bottom:14px">
+      <div style="font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:8px">科目 · 科目</div>
+      <div class="subj-row" id="practSubjRow">
+        <button class="subj-pill" onclick="selectPractSubj('math',this)" data-s="math">🔢 算数</button>
+        <button class="subj-pill" onclick="selectPractSubj('japanese',this)" data-s="japanese">📖 国語</button>
+        <button class="subj-pill" onclick="selectPractSubj('english',this)" data-s="english">🔤 英語</button>
+        <button class="subj-pill" onclick="selectPractSubj('science',this)" data-s="science">🔬 理科</button>
+        <button class="subj-pill" onclick="selectPractSubj('social',this)" data-s="social">🗾 社会</button>
+      </div>
+    </div>
+    <div style="margin-bottom:14px" id="topicPickWrap" style="display:none">
+      <div style="font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:8px">単元を選ぶ（任意）· 选择单元（可选）</div>
+      <div class="subj-row" id="topicPickRow">
+        <button class="subj-pill selected" onclick="selectPractTopic(null,this)">すべて</button>
+      </div>
+    </div>
+    <div style="margin-bottom:14px">
+      <div style="font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:8px">問題数 · 题目数量</div>
+      <div class="subj-row" id="qcountRow">
+        <button class="subj-pill selected" onclick="selectQCount(3,this)">3問</button>
+        <button class="subj-pill" onclick="selectQCount(5,this)">5問</button>
+        <button class="subj-pill" onclick="selectQCount(8,this)">8問</button>
+      </div>
+    </div>
+    <div style="margin-bottom:14px">
+      <div style="font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:8px">難易度 · 难度</div>
+      <div class="subj-row" id="diffRow">
+        <button class="subj-pill" onclick="selectDiff('easy',this)">🌱 やさしい</button>
+        <button class="subj-pill selected" onclick="selectDiff('normal',this)">📘 ふつう</button>
+        <button class="subj-pill" onclick="selectDiff('hard',this)">🔥 むずかしい</button>
+      </div>
+    </div>
+    <button class="gen-btn" id="genBtn" onclick="generateQuiz()" disabled>
+      <span>🎲</span><span>問題を生成する · 生成题目</span>
+    </button>
+  </div>
+
+  <div id="quizArea" style="display:none"></div>
+  <div id="quizScoreArea" style="display:none"></div>
+</div>
+
+<!-- ===== HOMEWORK PAGE ===== -->
+<div class="page" id="page-homework">
+  <div class="sec-title">📷 宿題を採点する · 作业批改</div>
+
+  <div class="hw-step active">
+    <div class="hw-step-header">
+      <div class="hw-num">1</div>
+      <div><div class="hw-label">科目 · 科目</div><div class="hw-sub">今回の宿題は？· 这次是哪门？</div></div>
+    </div>
+    <div class="subj-row">
+      <button class="subj-pill" onclick="selectHwSubj('math',this)">🔢 算数</button>
+      <button class="subj-pill" onclick="selectHwSubj('japanese',this)">📖 国語</button>
+      <button class="subj-pill" onclick="selectHwSubj('english',this)">🔤 英語</button>
+      <button class="subj-pill" onclick="selectHwSubj('science',this)">🔬 理科</button>
+      <button class="subj-pill" onclick="selectHwSubj('social',this)">🗾 社会</button>
+      <button class="subj-pill" onclick="selectHwSubj('other',this)">✏️ その他</button>
+    </div>
+  </div>
+
+  <div class="hw-step">
+    <div class="hw-step-header">
+      <div class="hw-num">2</div>
+      <div><div class="hw-label">写真 · 拍照上传</div><div class="hw-sub">答案用紙を撮影 · 拍下作业纸</div></div>
+    </div>
+    <div class="upload-area" id="hwUpload">
+      <input type="file" accept="image/*" id="hwFile" onchange="handleHwFile(event)" capture="environment"/>
+      <div class="upload-icon">📷</div>
+      <div class="upload-text">タップして撮影 · 点击拍照</div>
+      <div class="upload-hint">JPG / PNG 対応</div>
+    </div>
+    <div id="hwPreviewWrap">
+      <img id="hwPreviewImg" src="" alt="preview"/>
+      <br>
+      <button class="change-btn" onclick="document.getElementById('hwFile').click()">🔄 別の写真 · 换图</button>
+    </div>
+  </div>
+
+  <div class="hw-step">
+    <div class="hw-step-header">
+      <div class="hw-num">3</div>
+      <div><div class="hw-label">メモ（任意）· 备注（选填）</div><div class="hw-sub">特に見てほしいところ · 想特别说明的</div></div>
+    </div>
+    <textarea class="notes-ta" id="hwNotes" placeholder="例：問3がわからなかった / 第3题不会…"></textarea>
+  </div>
+
+  <button class="submit-btn" id="hwSubmit" onclick="submitHw()" disabled>
+    🚀 AIに採点してもらう · 开始批改
+  </button>
+
+  <div class="loading-card" id="hwLoading">
+    <div class="spinner"></div>
+    <div style="font-size:.95rem;font-weight:800">採点中… · 批改中…</div>
+    <div style="font-size:.78rem;opacity:.8;margin-top:5px">少々お待ちください · 请稍等</div>
+  </div>
+
+  <div class="error-card" id="hwError"><p id="hwErrorMsg">エラーが発生しました / 出错了</p></div>
+  <div class="result-wrap" id="hwResult"></div>
+</div>
+
+<!-- ===== MISTAKES PAGE ===== -->
+<div class="page" id="page-mistakes">
+  <div class="mistakes-header">
+    <div class="sec-title" style="margin-bottom:0">📋 間違いノート · 错题本</div>
+    <button class="clear-btn" onclick="clearMistakes()">🗑️ 全部クリア</button>
+  </div>
+  <div class="mistakes-stats" id="mistakesStats" style="display:none">
+    <div class="stat-chip">
+      <div class="stat-num" id="statTotal">0</div>
+      <div class="stat-label">合計 · 总计</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-num" id="statToday">0</div>
+      <div class="stat-label">今日 · 今天</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-num" id="statSubjs">0</div>
+      <div class="stat-label">科目数 · 科目</div>
+    </div>
+  </div>
+  <div id="mistakesContainer"></div>
+</div>
+
+</main>
+
+<!-- BOTTOM STREAK BAR -->
+<div class="streak-bar">
+  <div class="streak-item">🔥 <span class="si-val" id="streakCount">0</span>日連続</div>
+  <div class="streak-divider"></div>
+  <div class="streak-item">✅ <span class="si-val" id="totalCorrect">0</span>問正解</div>
+  <div class="streak-divider"></div>
+  <div class="streak-item">📚 <span class="si-val" id="topicsStudied">0</span>単元</div>
+</div>
+
+<script>
+// ===== STATE =====
+let currentGrade = 5;
+let currentLearnSubj = 'all';
+let currentLessonTopic = null;
+let practSubj = null;
+let practTopic = null;
+let practQCount = 3;
+let practDiff = 'normal';
+let hwSubj = null;
+let hwImageBase64 = null;
+let quizData = [];
+let quizAnswers = [];
+let quizChecked = [];
+let mistakes = JSON.parse(localStorage.getItem('manabi_mistakes') || '[]');
+
+// Stats
+let stats = JSON.parse(localStorage.getItem('manabi_stats') || '{"totalCorrect":0,"topicsStudied":[],"lastStudyDate":"","streak":0}');
+
+// Cache
+const topicsCache = {};
+
+const subjNames = {
+  math:{zh:'算数/数学',ja:'算数・数学'},
+  japanese:{zh:'语文/国语',ja:'国語'},
+  english:{zh:'英语',ja:'英語'},
+  science:{zh:'理科',ja:'理科'},
+  social:{zh:'社会/历史',ja:'社会'},
+  other:{zh:'其他',ja:'その他'}
+};
+
+// ===== REAL CURRICULUM DATA from happylilac.net =====
+// Structured by grade and subject with actual links to drills
+const DRILL_LINKS = {
+  math: {
+    4: [
+      {name:'大きな数', url:'https://happylilac.net/sansu-h.html', badge:'math'},
+      {name:'わり算・筆算', url:'https://happylilac.net/keisan-warizan.html', badge:'math'},
+      {name:'小数の計算', url:'https://happylilac.net/syousu-bunsu.html', badge:'math'},
+      {name:'図形・面積', url:'https://happylilac.net/zukei.html', badge:'math'},
+    ],
+    5: [
+      {name:'分数の計算', url:'https://happylilac.net/bunsu.html', badge:'math'},
+      {name:'小数の計算', url:'https://happylilac.net/syousu-bunsu.html', badge:'math'},
+      {name:'図形・体積', url:'https://happylilac.net/zukei.html', badge:'math'},
+      {name:'文章問題', url:'https://happylilac.net/s19_bun_5-ms202601211012.html', badge:'math'},
+      {name:'単位換算', url:'https://happylilac.net/sy-unit.html', badge:'math'},
+    ],
+    6: [
+      {name:'分数のかけ算・わり算', url:'https://happylilac.net/bunsu.html', badge:'math'},
+      {name:'文章問題', url:'https://happylilac.net/s19_bun_6-ms202601211012.html', badge:'math'},
+      {name:'図形・面積・体積', url:'https://happylilac.net/zukei.html', badge:'math'},
+      {name:'比・比例', url:'https://happylilac.net/keisan-suryokankei.html', badge:'math'},
+    ]
+  },
+  japanese: {
+    4: [
+      {name:'漢字練習（4年）', url:'https://happylilac.net/p-sy-kanzi.html', badge:'japanese'},
+      {name:'文章読解', url:'https://happylilac.net/sy-reading.html', badge:'japanese'},
+      {name:'文法・語彙', url:'https://happylilac.net/c-japanesegrammarps.html', badge:'japanese'},
+    ],
+    5: [
+      {name:'漢字練習（5年）', url:'https://happylilac.net/p-sy-kanzi.html', badge:'japanese'},
+      {name:'文章読解', url:'https://happylilac.net/sy-reading.html', badge:'japanese'},
+      {name:'慣用句・ことわざ', url:'https://happylilac.net/sy-kanyoku.html', badge:'japanese'},
+      {name:'四字熟語', url:'https://happylilac.net/sy-yozizyukugo.html', badge:'japanese'},
+    ],
+    6: [
+      {name:'漢字練習（6年）', url:'https://happylilac.net/p-sy-kanzi.html', badge:'japanese'},
+      {name:'文章読解', url:'https://happylilac.net/sy-reading.html', badge:'japanese'},
+      {name:'ことわざ', url:'https://happylilac.net/sy-kotowaza.html', badge:'japanese'},
+    ]
+  },
+  english: {
+    4: [{name:'英語プリント', url:'https://happylilac.net/index2.html', badge:'english'}],
+    5: [{name:'英語プリント', url:'https://happylilac.net/index2.html', badge:'english'}],
+    6: [{name:'英語プリント', url:'https://happylilac.net/index2.html', badge:'english'}],
+  },
+  science: {
+    4: [{name:'理科プリント', url:'https://happylilac.net/syogaku.html#down-science', badge:'science'}],
+    5: [{name:'理科プリント', url:'https://happylilac.net/syogaku.html#down-science', badge:'science'}],
+    6: [{name:'理科プリント', url:'https://happylilac.net/syogaku.html#down-science', badge:'science'}],
+  },
+  social: {
+    4: [{name:'社会プリント', url:'https://happylilac.net/syogaku.html#down3', badge:'social'}],
+    5: [{name:'社会プリント', url:'https://happylilac.net/syogaku.html#down3', badge:'social'}],
+    6: [{name:'社会プリント', url:'https://happylilac.net/syogaku.html#down3', badge:'social'}],
+  }
+};
+
+
+// ===== EMBEDDED CURRICULUM DATA (离线题库 - 220道题) =====
+let CURRICULUM = {
+  "grade4": {
+    "math": [
+      {
+        "id": "g4-math-1",
+        "subj": "math",
+        "icon": "➗",
+        "name": "わり算のひっ算",
+        "nameZh": "除法笔算",
+        "lesson": {
+          "point": "大きな数のわり算は、位ごとに分けて計算します。商（答え）・余りの求め方を覚えましょう。\n大数的除法按照位数分步计算。要掌握商（答案）和余数的求法。",
+          "formula": "わられる数 ÷ わる数 = 商 あまり 余り\n被除数 ÷ 除数 = 商 余 余数\n例：75 ÷ 3 = 25（25×3=75 で確認）",
+          "example": "【例】96 ÷ 4 を計算しよう\n① 十の位：9 ÷ 4 = 2 あまり 1\n② 一の位：16 ÷ 4 = 4\n③ 答え：24\n\n【例题】计算 96 ÷ 4\n①十位：9÷4=2余1 ②个位：16÷4=4 ③答案：24",
+          "tip": "確かめ算：商 × わる数 + 余り = わられる数 になればOK！\n验算方法：商×除数+余数=被除数，结果相同就对了！"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "84 ÷ 4 = ?",
+            "q_zh": "84 ÷ 4 = ?",
+            "options": [
+              "18",
+              "21",
+              "23",
+              "24"
+            ],
+            "answer": "21",
+            "explain_ja": "84÷4は十の位8÷4=2、一の位4÷4=1で21",
+            "explain_zh": "84÷4，十位8÷4=2，个位4÷4=1，所以是21"
+          },
+          {
+            "type": "choice",
+            "q_ja": "75 ÷ 3 = ?",
+            "q_zh": "75 ÷ 3 = ?",
+            "options": [
+              "23",
+              "24",
+              "25",
+              "26"
+            ],
+            "answer": "25",
+            "explain_ja": "7÷3=2余1、15÷3=5なので25",
+            "explain_zh": "7÷3=2余1，15÷3=5，所以是25"
+          },
+          {
+            "type": "choice",
+            "q_ja": "96 ÷ 6 = ?",
+            "q_zh": "96 ÷ 6 = ?",
+            "options": [
+              "14",
+              "15",
+              "16",
+              "17"
+            ],
+            "answer": "16",
+            "explain_ja": "9÷6=1余3、36÷6=6なので16",
+            "explain_zh": "9÷6=1余3，36÷6=6，所以是16"
+          },
+          {
+            "type": "fill",
+            "q_ja": "52 ÷ 4 = ?",
+            "q_zh": "52 ÷ 4 = ?",
+            "answer": "13",
+            "explain_ja": "5÷4=1余1、12÷4=3なので13",
+            "explain_zh": "5÷4=1余1，12÷4=3，所以是13"
+          },
+          {
+            "type": "fill",
+            "q_ja": "78 ÷ 3 = ?",
+            "q_zh": "78 ÷ 3 = ?",
+            "answer": "26",
+            "explain_ja": "7÷3=2余1、18÷3=6なので26",
+            "explain_zh": "7÷3=2余1，18÷3=6，所以是26"
+          },
+          {
+            "type": "choice",
+            "q_ja": "91 ÷ 7 のあまりは？",
+            "q_zh": "91 ÷ 7 的余数是？",
+            "options": [
+              "0",
+              "1",
+              "2",
+              "3"
+            ],
+            "answer": "0",
+            "explain_ja": "91÷7=13、あまり0（割り切れる）",
+            "explain_zh": "91÷7=13，整除余数为0"
+          },
+          {
+            "type": "choice",
+            "q_ja": "85 ÷ 4 の商は？",
+            "q_zh": "85 ÷ 4 的商是？",
+            "options": [
+              "20",
+              "21",
+              "22",
+              "23"
+            ],
+            "answer": "21",
+            "explain_ja": "85÷4=21あまり1、商は21",
+            "explain_zh": "85÷4=21余1，商是21"
+          },
+          {
+            "type": "fill",
+            "q_ja": "63 ÷ 3 = ?",
+            "q_zh": "63 ÷ 3 = ?",
+            "answer": "21",
+            "explain_ja": "6÷3=2、3÷3=1なので21",
+            "explain_zh": "6÷3=2，3÷3=1，所以是21"
+          },
+          {
+            "type": "choice",
+            "q_ja": "確かめ算：23×4+2=? これは何のわり算の確かめ？",
+            "q_zh": "验算：23×4+2=? 这是哪道除法的验算？",
+            "options": [
+              "92÷4",
+              "94÷4",
+              "93÷4",
+              "95÷4"
+            ],
+            "answer": "94÷4",
+            "explain_ja": "23×4+2=94 なので 94÷4の確かめ",
+            "explain_zh": "23×4+2=94，所以是94÷4的验算"
+          },
+          {
+            "type": "fill",
+            "q_ja": "99 ÷ 9 = ?",
+            "q_zh": "99 ÷ 9 = ?",
+            "answer": "11",
+            "explain_ja": "9÷9=1、9÷9=1なので11",
+            "explain_zh": "9÷9=1，9÷9=1，所以是11"
+          }
+        ]
+      },
+      {
+        "id": "g4-math-2",
+        "subj": "math",
+        "icon": "📐",
+        "name": "角の大きさ",
+        "nameZh": "角的大小",
+        "lesson": {
+          "point": "角の大きさは「度（°）」で表します。分度器を使って角度を測りましょう。\n角的大小用「度(°)」来表示，用量角器来测量角度。",
+          "formula": "直角 = 90°　　平角 = 180°　　一回転 = 360°\n三角形の内角の和 = 180°\n直角=90° 平角=180° 周角=360° 三角形内角和=180°",
+          "example": "【例】三角形の2つの角が50°と60°のとき、残りの角は？\n180° - 50° - 60° = 70°\n\n【例题】三角形两个角是50°和60°，第三个角是多少？\n180°-50°-60°=70°",
+          "tip": "直角(90°)より小さい → 鋭角　直角より大きく180°より小さい → 鈍角\n比90°小→锐角　比90°大比180°小→钝角　等于90°→直角"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "直角の大きさは何度？",
+            "q_zh": "直角是多少度？",
+            "options": [
+              "45°",
+              "60°",
+              "90°",
+              "180°"
+            ],
+            "answer": "90°",
+            "explain_ja": "直角は90度です",
+            "explain_zh": "直角是90度"
+          },
+          {
+            "type": "choice",
+            "q_ja": "平角の大きさは何度？",
+            "q_zh": "平角是多少度？",
+            "options": [
+              "90°",
+              "120°",
+              "150°",
+              "180°"
+            ],
+            "answer": "180°",
+            "explain_ja": "平角（一直線）は180度です",
+            "explain_zh": "平角（一条直线）是180度"
+          },
+          {
+            "type": "fill",
+            "q_ja": "三角形の内角の和は何度？",
+            "q_zh": "三角形内角和是多少度？",
+            "answer": "180",
+            "explain_ja": "三角形の3つの角をたすと必ず180°になります",
+            "explain_zh": "三角形三个内角相加一定等于180°"
+          },
+          {
+            "type": "choice",
+            "q_ja": "三角形の2つの角が70°と60°のとき、残りの角は？",
+            "q_zh": "三角形两角为70°和60°，第三角是？",
+            "options": [
+              "40°",
+              "50°",
+              "60°",
+              "70°"
+            ],
+            "answer": "50°",
+            "explain_ja": "180-70-60=50°",
+            "explain_zh": "180-70-60=50°"
+          },
+          {
+            "type": "choice",
+            "q_ja": "次のうち鈍角はどれ？",
+            "q_zh": "以下哪个是钝角？",
+            "options": [
+              "45°",
+              "80°",
+              "90°",
+              "120°"
+            ],
+            "answer": "120°",
+            "explain_ja": "90°より大きく180°より小さい角が鈍角",
+            "explain_zh": "大于90°小于180°的角是钝角"
+          },
+          {
+            "type": "fill",
+            "q_ja": "一回転（全周）は何度？",
+            "q_zh": "一圈（周角）是多少度？",
+            "answer": "360",
+            "explain_ja": "一回転は360度です",
+            "explain_zh": "一圈是360度"
+          },
+          {
+            "type": "choice",
+            "q_ja": "60°の角は何角？",
+            "q_zh": "60°的角是什么角？",
+            "options": [
+              "直角",
+              "鋭角",
+              "鈍角",
+              "平角"
+            ],
+            "answer": "鋭角",
+            "explain_ja": "90°より小さいので鋭角",
+            "explain_zh": "小于90°所以是锐角"
+          },
+          {
+            "type": "choice",
+            "q_ja": "正三角形の1つの角は何度？",
+            "q_zh": "等边三角形每个角是多少度？",
+            "options": [
+              "45°",
+              "60°",
+              "72°",
+              "90°"
+            ],
+            "answer": "60°",
+            "explain_ja": "180÷3=60°、正三角形の各角は60°",
+            "explain_zh": "180÷3=60°，等边三角形每角60°"
+          },
+          {
+            "type": "fill",
+            "q_ja": "三角形の2つの角が90°と45°のとき、残りの角は？（°不要）",
+            "q_zh": "三角形两角为90°和45°，第三角是多少？",
+            "answer": "45",
+            "explain_ja": "180-90-45=45°",
+            "explain_zh": "180-90-45=45°"
+          },
+          {
+            "type": "choice",
+            "q_ja": "分度器で角を測るとき、頂点はどこに合わせる？",
+            "q_zh": "用量角器量角时，顶点对准哪里？",
+            "options": [
+              "分度器の端",
+              "分度器の中心",
+              "分度器の0°",
+              "どこでもよい"
+            ],
+            "answer": "分度器の中心",
+            "explain_ja": "頂点（角の先）を分度器の中心に合わせます",
+            "explain_zh": "把角的顶点对准量角器的中心"
+          }
+        ]
+      },
+      {
+        "id": "g4-math-3",
+        "subj": "math",
+        "icon": "⬛",
+        "name": "面積",
+        "nameZh": "面积",
+        "lesson": {
+          "point": "面積は広さを表す量で、「cm²（平方センチメートル）」などで表します。\n面积是表示大小的量，用「cm²（平方厘米）」等单位表示。",
+          "formula": "長方形の面積 = 縦 × 横\n正方形の面積 = 一辺 × 一辺\n长方形面积=长×宽　正方形面积=边长×边长",
+          "example": "【例】縦5cm、横8cmの長方形の面積は？\n5 × 8 = 40 cm²\n\n【例题】长5cm，宽8cm的长方形面积？\n5×8=40 cm²",
+          "tip": "1m² = 10000cm²　1km² = 1000000m²\n単位変換に注意！\n1m²=10000cm²  记住单位换算！"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "縦4cm、横6cmの長方形の面積は？",
+            "q_zh": "长6cm宽4cm的长方形面积？",
+            "options": [
+              "20cm²",
+              "24cm²",
+              "28cm²",
+              "30cm²"
+            ],
+            "answer": "24cm²",
+            "explain_ja": "4×6=24cm²",
+            "explain_zh": "4×6=24cm²"
+          },
+          {
+            "type": "fill",
+            "q_ja": "一辺5cmの正方形の面積は？（cm²不要）",
+            "q_zh": "边长5cm的正方形面积是多少？",
+            "answer": "25",
+            "explain_ja": "5×5=25cm²",
+            "explain_zh": "5×5=25cm²"
+          },
+          {
+            "type": "choice",
+            "q_ja": "面積が36cm²の正方形の一辺は？",
+            "q_zh": "面积为36cm²的正方形边长是？",
+            "options": [
+              "4cm",
+              "5cm",
+              "6cm",
+              "7cm"
+            ],
+            "answer": "6cm",
+            "explain_ja": "6×6=36なので一辺は6cm",
+            "explain_zh": "6×6=36，边长是6cm"
+          },
+          {
+            "type": "choice",
+            "q_ja": "縦3cm、横12cmの長方形の面積は？",
+            "q_zh": "长12cm宽3cm的长方形面积？",
+            "options": [
+              "30cm²",
+              "36cm²",
+              "40cm²",
+              "45cm²"
+            ],
+            "answer": "36cm²",
+            "explain_ja": "3×12=36cm²",
+            "explain_zh": "3×12=36cm²"
+          },
+          {
+            "type": "fill",
+            "q_ja": "1m²は何cm²？",
+            "q_zh": "1m²等于多少cm²？",
+            "answer": "10000",
+            "explain_ja": "1m=100cmなので1m²=100×100=10000cm²",
+            "explain_zh": "1m=100cm，所以1m²=100×100=10000cm²"
+          },
+          {
+            "type": "choice",
+            "q_ja": "面積が48cm²、縦が6cmの長方形の横の長さは？",
+            "q_zh": "面积48cm²，宽6cm的长方形，长是多少？",
+            "options": [
+              "6cm",
+              "7cm",
+              "8cm",
+              "9cm"
+            ],
+            "answer": "8cm",
+            "explain_ja": "48÷6=8cm",
+            "explain_zh": "48÷6=8cm"
+          },
+          {
+            "type": "choice",
+            "q_ja": "縦8cm、横8cmの正方形の面積は？",
+            "q_zh": "边长8cm的正方形面积？",
+            "options": [
+              "32cm²",
+              "48cm²",
+              "56cm²",
+              "64cm²"
+            ],
+            "answer": "64cm²",
+            "explain_ja": "8×8=64cm²",
+            "explain_zh": "8×8=64cm²"
+          },
+          {
+            "type": "fill",
+            "q_ja": "縦7cm、横9cmの長方形の面積は？（cm²不要）",
+            "q_zh": "长9cm宽7cm的长方形面积是多少？",
+            "answer": "63",
+            "explain_ja": "7×9=63cm²",
+            "explain_zh": "7×9=63cm²"
+          },
+          {
+            "type": "choice",
+            "q_ja": "次のうち面積の単位はどれ？",
+            "q_zh": "以下哪个是面积单位？",
+            "options": [
+              "cm",
+              "cm²",
+              "cm³",
+              "kg"
+            ],
+            "answer": "cm²",
+            "explain_ja": "cm²（平方センチメートル）が面積の単位",
+            "explain_zh": "cm²（平方厘米）是面积单位"
+          },
+          {
+            "type": "choice",
+            "q_ja": "1a（アール）= ?m²",
+            "q_zh": "1a（公亩）= ?m²",
+            "options": [
+              "10m²",
+              "100m²",
+              "1000m²",
+              "10000m²"
+            ],
+            "answer": "100m²",
+            "explain_ja": "1アール=100m²",
+            "explain_zh": "1公亩=100m²"
+          }
+        ]
+      }
+    ],
+    "japanese": [
+      {
+        "id": "g4-ja-1",
+        "subj": "japanese",
+        "icon": "🈷️",
+        "name": "漢字（4年生）",
+        "nameZh": "汉字（4年级）",
+        "lesson": {
+          "point": "4年生で習う漢字は200字です。読み・書き・使い方をしっかり覚えましょう。\n4年级要学200个汉字，要好好记住读法、写法和用法。",
+          "formula": "音読み：中国から伝わった読み方（例：山→サン）\n訓読み：日本語の読み方（例：山→やま）\n音读：来自中国的读法　训读：日语本来的读法",
+          "example": "【例】愛（あい・アイ）→ 愛する、愛情\n【例】旗（はた・キ）→ 旗、国旗\n【例题】愛（爱）→ 爱する　旗（旗）→ 国旗",
+          "tip": "漢字の部首（へん・つくり）に注目すると覚えやすい！\nさんずい（氵）→ 水に関係　きへん（木）→ 木に関係\n注意汉字的偏旁部首，更容易记忆！"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "「愛」の読み方は？",
+            "q_zh": "「愛」怎么读？",
+            "options": [
+              "あい",
+              "いあ",
+              "えい",
+              "うい"
+            ],
+            "answer": "あい",
+            "explain_ja": "愛（あい）、音読みはアイ",
+            "explain_zh": "愛读作あい，音读是アイ"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「旗」を使った言葉は？",
+            "q_zh": "含有「旗」的词语是？",
+            "options": [
+              "国旗",
+              "国際",
+              "国家",
+              "国語"
+            ],
+            "answer": "国旗",
+            "explain_ja": "旗（はた・キ）→ 国旗（こっき）",
+            "explain_zh": "旗（はた・キ）→ 国旗（こっき）"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「清」の訓読みは？（ひらがなで）",
+            "q_zh": "「清」的训读是？（用平假名）",
+            "answer": "きよ",
+            "explain_ja": "清（きよ）い、音読みはセイ・ショウ",
+            "explain_zh": "清的训读是きよ，音读是セイ"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「健」を使った言葉は？",
+            "q_zh": "含有「健」的词语是？",
+            "options": [
+              "健康",
+              "健闘",
+              "健全",
+              "すべて"
+            ],
+            "answer": "すべて",
+            "explain_ja": "健康・健闘・健全、すべて正しい",
+            "explain_zh": "健康・健闘・健全都正确"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「最」の読み方で正しいのは？",
+            "q_zh": "「最」的正确读法是？",
+            "options": [
+              "さい",
+              "もっと",
+              "もっとも",
+              "さいとも"
+            ],
+            "answer": "もっとも",
+            "explain_ja": "最（もっとも）、音読みはサイ・サ",
+            "explain_zh": "最的训读是もっとも，音读是サイ"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「夫」の読み方を2つ書いて。（音読み）",
+            "q_zh": "「夫」的音读是？",
+            "answer": "フ",
+            "explain_ja": "夫の音読みはフ（夫婦・工夫）、訓読みはおっと",
+            "explain_zh": "夫的音读是フ，训读是おっと"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「笑」の部首は？",
+            "q_zh": "「笑」的部首是？",
+            "options": [
+              "竹",
+              "口",
+              "大",
+              "人"
+            ],
+            "answer": "竹",
+            "explain_ja": "笑は竹かんむり（たけかんむり）が部首",
+            "explain_zh": "笑的部首是竹字头"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「努力」の「努」の読みは？",
+            "q_zh": "「努力」中「努」的读法是？",
+            "options": [
+              "ど",
+              "のど",
+              "ぬ",
+              "どりょく"
+            ],
+            "answer": "ど",
+            "explain_ja": "努（ど）力（りょく）、努はドと読む",
+            "explain_zh": "努力读作どりょく，努读作ど"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「加える」の「加」の音読みは？",
+            "q_zh": "「加える」中「加」的音读是？",
+            "answer": "カ",
+            "explain_ja": "加（くわ）える、音読みはカ（加算）",
+            "explain_zh": "加的训读是くわえる，音读是カ"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「候」を使った言葉は？",
+            "q_zh": "含有「候」的词语是？",
+            "options": [
+              "気候",
+              "候補",
+              "時候",
+              "すべて"
+            ],
+            "answer": "すべて",
+            "explain_ja": "気候・候補・時候、すべて使う",
+            "explain_zh": "気候・候補・時候都使用「候」"
+          }
+        ]
+      }
+    ],
+    "english": [
+      {
+        "id": "g4-en-1",
+        "subj": "english",
+        "icon": "🔤",
+        "name": "アルファベット・あいさつ",
+        "nameZh": "字母与问候",
+        "lesson": {
+          "point": "アルファベット26文字（大文字・小文字）を覚えましょう。基本的なあいさつも練習します。\n学习26个英文字母（大写小写）和基本问候语。",
+          "formula": "Hello / Hi　こんにちは\nGood morning　おはよう\nGood bye / Bye　さようなら\nThank you　ありがとう\nYou're welcome　どういたしまして",
+          "example": "A:Hello! I'm Yuki. What's your name?\nB:Hi! I'm Mei. Nice to meet you!\nA:Nice to meet you too!\n\nA：你好！我是Yuki，你叫什么名字？\nB：嗨！我是Mei，很高兴认识你！",
+          "tip": "大文字と小文字をセットで覚えよう！\nA→a, B→b, C→c... Z→z\n大写和小写要配对记忆！"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "「おはようございます」を英語で言うと？",
+            "q_zh": "「早上好」用英语怎么说？",
+            "options": [
+              "Good night",
+              "Good morning",
+              "Good evening",
+              "Hello"
+            ],
+            "answer": "Good morning",
+            "explain_ja": "朝のあいさつはGood morning",
+            "explain_zh": "早上的问候语是Good morning"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「ありがとう」を英語で言うと？",
+            "q_zh": "「谢谢」用英语怎么说？",
+            "options": [
+              "Sorry",
+              "Please",
+              "Thank you",
+              "Welcome"
+            ],
+            "answer": "Thank you",
+            "explain_ja": "Thank youがありがとうの意味",
+            "explain_zh": "Thank you表示谢谢"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「さようなら」を英語で？（最初の大文字1語）",
+            "q_zh": "「再见」用英语一个词怎么说？",
+            "answer": "Goodbye",
+            "explain_ja": "Goodbye（またはBye）がさようなら",
+            "explain_zh": "再见是Goodbye或Bye"
+          },
+          {
+            "type": "choice",
+            "q_ja": "アルファベットは全部で何文字？",
+            "q_zh": "英文字母一共有多少个？",
+            "options": [
+              "24",
+              "25",
+              "26",
+              "27"
+            ],
+            "answer": "26",
+            "explain_ja": "A〜Zまでの26文字",
+            "explain_zh": "从A到Z共26个字母"
+          },
+          {
+            "type": "choice",
+            "q_ja": "自己紹介：「私はケンです」を英語で？",
+            "q_zh": "自我介绍：「我叫Ken」英语怎么说？",
+            "options": [
+              "I like Ken",
+              "I am Ken",
+              "My Ken",
+              "Ken I"
+            ],
+            "answer": "I am Ken",
+            "explain_ja": "「I am ～」または「I'm ～」で自己紹介",
+            "explain_zh": "用「I am ～」或「I'm ～」自我介绍"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「どうぞよろしく」を英語で？",
+            "q_zh": "「请多关照」英语怎么说？",
+            "options": [
+              "How are you?",
+              "Nice to meet you",
+              "Good job",
+              "See you"
+            ],
+            "answer": "Nice to meet you",
+            "explain_ja": "初めて会うときはNice to meet you",
+            "explain_zh": "初次见面说Nice to meet you"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「What's your name?」の意味は？（日本語で）",
+            "q_zh": "「What's your name?」是什么意思？",
+            "answer": "あなたの名前は何ですか",
+            "explain_ja": "お名前は何ですか？という質問",
+            "explain_zh": "问对方叫什么名字"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「Good evening」はいつ使う？",
+            "q_zh": "「Good evening」什么时候用？",
+            "options": [
+              "朝",
+              "昼",
+              "夜（夕方）",
+              "深夜"
+            ],
+            "answer": "夜（夕方）",
+            "explain_ja": "Good eveningは夕方・夜のあいさつ",
+            "explain_zh": "Good evening是傍晚和晚上的问候"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「I'm fine, thank you.」の意味は？",
+            "q_zh": "「I'm fine, thank you.」是什么意思？",
+            "options": [
+              "お腹が空いた",
+              "元気です、ありがとう",
+              "どういたしまして",
+              "初めまして"
+            ],
+            "answer": "元気です、ありがとう",
+            "explain_ja": "I'm fine=元気です、thank you=ありがとう",
+            "explain_zh": "I'm fine=我很好，thank you=谢谢"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「How are you?」への返事：「I'm ____, thank you.」（1語）",
+            "q_zh": "「How are you?」的回答填空",
+            "answer": "fine",
+            "explain_ja": "I'm fine, thank you.が定番の返し方",
+            "explain_zh": "标准回答是I'm fine, thank you"
+          }
+        ]
+      }
+    ],
+    "science": [
+      {
+        "id": "g4-sc-1",
+        "subj": "science",
+        "icon": "🌡️",
+        "name": "天気と気温",
+        "nameZh": "天气与气温",
+        "lesson": {
+          "point": "天気によって気温の変化のしかたがちがいます。晴れの日は気温の変化が大きく、くもりや雨の日は小さいです。\n天气不同，气温的变化方式也不同。晴天气温变化大，阴天和雨天变化小。",
+          "formula": "気温の測り方：温度計を直射日光のあたらない、地上1.2〜1.5mの高さで測る\n测量气温：在不受阳光直射的地方，距地面1.2～1.5m高度处测量",
+          "example": "晴れの日：朝は低く→昼ごろ最高→夕方また下がる\nくもりの日：一日中あまり変化しない\n\n晴天：早晨低→午后最高→傍晚再降\n阴天：全天变化不大",
+          "tip": "「最高気温」は午後2時ごろ、「最低気温」は夜明け前ごろになることが多い！\n最高气温通常在下午2点左右，最低气温通常在黎明前后！"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "気温を測るとき、温度計はどこに置く？",
+            "q_zh": "测量气温时，温度计放在哪里？",
+            "options": [
+              "日なた",
+              "日かげ",
+              "水の中",
+              "地面の上"
+            ],
+            "answer": "日かげ",
+            "explain_ja": "直射日光のあたらない日かげで測ります",
+            "explain_zh": "在不受阳光直射的阴凉处测量"
+          },
+          {
+            "type": "choice",
+            "q_ja": "晴れの日、気温が最も高くなるのはいつごろ？",
+            "q_zh": "晴天气温最高是什么时候？",
+            "options": [
+              "午前10時",
+              "正午12時",
+              "午後2時",
+              "午後4時"
+            ],
+            "answer": "午後2時",
+            "explain_ja": "晴れの日の最高気温は午後2時ごろ",
+            "explain_zh": "晴天最高气温通常在下午2点左右"
+          },
+          {
+            "type": "choice",
+            "q_ja": "くもりの日と晴れの日、気温の変化が大きいのは？",
+            "q_zh": "阴天和晴天哪天气温变化更大？",
+            "options": [
+              "くもりの日",
+              "晴れの日",
+              "同じ",
+              "季節による"
+            ],
+            "answer": "晴れの日",
+            "explain_ja": "晴れの日は気温の変化が大きく、くもりは小さい",
+            "explain_zh": "晴天气温变化大，阴天变化小"
+          },
+          {
+            "type": "fill",
+            "q_ja": "気温は地面から何m〜何mの高さで測る？（小さい数字）",
+            "q_zh": "气温测量高度是距地面多少米？（填较小的数字）",
+            "answer": "1.2",
+            "explain_ja": "地上1.2〜1.5mの高さで測ります",
+            "explain_zh": "在距地面1.2～1.5m高度处测量"
+          },
+          {
+            "type": "choice",
+            "q_ja": "雨の日の気温の変化の特徴は？",
+            "q_zh": "雨天气温变化的特点是？",
+            "options": [
+              "変化が大きい",
+              "変化が小さい",
+              "昼に最低になる",
+              "朝に最高になる"
+            ],
+            "answer": "変化が小さい",
+            "explain_ja": "雨（くもり）の日は気温の変化が小さい",
+            "explain_zh": "雨天（阴天）气温变化小"
+          },
+          {
+            "type": "choice",
+            "q_ja": "温度計の正しい読み方は？",
+            "q_zh": "温度计的正确读法是？",
+            "options": [
+              "上から見る",
+              "横から見る",
+              "下から見る",
+              "どこからでもよい"
+            ],
+            "answer": "横から見る",
+            "explain_ja": "目盛りと目の高さを合わせて横から読む",
+            "explain_zh": "眼睛与刻度齐平，从侧面读数"
+          },
+          {
+            "type": "fill",
+            "q_ja": "1日の最低気温は何時ごろ？（時間帯で答えて）",
+            "q_zh": "一天中最低气温大约在什么时候？",
+            "answer": "夜明け前",
+            "explain_ja": "最低気温は夜明け前（日の出前）ごろ",
+            "explain_zh": "最低气温通常在黎明前（日出前）"
+          },
+          {
+            "type": "choice",
+            "q_ja": "春・夏・秋・冬で気温が最も高い季節は？",
+            "q_zh": "春夏秋冬哪个季节气温最高？",
+            "options": [
+              "春",
+              "夏",
+              "秋",
+              "冬"
+            ],
+            "answer": "夏",
+            "explain_ja": "夏が最も気温が高い",
+            "explain_zh": "夏天气温最高"
+          },
+          {
+            "type": "choice",
+            "q_ja": "天気を記録するとき使う記号で「晴れ」は？",
+            "q_zh": "记录天气时，「晴天」的符号是？",
+            "options": [
+              "○",
+              "●",
+              "◎",
+              "×"
+            ],
+            "answer": "○",
+            "explain_ja": "晴れは○（丸）、くもりは◎、雨は●",
+            "explain_zh": "晴天是○，阴天是◎，雨天是●"
+          },
+          {
+            "type": "fill",
+            "q_ja": "気温の変化を折れ線グラフで表すとき、縦軸は何を表す？",
+            "q_zh": "用折线图表示气温变化时，纵轴表示什么？",
+            "answer": "気温",
+            "explain_ja": "縦軸が気温（℃）、横軸が時刻",
+            "explain_zh": "纵轴表示气温（℃），横轴表示时间"
+          }
+        ]
+      }
+    ],
+    "social": [
+      {
+        "id": "g4-so-1",
+        "subj": "social",
+        "icon": "🗾",
+        "name": "都道府県",
+        "nameZh": "都道府县",
+        "lesson": {
+          "point": "日本は47の都道府県からなります。東京都・大阪府・京都府・北海道と43県があります。\n日本由47个都道府县组成：东京都、大阪府、京都府、北海道和43个县。",
+          "formula": "1都（東京）+ 1道（北海道）+ 2府（大阪・京都）+ 43県 = 47都道府県\n1都+1道+2府+43县=47都道府县",
+          "example": "関東地方：東京都・神奈川県・千葉県・埼玉県・茨城県・栃木県・群馬県\n近畿地方：大阪府・京都府・兵庫県・奈良県・滋賀県・和歌山県・三重県\n\n关东地区：东京都・神奈川县等\n近畿地区：大阪府・京都府等",
+          "tip": "地方区分（7地方）：北海道・東北・関東・中部・近畿・中国四国・九州\n7大地区：北海道・东北・关东・中部・近畿・中国四国・九州"
+        },
+        "questions": [
+          {
+            "type": "fill",
+            "q_ja": "日本の都道府県は全部でいくつ？",
+            "q_zh": "日本一共有多少个都道府县？",
+            "answer": "47",
+            "explain_ja": "1都1道2府43県で合計47都道府県",
+            "explain_zh": "1都1道2府43县，共47个都道府县"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「道」がつく地方は？",
+            "q_zh": "带「道」的地方是？",
+            "options": [
+              "東京",
+              "大阪",
+              "北海道",
+              "京都"
+            ],
+            "answer": "北海道",
+            "explain_ja": "北海道だけが「道」です",
+            "explain_zh": "只有北海道带「道」"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「府」がつく場所はいくつ？",
+            "q_zh": "带「府」的地方有几个？",
+            "options": [
+              "1つ",
+              "2つ",
+              "3つ",
+              "4つ"
+            ],
+            "answer": "2つ",
+            "explain_ja": "大阪府と京都府の2つ",
+            "explain_zh": "大阪府和京都府，共2个"
+          },
+          {
+            "type": "fill",
+            "q_ja": "日本の首都（都）はどこ？",
+            "q_zh": "日本的首都（都）是哪里？",
+            "answer": "東京",
+            "explain_ja": "東京都が日本の首都",
+            "explain_zh": "东京都是日本的首都"
+          },
+          {
+            "type": "choice",
+            "q_ja": "関東地方に含まれない県は？",
+            "q_zh": "不属于关东地方的县是？",
+            "options": [
+              "神奈川県",
+              "千葉県",
+              "静岡県",
+              "埼玉県"
+            ],
+            "answer": "静岡県",
+            "explain_ja": "静岡県は中部地方（東海）です",
+            "explain_zh": "静冈县属于中部地方（东海）"
+          },
+          {
+            "type": "choice",
+            "q_ja": "日本で最も大きい都道府県は？（面積）",
+            "q_zh": "面积最大的都道府县是？",
+            "options": [
+              "東京都",
+              "岩手県",
+              "北海道",
+              "長野県"
+            ],
+            "answer": "北海道",
+            "explain_ja": "北海道が面積最大（約83,000km²）",
+            "explain_zh": "北海道面积最大（约83,000km²）"
+          },
+          {
+            "type": "fill",
+            "q_ja": "九州地方の最南端にある県は？",
+            "q_zh": "九州最南端的县是？",
+            "answer": "鹿児島",
+            "explain_ja": "鹿児島県が九州の最南部（沖縄は南西諸島）",
+            "explain_zh": "鹿儿岛县是九州最南端"
+          },
+          {
+            "type": "choice",
+            "q_ja": "東北地方は何県ある？",
+            "q_zh": "东北地方有几个县？",
+            "options": [
+              "4県",
+              "5県",
+              "6県",
+              "7県"
+            ],
+            "answer": "6県",
+            "explain_ja": "青森・岩手・宮城・秋田・山形・福島の6県",
+            "explain_zh": "青森・岩手・宫城・秋田・山形・福岛，共6县"
+          },
+          {
+            "type": "choice",
+            "q_ja": "大阪府の府庁所在地は？",
+            "q_zh": "大阪府的府政府所在地是？",
+            "options": [
+              "堺市",
+              "京都市",
+              "大阪市",
+              "神戸市"
+            ],
+            "answer": "大阪市",
+            "explain_ja": "大阪府の府庁は大阪市",
+            "explain_zh": "大阪府的府政府在大阪市"
+          },
+          {
+            "type": "choice",
+            "q_ja": "四国地方の都道府県の数は？",
+            "q_zh": "四国地方有几个都道府县？",
+            "options": [
+              "3つ",
+              "4つ",
+              "5つ",
+              "6つ"
+            ],
+            "answer": "4つ",
+            "explain_ja": "徳島・香川・愛媛・高知の4県",
+            "explain_zh": "德岛・香川・爱媛・高知，共4县"
+          }
+        ]
+      }
+    ]
+  },
+  "grade5": {
+    "math": [
+      {
+        "id": "g5-math-1",
+        "subj": "math",
+        "icon": "½",
+        "name": "分数のたし算・ひき算",
+        "nameZh": "分数加减法",
+        "lesson": {
+          "point": "通分（分母をそろえる）してからたし算・ひき算をします。\n先通分（使分母相同），再进行加减法。",
+          "formula": "通分の方法：分母の最小公倍数を求めて分母をそろえる\n1/3 + 1/4 = 4/12 + 3/12 = 7/12\n通分方法：求分母的最小公倍数，使分母相同",
+          "example": "【例】1/2 + 1/3 を計算しよう\n最小公倍数は6\n1/2 = 3/6、1/3 = 2/6\n3/6 + 2/6 = 5/6\n\n【例题】1/2+1/3的最小公倍数是6，通分后3/6+2/6=5/6",
+          "tip": "分母が同じなら分子だけ計算すればOK！\n約分を忘れずに！最大公約数で割る。\n分母相同时只需计算分子！别忘了约分！"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "1/2 + 1/4 = ?",
+            "q_zh": "1/2 + 1/4 = ?",
+            "options": [
+              "2/6",
+              "3/4",
+              "2/4",
+              "1/4"
+            ],
+            "answer": "3/4",
+            "explain_ja": "1/2=2/4、2/4+1/4=3/4",
+            "explain_zh": "1/2=2/4，2/4+1/4=3/4"
+          },
+          {
+            "type": "choice",
+            "q_ja": "1/3 + 1/6 = ?",
+            "q_zh": "1/3 + 1/6 = ?",
+            "options": [
+              "2/9",
+              "1/2",
+              "2/6",
+              "3/6"
+            ],
+            "answer": "1/2",
+            "explain_ja": "1/3=2/6、2/6+1/6=3/6=1/2",
+            "explain_zh": "1/3=2/6，2/6+1/6=3/6=1/2"
+          },
+          {
+            "type": "fill",
+            "q_ja": "3/4 - 1/2 = ? (分数で)",
+            "q_zh": "3/4 - 1/2 = ? (用分数表示)",
+            "answer": "1/4",
+            "explain_ja": "1/2=2/4、3/4-2/4=1/4",
+            "explain_zh": "1/2=2/4，3/4-2/4=1/4"
+          },
+          {
+            "type": "choice",
+            "q_ja": "1/2 + 1/3 の通分した分母は？",
+            "q_zh": "1/2 + 1/3 通分后的分母是？",
+            "options": [
+              "5",
+              "6",
+              "8",
+              "12"
+            ],
+            "answer": "6",
+            "explain_ja": "2と3の最小公倍数は6",
+            "explain_zh": "2和3的最小公倍数是6"
+          },
+          {
+            "type": "choice",
+            "q_ja": "5/6 - 1/2 = ?",
+            "q_zh": "5/6 - 1/2 = ?",
+            "options": [
+              "4/4",
+              "1/3",
+              "2/3",
+              "4/6"
+            ],
+            "answer": "1/3",
+            "explain_ja": "1/2=3/6、5/6-3/6=2/6=1/3",
+            "explain_zh": "1/2=3/6，5/6-3/6=2/6=1/3"
+          },
+          {
+            "type": "fill",
+            "q_ja": "1/4 + 3/8 = ? (分数で)",
+            "q_zh": "1/4 + 3/8 = ?",
+            "answer": "5/8",
+            "explain_ja": "1/4=2/8、2/8+3/8=5/8",
+            "explain_zh": "1/4=2/8，2/8+3/8=5/8"
+          },
+          {
+            "type": "choice",
+            "q_ja": "2/3 + 1/6 = ?",
+            "q_zh": "2/3 + 1/6 = ?",
+            "options": [
+              "3/9",
+              "3/6",
+              "5/6",
+              "4/6"
+            ],
+            "answer": "5/6",
+            "explain_ja": "2/3=4/6、4/6+1/6=5/6",
+            "explain_zh": "2/3=4/6，4/6+1/6=5/6"
+          },
+          {
+            "type": "choice",
+            "q_ja": "4/5 - 3/10 = ?",
+            "q_zh": "4/5 - 3/10 = ?",
+            "options": [
+              "1/5",
+              "1/10",
+              "1/2",
+              "3/5"
+            ],
+            "answer": "1/2",
+            "explain_ja": "4/5=8/10、8/10-3/10=5/10=1/2",
+            "explain_zh": "4/5=8/10，8/10-3/10=5/10=1/2"
+          },
+          {
+            "type": "fill",
+            "q_ja": "約分：6/8 = ?/4",
+            "q_zh": "约分：6/8 = ?/4",
+            "answer": "3",
+            "explain_ja": "6/8を÷2すると3/4",
+            "explain_zh": "6/8除以2得3/4"
+          },
+          {
+            "type": "choice",
+            "q_ja": "1 - 2/5 = ?",
+            "q_zh": "1 - 2/5 = ?",
+            "options": [
+              "1/5",
+              "2/5",
+              "3/5",
+              "4/5"
+            ],
+            "answer": "3/5",
+            "explain_ja": "1=5/5、5/5-2/5=3/5",
+            "explain_zh": "1=5/5，5/5-2/5=3/5"
+          }
+        ]
+      },
+      {
+        "id": "g5-math-2",
+        "subj": "math",
+        "icon": "💯",
+        "name": "小数のかけ算・わり算",
+        "nameZh": "小数乘除法",
+        "lesson": {
+          "point": "小数のかけ算は整数と同様に計算し、最後に小数点を移します。\n小数乘法与整数相同，最后移动小数点。",
+          "formula": "かけ算：小数点の位置は、かける数とかけられる数の小数の桁数の合計分移す\nわり算：わる数が整数になるように両方に同じ数をかける\n乘法：小数点位置移动位数=两个乘数小数位数之和",
+          "example": "【例】1.2 × 3 = 3.6\n【例】0.5 × 0.4 = 0.20 = 0.2\n【例】2.4 ÷ 0.3 = 24 ÷ 3 = 8\n\n【例题】0.5×0.4，1位×1位=2位，0.20=0.2",
+          "tip": "かけ算：小数点は右から桁数を数えて打つ\nわり算：わる数の小数点を右に移し、わられる数も同じだけ移す\n除法：把除数变成整数，被除数也移动相同位数"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "1.3 × 4 = ?",
+            "q_zh": "1.3 × 4 = ?",
+            "options": [
+              "4.2",
+              "5.2",
+              "5.12",
+              "6.2"
+            ],
+            "answer": "5.2",
+            "explain_ja": "13×4=52、小数1桁なので5.2",
+            "explain_zh": "13×4=52，一位小数，所以5.2"
+          },
+          {
+            "type": "fill",
+            "q_ja": "0.6 × 7 = ?",
+            "q_zh": "0.6 × 7 = ?",
+            "answer": "4.2",
+            "explain_ja": "6×7=42、1桁なので4.2",
+            "explain_zh": "6×7=42，一位小数，所以4.2"
+          },
+          {
+            "type": "choice",
+            "q_ja": "2.4 ÷ 4 = ?",
+            "q_zh": "2.4 ÷ 4 = ?",
+            "options": [
+              "0.06",
+              "0.6",
+              "6",
+              "0.06"
+            ],
+            "answer": "0.6",
+            "explain_ja": "24÷4=6、1桁なので0.6",
+            "explain_zh": "24÷4=6，一位小数，所以0.6"
+          },
+          {
+            "type": "choice",
+            "q_ja": "0.5 × 0.6 = ?",
+            "q_zh": "0.5 × 0.6 = ?",
+            "options": [
+              "3",
+              "0.3",
+              "0.03",
+              "30"
+            ],
+            "answer": "0.3",
+            "explain_ja": "5×6=30、2桁なので0.30=0.3",
+            "explain_zh": "5×6=30，两位小数，所以0.30=0.3"
+          },
+          {
+            "type": "fill",
+            "q_ja": "3.6 ÷ 0.9 = ?",
+            "q_zh": "3.6 ÷ 0.9 = ?",
+            "answer": "4",
+            "explain_ja": "36÷9=4",
+            "explain_zh": "36÷9=4"
+          },
+          {
+            "type": "choice",
+            "q_ja": "1.4 × 2.5 = ?",
+            "q_zh": "1.4 × 2.5 = ?",
+            "options": [
+              "3",
+              "3.5",
+              "3.0",
+              "35"
+            ],
+            "answer": "3.5",
+            "explain_ja": "14×25=350、2桁なので3.50=3.5",
+            "explain_zh": "14×25=350，两位小数，所以3.5"
+          },
+          {
+            "type": "fill",
+            "q_ja": "7.2 ÷ 8 = ?",
+            "q_zh": "7.2 ÷ 8 = ?",
+            "answer": "0.9",
+            "explain_ja": "72÷8=9、1桁なので0.9",
+            "explain_zh": "72÷8=9，一位小数，所以0.9"
+          },
+          {
+            "type": "choice",
+            "q_ja": "0.8 × 100 = ?",
+            "q_zh": "0.8 × 100 = ?",
+            "options": [
+              "8",
+              "80",
+              "800",
+              "0.008"
+            ],
+            "answer": "80",
+            "explain_ja": "×100で小数点が2つ右へ移り80",
+            "explain_zh": "×100小数点右移2位，得80"
+          },
+          {
+            "type": "fill",
+            "q_ja": "4.5 ÷ 0.5 = ?",
+            "q_zh": "4.5 ÷ 0.5 = ?",
+            "answer": "9",
+            "explain_ja": "45÷5=9",
+            "explain_zh": "45÷5=9"
+          },
+          {
+            "type": "choice",
+            "q_ja": "2.5 × 4 = ?",
+            "q_zh": "2.5 × 4 = ?",
+            "options": [
+              "8",
+              "9",
+              "10",
+              "12"
+            ],
+            "answer": "10",
+            "explain_ja": "25×4=100、1桁なので10.0=10",
+            "explain_zh": "25×4=100，一位小数，所以10"
+          }
+        ]
+      },
+      {
+        "id": "g5-math-3",
+        "subj": "math",
+        "icon": "📦",
+        "name": "体積",
+        "nameZh": "体积",
+        "lesson": {
+          "point": "体積は立体の大きさで「cm³（立方センチメートル）」などで表します。\n体积是立体的大小，用「cm³（立方厘米）」等单位表示。",
+          "formula": "直方体の体積 = 縦 × 横 × 高さ\n立方体の体積 = 一辺 × 一辺 × 一辺\n长方体体积=长×宽×高　正方体体积=边长³",
+          "example": "【例】縦3cm、横4cm、高さ5cmの直方体の体積は？\n3 × 4 × 5 = 60 cm³\n\n【例题】长4cm宽3cm高5cm的长方体体积\n4×3×5=60 cm³",
+          "tip": "1L = 1000mL = 1000cm³\n1m³ = 1000000cm³（100×100×100）\n1L=1000cm³ 记住单位换算！"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "縦2cm、横3cm、高さ4cmの直方体の体積は？",
+            "q_zh": "长3cm宽2cm高4cm的长方体体积？",
+            "options": [
+              "18cm³",
+              "20cm³",
+              "24cm³",
+              "28cm³"
+            ],
+            "answer": "24cm³",
+            "explain_ja": "2×3×4=24cm³",
+            "explain_zh": "2×3×4=24cm³"
+          },
+          {
+            "type": "fill",
+            "q_ja": "一辺3cmの立方体の体積は？（cm³不要）",
+            "q_zh": "边长3cm的正方体体积是多少？",
+            "answer": "27",
+            "explain_ja": "3×3×3=27cm³",
+            "explain_zh": "3×3×3=27cm³"
+          },
+          {
+            "type": "choice",
+            "q_ja": "1L = ?cm³",
+            "q_zh": "1L = ?cm³",
+            "options": [
+              "100cm³",
+              "500cm³",
+              "1000cm³",
+              "10000cm³"
+            ],
+            "answer": "1000cm³",
+            "explain_ja": "1L=1000cm³（1dL=100cm³）",
+            "explain_zh": "1L=1000cm³"
+          },
+          {
+            "type": "choice",
+            "q_ja": "体積が60cm³、縦5cm、横4cmの直方体の高さは？",
+            "q_zh": "体积60cm³，长5cm宽4cm的长方体，高是多少？",
+            "options": [
+              "2cm",
+              "3cm",
+              "4cm",
+              "5cm"
+            ],
+            "answer": "3cm",
+            "explain_ja": "60÷5÷4=3cm",
+            "explain_zh": "60÷5÷4=3cm"
+          },
+          {
+            "type": "fill",
+            "q_ja": "縦4cm、横5cm、高さ6cmの直方体の体積は？（cm³不要）",
+            "q_zh": "长5cm宽4cm高6cm的长方体体积是多少？",
+            "answer": "120",
+            "explain_ja": "4×5×6=120cm³",
+            "explain_zh": "4×5×6=120cm³"
+          },
+          {
+            "type": "choice",
+            "q_ja": "1m³ = ?cm³",
+            "q_zh": "1m³ = ?cm³",
+            "options": [
+              "1000cm³",
+              "10000cm³",
+              "100000cm³",
+              "1000000cm³"
+            ],
+            "answer": "1000000cm³",
+            "explain_ja": "100×100×100=1000000cm³",
+            "explain_zh": "100×100×100=1000000cm³"
+          },
+          {
+            "type": "choice",
+            "q_ja": "一辺5cmの立方体の体積は？",
+            "q_zh": "边长5cm的正方体体积？",
+            "options": [
+              "25cm³",
+              "75cm³",
+              "100cm³",
+              "125cm³"
+            ],
+            "answer": "125cm³",
+            "explain_ja": "5×5×5=125cm³",
+            "explain_zh": "5×5×5=125cm³"
+          },
+          {
+            "type": "fill",
+            "q_ja": "3000cm³は何L？",
+            "q_zh": "3000cm³等于多少L？",
+            "answer": "3",
+            "explain_ja": "3000÷1000=3L",
+            "explain_zh": "3000÷1000=3L"
+          },
+          {
+            "type": "choice",
+            "q_ja": "体積の単位はどれ？",
+            "q_zh": "以下哪个是体积单位？",
+            "options": [
+              "cm",
+              "cm²",
+              "cm³",
+              "m²"
+            ],
+            "answer": "cm³",
+            "explain_ja": "cm³（立方センチメートル）が体積の単位",
+            "explain_zh": "cm³（立方厘米）是体积单位"
+          },
+          {
+            "type": "choice",
+            "q_ja": "直方体と立方体の違いは？",
+            "q_zh": "长方体和正方体的区别是？",
+            "options": [
+              "大きさ",
+              "辺の長さがすべて等しいかどうか",
+              "色",
+              "重さ"
+            ],
+            "answer": "辺の長さがすべて等しいかどうか",
+            "explain_ja": "立方体はすべての辺が等しい特別な直方体",
+            "explain_zh": "正方体是所有边相等的特殊长方体"
+          }
+        ]
+      },
+      {
+        "id": "g5-math-4",
+        "subj": "math",
+        "icon": "📊",
+        "name": "割合",
+        "nameZh": "比例与百分比",
+        "lesson": {
+          "point": "割合は、ある量が基準の量の何倍かを表す数です。\n比例表示某个量是基准量的多少倍。",
+          "formula": "割合 = 比べる量 ÷ 基準の量\n比べる量 = 基準の量 × 割合\n基準の量 = 比べる量 ÷ 割合\n比率=比较量÷基准量",
+          "example": "【例】40人のクラスで24人が女子のとき、女子の割合は？\n24 ÷ 40 = 0.6（60%）\n\n【例题】40人班级24人是女生，女生比例是？\n24÷40=0.6（60%）",
+          "tip": "割合の表し方：小数→百分率(%)→歩合（割・分・厘）\n0.1 = 10% = 1割　0.01 = 1% = 1分\n比率的表示：小数→百分率→成（割・分・厘）"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "30人のうち18人が好きなとき、割合は？",
+            "q_zh": "30人中18人喜欢，比例是多少？",
+            "options": [
+              "0.4",
+              "0.5",
+              "0.6",
+              "0.7"
+            ],
+            "answer": "0.6",
+            "explain_ja": "18÷30=0.6（60%）",
+            "explain_zh": "18÷30=0.6（60%）"
+          },
+          {
+            "type": "fill",
+            "q_ja": "0.7を百分率（%）に直すと？（%不要）",
+            "q_zh": "0.7化为百分率是多少？",
+            "answer": "70",
+            "explain_ja": "0.7×100=70%",
+            "explain_zh": "0.7×100=70%"
+          },
+          {
+            "type": "choice",
+            "q_ja": "基準量200、割合0.4のとき比べる量は？",
+            "q_zh": "基准量200，比率0.4，比较量是多少？",
+            "options": [
+              "50",
+              "60",
+              "80",
+              "100"
+            ],
+            "answer": "80",
+            "explain_ja": "200×0.4=80",
+            "explain_zh": "200×0.4=80"
+          },
+          {
+            "type": "choice",
+            "q_ja": "60%を小数に直すと？",
+            "q_zh": "60%化为小数是多少？",
+            "options": [
+              "6",
+              "0.6",
+              "0.06",
+              "600"
+            ],
+            "answer": "0.6",
+            "explain_ja": "60÷100=0.6",
+            "explain_zh": "60÷100=0.6"
+          },
+          {
+            "type": "fill",
+            "q_ja": "比べる量80、基準量200のとき割合は？（小数で）",
+            "q_zh": "比较量80，基准量200，比率是多少？（用小数）",
+            "answer": "0.4",
+            "explain_ja": "80÷200=0.4",
+            "explain_zh": "80÷200=0.4"
+          },
+          {
+            "type": "choice",
+            "q_ja": "1割は何%？",
+            "q_zh": "「1割」是百分之多少？",
+            "options": [
+              "1%",
+              "5%",
+              "10%",
+              "100%"
+            ],
+            "answer": "10%",
+            "explain_ja": "1割=0.1=10%",
+            "explain_zh": "1割=0.1=10%"
+          },
+          {
+            "type": "choice",
+            "q_ja": "定価1000円の3割引の値段は？",
+            "q_zh": "定价1000日元打七折的价格是多少？",
+            "options": [
+              "300円",
+              "700円",
+              "730円",
+              "970円"
+            ],
+            "answer": "700円",
+            "explain_ja": "1000×(1-0.3)=1000×0.7=700円",
+            "explain_zh": "1000×(1-0.3)=700円"
+          },
+          {
+            "type": "fill",
+            "q_ja": "50%は小数で？",
+            "q_zh": "50%用小数表示是多少？",
+            "answer": "0.5",
+            "explain_ja": "50÷100=0.5",
+            "explain_zh": "50÷100=0.5"
+          },
+          {
+            "type": "choice",
+            "q_ja": "120人の25%は何人？",
+            "q_zh": "120人的25%是多少人？",
+            "options": [
+              "20人",
+              "25人",
+              "30人",
+              "40人"
+            ],
+            "answer": "30人",
+            "explain_ja": "120×0.25=30人",
+            "explain_zh": "120×0.25=30人"
+          },
+          {
+            "type": "choice",
+            "q_ja": "比べる量60、割合0.3のとき基準量は？",
+            "q_zh": "比较量60，比率0.3，基准量是多少？",
+            "options": [
+              "18",
+              "20",
+              "180",
+              "200"
+            ],
+            "answer": "200",
+            "explain_ja": "60÷0.3=200",
+            "explain_zh": "60÷0.3=200"
+          }
+        ]
+      }
+    ],
+    "japanese": [
+      {
+        "id": "g5-ja-1",
+        "subj": "japanese",
+        "icon": "🈷️",
+        "name": "漢字（5年生）",
+        "nameZh": "汉字（5年级）",
+        "lesson": {
+          "point": "5年生で習う漢字は185字です。熟語や文の中で使えるようにしましょう。\n5年级要学185个汉字，要能在词语和句子中灵活使用。",
+          "formula": "同訓異字：同じ読みで意味の違う漢字\n例：あう → 会う（人に）・合う（答えが）・遭う（事故に）\n同音异字：读音相同但意思不同的汉字",
+          "example": "【例】「志」：こころざし（志）、シ（志望）\n【例】「序」：ジョ（序文・序列）\n【例题】志望（しぼう）＝愿望　序文（じょぶん）＝序言",
+          "tip": "5年生の重要漢字：圧・移・因・営・易・益・液・演・応・仮…\n覚えにくい字は文や例文を作って覚えよう！\n用造句法记忆难写的汉字！"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "「永」の読み方は？",
+            "q_zh": "「永」的读法是？",
+            "options": [
+              "えい",
+              "よう",
+              "おい",
+              "よ"
+            ],
+            "answer": "えい",
+            "explain_ja": "永（えい）、永遠（えいえん）、永久（えいきゅう）",
+            "explain_zh": "永读えい，永远（えいえん）、永久（えいきゅう）"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「移動」の「移」の読みは？",
+            "q_zh": "「移動」中「移」的读法是？",
+            "answer": "い",
+            "explain_ja": "移動（いどう）、移（うつ）る",
+            "explain_zh": "移动（いどう），移（うつ）る"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「益」を使った言葉は？",
+            "q_zh": "含有「益」的词语是？",
+            "options": [
+              "利益",
+              "有益",
+              "益虫",
+              "すべて"
+            ],
+            "answer": "すべて",
+            "explain_ja": "利益・有益・益虫、すべて使います",
+            "explain_zh": "利益・有益・益虫都使用「益」"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「確かめる」の「確」の音読みは？",
+            "q_zh": "「確かめる」中「確」的音读是？",
+            "options": [
+              "かく",
+              "こく",
+              "くわ",
+              "きわ"
+            ],
+            "answer": "かく",
+            "explain_ja": "確（かく）認、確（たし）かめる",
+            "explain_zh": "確的音读是カク，训读是たしか"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「仮定」の「仮」の読みは？",
+            "q_zh": "「仮定」中「仮」的读法是？",
+            "answer": "か",
+            "explain_ja": "仮定（かてい）、仮（かり）",
+            "explain_zh": "仮定（かてい），仮（かり）"
+          },
+          {
+            "type": "choice",
+            "q_ja": "次の漢字の部首が「口（くち）」のは？",
+            "q_zh": "以下哪个汉字的部首是「口（くち）」？",
+            "options": [
+              "唱",
+              "海",
+              "林",
+              "門"
+            ],
+            "answer": "唱",
+            "explain_ja": "唱はくちへんが部首",
+            "explain_zh": "唱的部首是口旁"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「規則」の「規」の読みは？",
+            "q_zh": "「規則」中「規」的读法是？",
+            "options": [
+              "き",
+              "くわ",
+              "ぎ",
+              "き"
+            ],
+            "answer": "き",
+            "explain_ja": "規則（きそく）、規（き）",
+            "explain_zh": "規則读きそく，規读き"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「厚い」の「厚」の音読みは？",
+            "q_zh": "「厚い」中「厚」的音读是？",
+            "answer": "こう",
+            "explain_ja": "厚（こう）意、厚（あつ）い",
+            "explain_zh": "厚的音读是コウ，训读是あつい"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「応用」の「応」の読みは？",
+            "q_zh": "「応用」中「応」的读法是？",
+            "options": [
+              "お",
+              "おう",
+              "よう",
+              "おん"
+            ],
+            "answer": "おう",
+            "explain_ja": "応用（おうよう）、応（おう）じる",
+            "explain_zh": "応用读おうよう，応読おう"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「演じる」の「演」の部首は？",
+            "q_zh": "「演じる」中「演」的部首是？",
+            "options": [
+              "水（さんずい）",
+              "木",
+              "心",
+              "田"
+            ],
+            "answer": "水（さんずい）",
+            "explain_ja": "演はさんずい（氵）が部首",
+            "explain_zh": "演的部首是三点水（氵）"
+          }
+        ]
+      },
+      {
+        "id": "g5-ja-2",
+        "subj": "japanese",
+        "icon": "🗣️",
+        "name": "慣用句・ことわざ",
+        "nameZh": "惯用语与谚语",
+        "lesson": {
+          "point": "慣用句は体の一部を使った決まった言い方です。ことわざは昔からの知恵や教えです。\n惯用语是使用身体部位的固定说法，谚语是古代流传下来的智慧与教导。",
+          "formula": "慣用句の例：\n・耳が痛い（自分の欠点を指摘されてつらい）\n・目を丸くする（非常に驚く）\n・手を焼く（扱いに困る）",
+          "example": "【ことわざ例】\n・七転び八起き：何度失敗しても立ち上がる\n・石の上にも三年：苦しくても続ければ成果が出る\n\n【谚语例】七次跌倒八次站起来=百折不挠\n石头上坐三年也会暖=坚持就是胜利",
+          "tip": "体の部位を含む慣用句をまとめて覚えよう：\n頭・目・耳・口・鼻・手・足・腰・腹・胸\n把含有身体部位的惯用语归类记忆！"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "「耳が痛い」の意味は？",
+            "q_zh": "「耳が痛い」是什么意思？",
+            "options": [
+              "耳が病気",
+              "自分の欠点を言われてつらい",
+              "音がうるさい",
+              "眠い"
+            ],
+            "answer": "自分の欠点を言われてつらい",
+            "explain_ja": "耳が痛い＝自分の弱点を指摘されてつらい",
+            "explain_zh": "耳が痛い=被指出弱点感到难受"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「七転び八起き」の意味は？",
+            "q_zh": "「七転び八起き」是什么意思？",
+            "options": [
+              "運動が得意",
+              "何度失敗しても立ち向かう",
+              "7回勝つ",
+              "転ぶのが好き"
+            ],
+            "answer": "何度失敗しても立ち向かう",
+            "explain_ja": "何度転んでも立ち上がる＝不屈の精神",
+            "explain_zh": "不管跌倒多少次都要站起来=百折不挠"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「目を（　）する」（非常に驚く）の（）に入る言葉は？",
+            "q_zh": "「目を（　）する」（非常惊讶）括号里填什么？",
+            "answer": "丸く",
+            "explain_ja": "目を丸くする＝とても驚く",
+            "explain_zh": "目を丸くする=非常吃惊"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「石の上にも三年」の意味は？",
+            "q_zh": "「石の上にも三年」是什么意思？",
+            "options": [
+              "石の上で寝る",
+              "我慢して続ければ成功する",
+              "石は固い",
+              "3年で石になる"
+            ],
+            "answer": "我慢して続ければ成功する",
+            "explain_ja": "辛くても続ければ必ず成果が出る",
+            "explain_zh": "坚持下去就会成功"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「手を焼く」の意味は？",
+            "q_zh": "「手を焼く」是什么意思？",
+            "options": [
+              "料理をする",
+              "扱いに困る",
+              "手が熱い",
+              "働く"
+            ],
+            "answer": "扱いに困る",
+            "explain_ja": "手を焼く＝扱いに困る・苦労する",
+            "explain_zh": "手を焼く=感到棘手、难以对付"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「頭が下がる」の意味は？",
+            "q_zh": "「頭が下がる」是什么意思？",
+            "options": [
+              "眠い",
+              "尊敬・感心する",
+              "頭が痛い",
+              "謝る"
+            ],
+            "answer": "尊敬・感心する",
+            "explain_ja": "頭が下がる＝尊敬する・感心する",
+            "explain_zh": "頭が下がる=非常佩服、尊敬"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「急がば（　）れ」（急ぐときこそ安全な道を）の（）は？",
+            "q_zh": "「急がば（　）れ」括号里填什么？（欲速则不达）",
+            "answer": "まわ",
+            "explain_ja": "急がばまわれ＝急ぐときこそ安全な道を行け",
+            "explain_zh": "欲速则不达，急时更要走稳妥的路"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「口が軽い」の意味は？",
+            "q_zh": "「口が軽い」是什么意思？",
+            "options": [
+              "声が小さい",
+              "秘密を守れない",
+              "よく食べる",
+              "話すのが好き"
+            ],
+            "answer": "秘密を守れない",
+            "explain_ja": "口が軽い＝秘密をすぐ話してしまう",
+            "explain_zh": "口が軽い=管不住嘴，不能保守秘密"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「猿も木から落ちる」の意味は？",
+            "q_zh": "「猿も木から落ちる」是什么意思？",
+            "options": [
+              "猿は下手",
+              "どんな名人でも失敗することがある",
+              "木は危ない",
+              "猿が好き"
+            ],
+            "answer": "どんな名人でも失敗することがある",
+            "explain_ja": "名人・達人でも失敗することがある",
+            "explain_zh": "再高明的人也有失手的时候"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「腹を（　）って話す」（本音で話す）の（）は？",
+            "q_zh": "「腹を（　）って話す」（坦诚地谈）括号填什么？",
+            "answer": "割",
+            "explain_ja": "腹を割って話す＝本音で話す",
+            "explain_zh": "腹を割って话=推心置腹地交谈"
+          }
+        ]
+      }
+    ],
+    "english": [
+      {
+        "id": "g5-en-1",
+        "subj": "english",
+        "icon": "🌏",
+        "name": "国・言語・食べ物",
+        "nameZh": "国家语言食物",
+        "lesson": {
+          "point": "世界の国名・言語・食べ物を英語で言えるようにしましょう。\n用英语说出世界各国的国家名、语言和食物。",
+          "formula": "Japan → Japanese（国語）→ sushi, ramen（食べ物）\nChina → Chinese → dumplings\nFrance → French → croissant\nUSA → English → hamburger",
+          "example": "A:What country do you want to visit?\nB:I want to visit France. They have great croissants!\nA:Cool! Can you speak French?\nB:A little!\n\n你想去哪个国家？我想去法国，他们有好吃的可颂！",
+          "tip": "国名と言語名の関係を覚えよう：\nJapan→Japanese, China→Chinese, France→French\nただしEnglandの言語はEnglishなど不規則もある！\n注意不规则变化！"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "日本語を英語で言うと？",
+            "q_zh": "日语用英语怎么说？",
+            "options": [
+              "Japan",
+              "Japanese",
+              "Japanish",
+              "Japanian"
+            ],
+            "answer": "Japanese",
+            "explain_ja": "日本はJapan、日本語はJapanese",
+            "explain_zh": "日本是Japan，日语是Japanese"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「すし」を英語で？",
+            "q_zh": "「寿司」用英语怎么说？",
+            "options": [
+              "sushi",
+              "ramen",
+              "tempura",
+              "sashimi"
+            ],
+            "answer": "sushi",
+            "explain_ja": "寿司はそのままsushi",
+            "explain_zh": "寿司的英语就是sushi"
+          },
+          {
+            "type": "fill",
+            "q_ja": "フランス語を英語で？（大文字始まり）",
+            "q_zh": "法语用英语怎么说？",
+            "answer": "French",
+            "explain_ja": "フランスはFrance、フランス語はFrench",
+            "explain_zh": "法国是France，法语是French"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「I want to visit Italy.」の意味は？",
+            "q_zh": "「I want to visit Italy.」是什么意思？",
+            "options": [
+              "イタリアが好き",
+              "イタリアに住んでいる",
+              "イタリアに行きたい",
+              "イタリアから来た"
+            ],
+            "answer": "イタリアに行きたい",
+            "explain_ja": "want to visit=行きたい",
+            "explain_zh": "want to visit=想去"
+          },
+          {
+            "type": "choice",
+            "q_ja": "中国語を英語で？",
+            "q_zh": "中文用英语怎么说？",
+            "options": [
+              "China",
+              "Chinian",
+              "Chinese",
+              "Chinish"
+            ],
+            "answer": "Chinese",
+            "explain_ja": "中国はChina、中国語はChinese",
+            "explain_zh": "中国是China，中文是Chinese"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「ハンバーガー」を英語で？（小文字で）",
+            "q_zh": "「汉堡」用英语怎么说？",
+            "answer": "hamburger",
+            "explain_ja": "ハンバーガーはhamburger",
+            "explain_zh": "汉堡是hamburger"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「What food do you like?」への答えは？",
+            "q_zh": "「What food do you like?」怎么回答？",
+            "options": [
+              "I like soccer.",
+              "I like sushi.",
+              "I am fine.",
+              "I want Japan."
+            ],
+            "answer": "I like sushi.",
+            "explain_ja": "What food=何の食べ物、I like ～で答える",
+            "explain_zh": "What food问食物，用I like ～回答"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「クロワッサン」はどの国の食べ物？",
+            "q_zh": "「可颂」是哪国的食物？",
+            "options": [
+              "イタリア",
+              "ドイツ",
+              "フランス",
+              "スペイン"
+            ],
+            "answer": "フランス",
+            "explain_ja": "クロワッサン（croissant）はフランスの食べ物",
+            "explain_zh": "可颂（croissant）是法国食物"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「I come from Japan.」の意味は？（日本語で）",
+            "q_zh": "「I come from Japan.」是什么意思？",
+            "answer": "私は日本から来ました",
+            "explain_ja": "come from ～=～出身・～から来た",
+            "explain_zh": "come from ～=来自～"
+          },
+          {
+            "type": "choice",
+            "q_ja": "韓国語を英語で？",
+            "q_zh": "韩语用英语怎么说？",
+            "options": [
+              "Korea",
+              "Korean",
+              "Koreaish",
+              "Korish"
+            ],
+            "answer": "Korean",
+            "explain_ja": "韓国はKorea、韓国語はKorean",
+            "explain_zh": "韩国是Korea，韩语是Korean"
+          }
+        ]
+      }
+    ],
+    "science": [
+      {
+        "id": "g5-sc-1",
+        "subj": "science",
+        "icon": "🌱",
+        "name": "植物の発芽と成長",
+        "nameZh": "植物发芽与生长",
+        "lesson": {
+          "point": "種が発芽するには、水・空気・適切な温度の3つが必要です。成長には日光と肥料も必要です。\n种子发芽需要水、空气和适当的温度3个条件，生长还需要阳光和肥料。",
+          "formula": "発芽の条件：水・空気・適当な温度（3つ必要）\n成長の条件：発芽の条件＋日光・肥料（5つ）\n发芽条件：水+空气+适当温度（3个）\n生长条件：发芽条件+阳光+肥料（5个）",
+          "example": "実験：同じ種を2つ用意し、片方だけ水を与える\n→ 水ありは発芽、水なしは発芽しない\n→ 発芽に水が必要とわかる\n\n实验：两粒种子，一粒给水一粒不给水，有水的发芽",
+          "tip": "「発芽」に必要なのは3つ（日光は不要！）\n「成長」に必要なのは5つ（日光も必要）\n发芽只需3个条件（不需要阳光！），生长需要5个！"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "発芽に必要なものはどれ？",
+            "q_zh": "发芽需要哪些条件？",
+            "options": [
+              "水・空気・日光",
+              "水・空気・適当な温度",
+              "水・日光・肥料",
+              "空気・日光・温度"
+            ],
+            "answer": "水・空気・適当な温度",
+            "explain_ja": "発芽の3条件：水・空気・適当な温度",
+            "explain_zh": "发芽3条件：水、空气、适当温度"
+          },
+          {
+            "type": "choice",
+            "q_ja": "発芽に日光は必要？",
+            "q_zh": "发芽需要阳光吗？",
+            "options": [
+              "必要",
+              "不要",
+              "あったほうがよい",
+              "種による"
+            ],
+            "answer": "不要",
+            "explain_ja": "発芽に日光は必要ない（成長には必要）",
+            "explain_zh": "发芽不需要阳光（生长需要）"
+          },
+          {
+            "type": "fill",
+            "q_ja": "植物の成長に必要な条件は全部でいくつ？",
+            "q_zh": "植物生长需要几个条件？",
+            "answer": "5",
+            "explain_ja": "水・空気・温度・日光・肥料の5つ",
+            "explain_zh": "水・空气・温度・阳光・肥料，共5个"
+          },
+          {
+            "type": "choice",
+            "q_ja": "発芽の実験で「水の有無」を比べるとき、その他の条件は？",
+            "q_zh": "做发芽实验比较「有水无水」时，其他条件应该？",
+            "options": [
+              "変える",
+              "同じにする",
+              "関係ない",
+              "好きに決める"
+            ],
+            "answer": "同じにする",
+            "explain_ja": "1つの条件だけ変えて他は同じにする（対照実験）",
+            "explain_zh": "只改变一个条件，其他保持相同（对照实验）"
+          },
+          {
+            "type": "choice",
+            "q_ja": "インゲンマメの種の中の「胚乳」の役割は？",
+            "q_zh": "菜豆种子中「胚乳」的作用是？",
+            "options": [
+              "根になる",
+              "葉になる",
+              "発芽のエネルギー源",
+              "茎になる"
+            ],
+            "answer": "発芽のエネルギー源",
+            "explain_ja": "胚乳（はいにゅう）は発芽のための養分",
+            "explain_zh": "胚乳是发芽的养分来源"
+          },
+          {
+            "type": "fill",
+            "q_ja": "植物の成長に必要な、土に含まれる栄養素のことを何という？",
+            "q_zh": "植物生长需要的土壤中的营养物质叫什么？",
+            "answer": "肥料",
+            "explain_ja": "肥料（ひりょう）が植物の成長を助ける",
+            "explain_zh": "肥料帮助植物生长"
+          },
+          {
+            "type": "choice",
+            "q_ja": "日光があたらないと植物の葉はどうなる？",
+            "q_zh": "没有阳光，植物的叶子会怎样？",
+            "options": [
+              "大きくなる",
+              "黄色くなり弱る",
+              "変わらない",
+              "赤くなる"
+            ],
+            "answer": "黄色くなり弱る",
+            "explain_ja": "日光不足では光合成できず黄色くなる",
+            "explain_zh": "缺少阳光无法光合作用，叶子变黄"
+          },
+          {
+            "type": "choice",
+            "q_ja": "発芽に「適当な温度」が必要な理由は？",
+            "q_zh": "发芽需要「适当温度」的原因是？",
+            "options": [
+              "温かいほど早い",
+              "低すぎると発芽できない",
+              "熱いほうがよい",
+              "温度は関係ない"
+            ],
+            "answer": "低すぎると発芽できない",
+            "explain_ja": "温度が低すぎると種が活動できない",
+            "explain_zh": "温度太低种子无法活动"
+          },
+          {
+            "type": "fill",
+            "q_ja": "植物が日光と水と二酸化炭素を使って養分を作るはたらきを何という？",
+            "q_zh": "植物利用阳光、水和二氧化碳制造养分的过程叫什么？",
+            "answer": "光合成",
+            "explain_ja": "光合成（こうごうせい）によって養分を作る",
+            "explain_zh": "这个过程叫光合作用（こうごうせい）"
+          },
+          {
+            "type": "choice",
+            "q_ja": "根・茎・葉のうち、水をもっとも多く吸収するのは？",
+            "q_zh": "根、茎、叶中哪个吸收水分最多？",
+            "options": [
+              "茎",
+              "葉",
+              "根",
+              "同じ"
+            ],
+            "answer": "根",
+            "explain_ja": "根（ね）が水分を土から吸収する",
+            "explain_zh": "根从土壤中吸收水分"
+          }
+        ]
+      }
+    ],
+    "social": [
+      {
+        "id": "g5-so-1",
+        "subj": "social",
+        "icon": "🌾",
+        "name": "日本の農業・食料生産",
+        "nameZh": "日本的农业与食品生产",
+        "lesson": {
+          "point": "日本の食料自給率は約40%で、多くの食料を輸入しています。農業の課題と工夫を学びましょう。\n日本食品自给率约40%，大量进口食品。学习农业的挑战和改进方法。",
+          "formula": "食料自給率 = 国内生産量 ÷ 消費量 × 100\n日本の食料自給率：約38〜40%（カロリーベース）\n食品自给率=国内产量÷消费量×100",
+          "example": "米：自給率ほぼ100%（日本は米の自給率が高い）\n小麦：自給率約15%（多くをアメリカ・カナダから輸入）\n大豆：自給率約6%（ほとんどをアメリカから輸入）\n\n大米自给率接近100%，小麦约15%，大豆约6%",
+          "tip": "食料問題のキーワード：\n食料自給率・地産地消・フードマイレージ・有機農業\n食品问题关键词：自给率、本地生产本地消费、食物里程、有机农业"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "日本の食料自給率（カロリーベース）はおよそ何%？",
+            "q_zh": "日本食品自给率（热量基准）约是多少%？",
+            "options": [
+              "20%",
+              "40%",
+              "60%",
+              "80%"
+            ],
+            "answer": "40%",
+            "explain_ja": "日本の食料自給率は約38〜40%",
+            "explain_zh": "日本食品自给率约38~40%"
+          },
+          {
+            "type": "choice",
+            "q_ja": "日本で自給率がほぼ100%の農産物は？",
+            "q_zh": "日本自给率接近100%的农产品是？",
+            "options": [
+              "小麦",
+              "大豆",
+              "米",
+              "とうもろこし"
+            ],
+            "answer": "米",
+            "explain_ja": "米は自給率がほぼ100%",
+            "explain_zh": "大米自给率接近100%"
+          },
+          {
+            "type": "fill",
+            "q_ja": "地元でとれたものを地元で消費することを何という？（4文字）",
+            "q_zh": "在当地生产在当地消费叫什么？（4个汉字）",
+            "answer": "地産地消",
+            "explain_ja": "地産地消（ちさんちしょう）",
+            "explain_zh": "地产地消（ちさんちしょう）"
+          },
+          {
+            "type": "choice",
+            "q_ja": "日本が最も多く小麦を輸入している国は？",
+            "q_zh": "日本进口小麦最多来自哪个国家？",
+            "options": [
+              "中国",
+              "アメリカ",
+              "フランス",
+              "オーストラリア"
+            ],
+            "answer": "アメリカ",
+            "explain_ja": "小麦の主要輸入先はアメリカ・カナダ・オーストラリア",
+            "explain_zh": "小麦主要从美国、加拿大、澳大利亚进口"
+          },
+          {
+            "type": "choice",
+            "q_ja": "農業の問題として正しいのは？",
+            "q_zh": "以下哪个是日本农业面临的问题？",
+            "options": [
+              "農家が増えている",
+              "農業従事者の高齢化",
+              "食料が余っている",
+              "農地が増えている"
+            ],
+            "answer": "農業従事者の高齢化",
+            "explain_ja": "農業従事者の高齢化と後継者不足が問題",
+            "explain_zh": "农业从业者老龄化和后继无人是主要问题"
+          },
+          {
+            "type": "fill",
+            "q_ja": "食べ物が生産地から消費者に届くまでの距離を何という？（カタカナ）",
+            "q_zh": "食物从产地到消费者的运输距离叫什么？",
+            "answer": "フードマイレージ",
+            "explain_ja": "フードマイレージが小さいほど環境にやさしい",
+            "explain_zh": "食物里程越小越环保"
+          },
+          {
+            "type": "choice",
+            "q_ja": "稲作が盛んな日本の地方は？",
+            "q_zh": "日本哪个地方水稻种植最盛行？",
+            "options": [
+              "関東",
+              "東北",
+              "近畿",
+              "中国"
+            ],
+            "answer": "東北",
+            "explain_ja": "東北地方（新潟・秋田・山形）は稲作が盛ん",
+            "explain_zh": "东北地方（新潟・秋田・山形）水稻种植盛行"
+          },
+          {
+            "type": "choice",
+            "q_ja": "促成栽培（そくせいさいばい）とは？",
+            "q_zh": "促成栽培是什么意思？",
+            "options": [
+              "寒い地方での栽培",
+              "暖かい地方で通常より早く出荷する栽培",
+              "有機栽培",
+              "山での栽培"
+            ],
+            "answer": "暖かい地方で通常より早く出荷する栽培",
+            "explain_ja": "ビニールハウスなどを使い早く出荷する栽培方法",
+            "explain_zh": "利用温室等设施提前上市的栽培方式"
+          },
+          {
+            "type": "fill",
+            "q_ja": "化学肥料や農薬を使わない農業を何農業という？（2文字+農業）",
+            "q_zh": "不使用化学肥料和农药的农业叫什么农业？",
+            "answer": "有機農業",
+            "explain_ja": "有機農業（ゆうきのうぎょう）は環境にやさしい",
+            "explain_zh": "有机农业（ゆうきのうぎょう）对环境友好"
+          },
+          {
+            "type": "choice",
+            "q_ja": "日本の農業の特徴として正しいのは？",
+            "q_zh": "以下哪项是日本农业的特点？",
+            "options": [
+              "大規模農業が中心",
+              "小規模・集約的農業",
+              "農地が広大",
+              "農業人口が多い"
+            ],
+            "answer": "小規模・集約的農業",
+            "explain_ja": "日本は農地が少なく小規模・集約的（こうりつよく）",
+            "explain_zh": "日本农地少，以小规模集约型农业为主"
+          }
+        ]
+      }
+    ]
+  },
+  "grade6": {
+    "math": [
+      {
+        "id": "g6-math-1",
+        "subj": "math",
+        "icon": "✖️",
+        "name": "分数のかけ算・わり算",
+        "nameZh": "分数乘除法",
+        "lesson": {
+          "point": "分数のかけ算は分子どうし・分母どうしをかけます。わり算は逆数をかけます。\n分数乘法是分子乘分子、分母乘分母。除法是乘以倒数。",
+          "formula": "かけ算：a/b × c/d = (a×c)/(b×d)\nわり算：a/b ÷ c/d = a/b × d/c = (a×d)/(b×c)\n乘法：分子×分子，分母×分母\n除法：乘以除数的倒数",
+          "example": "【例】2/3 × 3/4 = (2×3)/(3×4) = 6/12 = 1/2\n【例】2/3 ÷ 4/5 = 2/3 × 5/4 = 10/12 = 5/6\n\n【例题】2/3×3/4=6/12=1/2（约分后）\n2/3÷4/5=2/3×5/4=10/12=5/6",
+          "tip": "わり算は「逆数をかける」！\n逆数：分子と分母を入れ替えた数\n例：4/5の逆数は5/4\n除法=乘倒数！倒数就是分子分母互换。"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "2/3 × 3/5 = ?",
+            "q_zh": "2/3 × 3/5 = ?",
+            "options": [
+              "5/8",
+              "6/15",
+              "2/5",
+              "4/15"
+            ],
+            "answer": "2/5",
+            "explain_ja": "(2×3)/(3×5)=6/15=2/5（約分）",
+            "explain_zh": "(2×3)/(3×5)=6/15=2/5（约分）"
+          },
+          {
+            "type": "fill",
+            "q_ja": "4/5の逆数は？（分数で）",
+            "q_zh": "4/5的倒数是多少？",
+            "answer": "5/4",
+            "explain_ja": "逆数は分子・分母を入れ替える：5/4",
+            "explain_zh": "倒数是分子分母互换：5/4"
+          },
+          {
+            "type": "choice",
+            "q_ja": "1/2 ÷ 1/3 = ?",
+            "q_zh": "1/2 ÷ 1/3 = ?",
+            "options": [
+              "1/6",
+              "3/2",
+              "2/3",
+              "3/6"
+            ],
+            "answer": "3/2",
+            "explain_ja": "1/2 × 3/1 = 3/2",
+            "explain_zh": "1/2 × 3/1 = 3/2"
+          },
+          {
+            "type": "choice",
+            "q_ja": "3/4 × 8 = ?",
+            "q_zh": "3/4 × 8 = ?",
+            "options": [
+              "3",
+              "6",
+              "8",
+              "12"
+            ],
+            "answer": "6",
+            "explain_ja": "3/4 × 8 = 24/4 = 6",
+            "explain_zh": "3/4 × 8 = 24/4 = 6"
+          },
+          {
+            "type": "fill",
+            "q_ja": "2/5 ÷ 4/15 = ? (分数・整数で)",
+            "q_zh": "2/5 ÷ 4/15 = ?",
+            "answer": "3/2",
+            "explain_ja": "2/5 × 15/4 = 30/20 = 3/2",
+            "explain_zh": "2/5 × 15/4 = 30/20 = 3/2"
+          },
+          {
+            "type": "choice",
+            "q_ja": "5/6 ÷ 5 = ?",
+            "q_zh": "5/6 ÷ 5 = ?",
+            "options": [
+              "25/6",
+              "1/6",
+              "5/30",
+              "6/25"
+            ],
+            "answer": "1/6",
+            "explain_ja": "5/6 × 1/5 = 5/30 = 1/6",
+            "explain_zh": "5/6 × 1/5 = 5/30 = 1/6"
+          },
+          {
+            "type": "fill",
+            "q_ja": "1/3 × 1/3 = ? (分数で)",
+            "q_zh": "1/3 × 1/3 = ?",
+            "answer": "1/9",
+            "explain_ja": "(1×1)/(3×3) = 1/9",
+            "explain_zh": "1×1/3×3 = 1/9"
+          },
+          {
+            "type": "choice",
+            "q_ja": "3/4 ÷ 3/8 = ?",
+            "q_zh": "3/4 ÷ 3/8 = ?",
+            "options": [
+              "1",
+              "9/32",
+              "2",
+              "8/9"
+            ],
+            "answer": "2",
+            "explain_ja": "3/4 × 8/3 = 24/12 = 2",
+            "explain_zh": "3/4 × 8/3 = 24/12 = 2"
+          },
+          {
+            "type": "choice",
+            "q_ja": "2/7 × 7/4 = ?",
+            "q_zh": "2/7 × 7/4 = ?",
+            "options": [
+              "14/28",
+              "1/2",
+              "2/4",
+              "14/4"
+            ],
+            "answer": "1/2",
+            "explain_ja": "14/28 = 1/2（約分）",
+            "explain_zh": "14/28 = 1/2（约分）"
+          },
+          {
+            "type": "fill",
+            "q_ja": "3 ÷ 3/4 = ? (整数で)",
+            "q_zh": "3 ÷ 3/4 = ? (用整数)",
+            "answer": "4",
+            "explain_ja": "3 × 4/3 = 12/3 = 4",
+            "explain_zh": "3 × 4/3 = 12/3 = 4"
+          }
+        ]
+      },
+      {
+        "id": "g6-math-2",
+        "subj": "math",
+        "icon": "🔵",
+        "name": "円の面積",
+        "nameZh": "圆的面积",
+        "lesson": {
+          "point": "円の面積は「半径 × 半径 × 円周率」で求めます。円周率は約3.14です。\n圆的面积=半径×半径×圆周率，圆周率约为3.14。",
+          "formula": "円の面積 = 半径 × 半径 × 3.14（π）\n円の周囲（円周）= 直径 × 3.14\n圆面积=半径×半径×3.14\n圆周长=直径×3.14",
+          "example": "【例】半径5cmの円の面積は？\n5 × 5 × 3.14 = 78.5 cm²\n\n【例題】半径4cmの円の周囲は？\n(4×2) × 3.14 = 25.12 cm\n\n【例题】半径5cm的圆面积=5×5×3.14=78.5cm²",
+          "tip": "直径=半径×2　半径=直径÷2\n「半径×半径×3.14」を暗記！\n直径=半径×2　记住「半径×半径×3.14」！"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "半径3cmの円の面積は？",
+            "q_zh": "半径3cm的圆的面积是多少？",
+            "options": [
+              "9.42cm²",
+              "18.84cm²",
+              "28.26cm²",
+              "36cm²"
+            ],
+            "answer": "28.26cm²",
+            "explain_ja": "3×3×3.14=28.26cm²",
+            "explain_zh": "3×3×3.14=28.26cm²"
+          },
+          {
+            "type": "fill",
+            "q_ja": "半径5cmの円の面積は？（cm²不要）",
+            "q_zh": "半径5cm的圆的面积是多少？",
+            "answer": "78.5",
+            "explain_ja": "5×5×3.14=78.5cm²",
+            "explain_zh": "5×5×3.14=78.5cm²"
+          },
+          {
+            "type": "choice",
+            "q_ja": "直径10cmの円の面積は？",
+            "q_zh": "直径10cm的圆的面积是多少？",
+            "options": [
+              "31.4cm²",
+              "78.5cm²",
+              "100cm²",
+              "314cm²"
+            ],
+            "answer": "78.5cm²",
+            "explain_ja": "半径5cm、5×5×3.14=78.5cm²",
+            "explain_zh": "半径5cm，5×5×3.14=78.5cm²"
+          },
+          {
+            "type": "fill",
+            "q_ja": "直径8cmの円の円周（周りの長さ）は？（cm不要）",
+            "q_zh": "直径8cm的圆的周长是多少？",
+            "answer": "25.12",
+            "explain_ja": "8×3.14=25.12cm",
+            "explain_zh": "8×3.14=25.12cm"
+          },
+          {
+            "type": "choice",
+            "q_ja": "面積が314cm²の円の半径は？",
+            "q_zh": "面积为314cm²的圆的半径是多少？",
+            "options": [
+              "5cm",
+              "8cm",
+              "10cm",
+              "12cm"
+            ],
+            "answer": "10cm",
+            "explain_ja": "10×10×3.14=314、半径は10cm",
+            "explain_zh": "10×10×3.14=314，半径是10cm"
+          },
+          {
+            "type": "choice",
+            "q_ja": "半径4cmの円の面積は？",
+            "q_zh": "半径4cm的圆的面积是多少？",
+            "options": [
+              "25.12cm²",
+              "50.24cm²",
+              "100.48cm²",
+              "16cm²"
+            ],
+            "answer": "50.24cm²",
+            "explain_ja": "4×4×3.14=50.24cm²",
+            "explain_zh": "4×4×3.14=50.24cm²"
+          },
+          {
+            "type": "fill",
+            "q_ja": "半径2cmの円の面積は？（cm²不要）",
+            "q_zh": "半径2cm的圆的面积是多少？",
+            "answer": "12.56",
+            "explain_ja": "2×2×3.14=12.56cm²",
+            "explain_zh": "2×2×3.14=12.56cm²"
+          },
+          {
+            "type": "choice",
+            "q_ja": "直径の長さが半径の何倍？",
+            "q_zh": "直径是半径的多少倍？",
+            "options": [
+              "1倍",
+              "2倍",
+              "3倍",
+              "4倍"
+            ],
+            "answer": "2倍",
+            "explain_ja": "直径=半径×2",
+            "explain_zh": "直径=半径×2"
+          },
+          {
+            "type": "fill",
+            "q_ja": "半径10cmの円周は？（cm不要）",
+            "q_zh": "半径10cm的圆的周长是多少？",
+            "answer": "62.8",
+            "explain_ja": "直径20cm、20×3.14=62.8cm",
+            "explain_zh": "直径20cm，20×3.14=62.8cm"
+          },
+          {
+            "type": "choice",
+            "q_ja": "半径6cmの円の面積は？",
+            "q_zh": "半径6cm的圆的面积是多少？",
+            "options": [
+              "36cm²",
+              "56.52cm²",
+              "113.04cm²",
+              "150cm²"
+            ],
+            "answer": "113.04cm²",
+            "explain_ja": "6×6×3.14=113.04cm²",
+            "explain_zh": "6×6×3.14=113.04cm²"
+          }
+        ]
+      },
+      {
+        "id": "g6-math-3",
+        "subj": "math",
+        "icon": "📐",
+        "name": "拡大図・縮小図",
+        "nameZh": "放大图与缩小图",
+        "lesson": {
+          "point": "拡大図は元の図を同じ形で大きくしたもの。縮小図は小さくしたものです。\n放大图是将原图按比例放大，缩小图是按比例缩小。",
+          "formula": "拡大図の辺の長さ = 元の辺 × 拡大の比\n縮小図の辺の長さ = 元の辺 × 縮小の比\n对应角度相等，对应边成比例",
+          "example": "【例】2倍の拡大図：辺3cmの三角形→6cmになる\n【例题】将边长4cm的图形放大3倍→边长变为12cm",
+          "tip": "拡大・縮小しても角度は変わらない！辺の長さだけが変わる。\n放大缩小时角度不变，只有边长改变。"
+        },
+        "questions": [
+          {"type":"choice","q_ja":"3倍の拡大図で辺4cmの長さは？","q_zh":"3倍放大图中边长4cm变成多少？","options":["7cm","8cm","12cm","16cm"],"answer":"12cm","explain_ja":"4×3=12cm","explain_zh":"4×3=12cm"},
+          {"type":"fill","q_ja":"1/2の縮小図で辺10cmは？（cm不要）","q_zh":"1/2缩小图中边长10cm变成多少？","answer":"5","explain_ja":"10×1/2=5cm","explain_zh":"10×1/2=5cm"},
+          {"type":"choice","q_ja":"拡大・縮小しても変わらないのは？","q_zh":"放大缩小时不变的是？","options":["辺の長さ","角度","面積","周囲の長さ"],"answer":"角度","explain_ja":"角度は変わらない","explain_zh":"角度保持不变"},
+          {"type":"choice","q_ja":"辺6cmが2cmになった。何分の1の縮小？","q_zh":"边长6cm变为2cm，是几分之几的缩小？","options":["1/2","1/3","1/4","2/3"],"answer":"1/3","explain_ja":"2÷6=1/3","explain_zh":"2÷6=1/3"},
+          {"type":"fill","q_ja":"4倍の拡大図で辺2.5cmは？（cm不要）","q_zh":"4倍放大图中边长2.5cm变成多少？","answer":"10","explain_ja":"2.5×4=10cm","explain_zh":"2.5×4=10cm"}
+        ]
+      },
+      {
+        "id": "g6-math-4",
+        "subj": "math",
+        "icon": "📊",
+        "name": "比とその利用",
+        "nameZh": "比及其应用",
+        "lesson": {
+          "point": "比は2つの数量の関係を表します。a:b の形で書きます。\n比是表示两个数量关系的方式，写作 a:b。",
+          "formula": "比の値 = a ÷ b\n等しい比：a:b = (a×n):(b×n)\n比を簡単にする：最大公約数で割る\n比例式：a:b = c:d → a×d = b×c",
+          "example": "【例】6:9 を簡単にする → 最大公約数3で割る → 2:3\n【例题】6:9化简→除以最大公因数3→2:3",
+          "tip": "比を簡単にするには最大公約数で両方を割る！\n化简比：用最大公因数除两边。"
+        },
+        "questions": [
+          {"type":"choice","q_ja":"6:8 を最も簡単な比にすると？","q_zh":"6:8化简后是？","options":["1:2","2:3","3:4","4:6"],"answer":"3:4","explain_ja":"最大公約数2で割る：3:4","explain_zh":"除以最大公因数2：3:4"},
+          {"type":"fill","q_ja":"4:6の比の値は？（分数で）","q_zh":"4:6的比值是多少？","answer":"2/3","explain_ja":"4÷6=2/3","explain_zh":"4÷6=2/3"},
+          {"type":"choice","q_ja":"2:3=□:12の□は？","q_zh":"2:3=□:12，□是多少？","options":["6","8","9","10"],"answer":"8","explain_ja":"2:3=8:12（×4）","explain_zh":"2:3=8:12（乘以4）"},
+          {"type":"choice","q_ja":"15:10 を簡単にすると？","q_zh":"15:10化简后是？","options":["1:2","2:3","3:2","5:3"],"answer":"3:2","explain_ja":"最大公約数5で割る：3:2","explain_zh":"除以最大公因数5：3:2"},
+          {"type":"fill","q_ja":"3:5=9:□の□は？","q_zh":"3:5=9:□，□是多少？","answer":"15","explain_ja":"3:5=9:15（×3）","explain_zh":"3:5=9:15（乘以3）"}
+        ]
+      },
+      {
+        "id": "g6-math-5",
+        "subj": "math",
+        "icon": "📈",
+        "name": "比例と反比例",
+        "nameZh": "正比例与反比例",
+        "lesson": {
+          "point": "比例：xが2倍になるとyも2倍。反比例：xが2倍になるとyは1/2倍。\n正比例：x变为2倍，y也变为2倍。反比例：x变为2倍，y变为1/2。",
+          "formula": "比例：y = a × x（aは比例定数）\n反比例：y = a ÷ x（a = x × y は一定）\n正比例：y=ax　反比例：y=a/x",
+          "example": "【比例の例】1個80円のりんご：y=80x\n【反比例の例】面積12cm²の長方形：縦×横=12\n【例题】正比例：y=2x；反比例：xy=6",
+          "tip": "比例は「y÷x=一定」、反比例は「x×y=一定」で確認！\n正比例：y÷x为常数；反比例：x×y为常数。"
+        },
+        "questions": [
+          {"type":"choice","q_ja":"y=3xはどんな関係？","q_zh":"y=3x是什么关系？","options":["反比例","比例","関係なし","等しい"],"answer":"比例","explain_ja":"y=axの形なので比例","explain_zh":"y=ax的形式，是正比例"},
+          {"type":"choice","q_ja":"x×y=24のとき、x=4なら y=?","q_zh":"x×y=24，x=4时y=？","options":["4","6","8","96"],"answer":"6","explain_ja":"24÷4=6","explain_zh":"24÷4=6"},
+          {"type":"fill","q_ja":"y=5xでx=3のとき y=?","q_zh":"y=5x，x=3时y=？","answer":"15","explain_ja":"y=5×3=15","explain_zh":"y=5×3=15"},
+          {"type":"choice","q_ja":"比例のグラフの形は？","q_zh":"正比例的图形是什么形状？","options":["曲線","原点を通る直線","横に水平な直線","円"],"answer":"原点を通る直線","explain_ja":"比例グラフは原点を通る直線","explain_zh":"正比例图像是过原点的直线"},
+          {"type":"fill","q_ja":"y=12/xでx=3のとき y=?","q_zh":"y=12/x，x=3时y=？","answer":"4","explain_ja":"12÷3=4","explain_zh":"12÷3=4"}
+        ]
+      },
+      {
+        "id": "g6-math-6",
+        "subj": "math",
+        "icon": "🔺",
+        "name": "対称な図形",
+        "nameZh": "对称图形",
+        "lesson": {
+          "point": "線対称：1本の直線で折ると完全に重なる図形。点対称：1点を中心に180°回転すると重なる図形。\n线对称：沿一条直线折叠完全重合。点对称：绕一点旋转180°后重合。",
+          "formula": "線対称の軸：対応する点を結ぶ線分を垂直に2等分する\n点対称の中心：対応する点を結ぶ線分の中点\n线对称轴垂直平分对应点的连线",
+          "example": "【線対称の例】正三角形、二等辺三角形、長方形、正六角形\n【点対称の例】平行四辺形、正六角形、S字\n【例题】正六边形既是线对称也是点对称图形",
+          "tip": "正多角形は線対称も点対称も持つ！\n正多边形既有线对称也有点对称。"
+        },
+        "questions": [
+          {"type":"choice","q_ja":"線対称な図形はどれ？","q_zh":"哪个是线对称图形？","options":["平行四辺形","台形（辺が等しくない）","二等辺三角形","一般の四角形"],"answer":"二等辺三角形","explain_ja":"二等辺三角形は頂角から底辺への線が対称軸","explain_zh":"等腰三角形有一条对称轴"},
+          {"type":"choice","q_ja":"点対称な図形はどれ？","q_zh":"哪个是点对称图形？","options":["正三角形","二等辺三角形","平行四辺形","直角三角形"],"answer":"平行四辺形","explain_ja":"平行四辺形は中心点で180°回転すると重なる","explain_zh":"平行四边形绕中心旋转180°后重合"},
+          {"type":"fill","q_ja":"正六角形の対称軸は何本？","q_zh":"正六边形有几条对称轴？","answer":"6","explain_ja":"正六角形は6本の対称軸を持つ","explain_zh":"正六边形有6条对称轴"},
+          {"type":"choice","q_ja":"線対称と点対称の両方を持つ図形は？","q_zh":"既是线对称又是点对称的图形是？","options":["直角三角形","正三角形","平行四辺形","正六角形"],"answer":"正六角形","explain_ja":"正六角形は6本の対称軸と点対称を持つ","explain_zh":"正六边形有6条对称轴且是点对称图形"},
+          {"type":"fill","q_ja":"長方形の対称軸は何本？","q_zh":"长方形有几条对称轴？","answer":"2","explain_ja":"長方形は縦・横の2本の対称軸を持つ","explain_zh":"长方形有2条对称轴"}
+        ]
+      },
+      {
+        "id": "g6-math-7",
+        "subj": "math",
+        "icon": "📦",
+        "name": "角柱・円柱の体積",
+        "nameZh": "棱柱与圆柱的体积",
+        "lesson": {
+          "point": "角柱・円柱の体積は「底面積 × 高さ」で求めます。\n棱柱和圆柱的体积=底面积×高。",
+          "formula": "体積 = 底面積 × 高さ\n三角柱の底面積 = 底辺 × 高さ ÷ 2\n円柱の底面積 = 半径 × 半径 × 3.14\n体积=底面积×高　圆柱底面积=半径²×3.14",
+          "example": "【三角柱】底面：底3cm高4cm、高さ5cm\n底面積=3×4÷2=6cm²　体積=6×5=30cm³\n【圆柱例题】底面半径3cm，高5cm→底面积28.26cm²→体积141.3cm³",
+          "tip": "底面の形を確認してから面積を求める！\n先确认底面形状再算面积。"
+        },
+        "questions": [
+          {"type":"choice","q_ja":"底面積10cm²、高さ6cmの三角柱の体積は？","q_zh":"底面积10cm²、高6cm的三棱柱体积是多少？","options":["16cm³","50cm³","60cm³","100cm³"],"answer":"60cm³","explain_ja":"10×6=60cm³","explain_zh":"10×6=60cm³"},
+          {"type":"fill","q_ja":"底面積15cm²、高さ4cmの四角柱の体積は？（cm³不要）","q_zh":"底面积15cm²、高4cm的四棱柱体积是多少？","answer":"60","explain_ja":"15×4=60cm³","explain_zh":"15×4=60cm³"},
+          {"type":"choice","q_ja":"半径2cm、高さ5cmの円柱の体積は？","q_zh":"底面半径2cm，高5cm的圆柱体积是多少？","options":["31.4cm³","62.8cm³","125.6cm³","20cm³"],"answer":"62.8cm³","explain_ja":"2×2×3.14×5=62.8cm³","explain_zh":"2×2×3.14×5=62.8cm³"},
+          {"type":"fill","q_ja":"底面が底3cm高4cmの直角三角形、高さ8cmの三角柱の体積は？","q_zh":"底面为底3cm高4cm的直角三角形、高8cm的三棱柱体积？","answer":"48","explain_ja":"3×4÷2×8=48cm³","explain_zh":"3×4÷2×8=48cm³"},
+          {"type":"choice","q_ja":"体積の単位は？","q_zh":"体积的单位是什么？","options":["cm²","cm³","m²","mm"],"answer":"cm³","explain_ja":"体積の単位はcm³（立方センチメートル）","explain_zh":"体积单位是cm³（立方厘米）"}
+        ]
+      },
+      {
+        "id": "g6-math-8",
+        "subj": "math",
+        "icon": "🔢",
+        "name": "文字を使った式",
+        "nameZh": "含字母的算式",
+        "lesson": {
+          "point": "□の代わりに x や a などの文字を使って式を表します。\n用字母x或a代替□来表示算式。",
+          "formula": "x+3=7 → x=7-3=4\n2×x=10 → x=10÷2=5\n文字を使った式で数量の関係を表せる\n用字母表示数量关系",
+          "example": "【例】1個x円のりんごを3個買った代金：3x円\n【例】縦xcm、横5cmの長方形の面積：5x cm²\n【例题】每个x円的苹果买3个：代金=3x円",
+          "tip": "文字は「わからない数」の代わり！\nx×2は「2x」と書く（×を省略）\n字母代替未知数，2×x简写为2x。"
+        },
+        "questions": [
+          {"type":"choice","q_ja":"x+5=12のとき x=?","q_zh":"x+5=12，x=？","options":["5","6","7","8"],"answer":"7","explain_ja":"x=12-5=7","explain_zh":"x=12-5=7"},
+          {"type":"fill","q_ja":"3x=18のとき x=?","q_zh":"3x=18，x=？","answer":"6","explain_ja":"x=18÷3=6","explain_zh":"x=18÷3=6"},
+          {"type":"choice","q_ja":"1個a円のお菓子を4個買った代金は？","q_zh":"每个a円的零食买4个，总价是多少？","options":["a+4","a-4","4a","a÷4"],"answer":"4a","explain_ja":"4×a=4a円","explain_zh":"4×a=4a円"},
+          {"type":"fill","q_ja":"x-8=5のとき x=?","q_zh":"x-8=5，x=？","answer":"13","explain_ja":"x=5+8=13","explain_zh":"x=5+8=13"},
+          {"type":"choice","q_ja":"縦xcm、横6cmの長方形の面積は？","q_zh":"长xcm宽6cm的长方形面积是多少？","options":["x+6","x-6","6x","x÷6"],"answer":"6x","explain_ja":"面積=縦×横=x×6=6x cm²","explain_zh":"面积=长×宽=6x cm²"}
+        ]
+      },
+      {
+        "id": "g6-math-9",
+        "subj": "math",
+        "icon": "📉",
+        "name": "データの活用・度数分布",
+        "nameZh": "数据整理与频率分布",
+        "lesson": {
+          "point": "データを整理して表やグラフにまとめ、特徴を読み取ります。\n将数据整理成表格或图表，分析其特征。",
+          "formula": "平均値 = 合計 ÷ 個数\n最頻値（モード）= 最も多く出る値\n中央値（メジアン）= 並べたときの真ん中の値\n平均数=总和÷个数",
+          "example": "【例】テストの点数：60,70,70,80,90,100\n平均=(60+70+70+80+90+100)÷6=78.3点\n最頻値=70点　中央値=(70+80)÷2=75点\n【例题】平均数=所有数之和÷个数",
+          "tip": "平均＝合計÷個数を必ず覚えよう！\n平均=总和÷个数，一定要记住！"
+        },
+        "questions": [
+          {"type":"fill","q_ja":"10,20,30,40,50の平均は？","q_zh":"10,20,30,40,50的平均数是多少？","answer":"30","explain_ja":"(10+20+30+40+50)÷5=150÷5=30","explain_zh":"(10+20+30+40+50)÷5=30"},
+          {"type":"choice","q_ja":"5,7,7,8,9の最頻値は？","q_zh":"5,7,7,8,9的众数是多少？","options":["5","7","8","9"],"answer":"7","explain_ja":"最も多く出る値は7（2回）","explain_zh":"出现次数最多的是7（2次）"},
+          {"type":"choice","q_ja":"3,5,7,9,11の中央値は？","q_zh":"3,5,7,9,11的中位数是多少？","options":["5","6","7","9"],"answer":"7","explain_ja":"5個の真ん中は3番目の7","explain_zh":"5个数中间第3个是7"},
+          {"type":"fill","q_ja":"4人のテストが60,70,80,90点。平均は？","q_zh":"4人考试60,70,80,90分，平均分是多少？","answer":"75","explain_ja":"(60+70+80+90)÷4=300÷4=75","explain_zh":"(60+70+80+90)÷4=75"},
+          {"type":"choice","q_ja":"データをまとめた棒グラフで一番多いものは何で表す？","q_zh":"柱状图中哪个表示数量最多？","options":["一番低い棒","一番高い棒","真ん中の棒","全部同じ"],"answer":"一番高い棒","explain_ja":"棒が高いほど数が多い","explain_zh":"柱子越高表示数量越多"}
+        ]
+      }
+    ],
+    "japanese": [
+      {
+        "id": "g6-ja-1",
+        "subj": "japanese",
+        "icon": "🈷️",
+        "name": "漢字（6年生）",
+        "nameZh": "汉字（6年级）",
+        "lesson": {
+          "point": "6年生で習う漢字は191字です。小学校6年間で習う漢字（1006字）を復習しましょう。\n6年级要学191个汉字，一起复习小学6年间学的1006个汉字。",
+          "formula": "6年生の重要漢字：\n異・遺・域・宇・映・沿・我・灰・拡・閣\n革・割・株・干・巻・看・簡・危・机・揮",
+          "example": "【例】「異なる」（こと）＝ちがう\n「遺産」（いさん）＝受け継いだ財産\n「宇宙」（うちゅう）＝space\n\n【例题】\n異なる=不同　遺産=遗产　宇宙=宇宙",
+          "tip": "6年生の漢字は難しいものが多い。\n熟語で覚えると効果的！\n例：拡張・閣議・革命・簡単・危険\n6年级汉字较难，用词语组合记忆更有效！"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "「宇宙」の読みは？",
+            "q_zh": "「宇宙」怎么读？",
+            "options": [
+              "うちゅう",
+              "そらそら",
+              "てんくう",
+              "うくう"
+            ],
+            "answer": "うちゅう",
+            "explain_ja": "宇宙（うちゅう）、宇（う）宙（ちゅう）",
+            "explain_zh": "宇宙读うちゅう"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「異なる」の読みは？（ひらがな）",
+            "q_zh": "「異なる」怎么读？（平假名）",
+            "answer": "ことなる",
+            "explain_ja": "異（こと）なる、音読みはイ（異常・相違）",
+            "explain_zh": "異なる读ことなる，音读是イ"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「拡大」の「拡」の意味は？",
+            "q_zh": "「拡大」中「拡」的意思是？",
+            "options": [
+              "縮める",
+              "広げる",
+              "回す",
+              "止める"
+            ],
+            "answer": "広げる",
+            "explain_ja": "拡（ひろ）げる、拡大＝広げること",
+            "explain_zh": "拡=扩大、拡大=扩大"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「危険」の「危」の読みは？",
+            "q_zh": "「危険」中「危」怎么读？",
+            "options": [
+              "き",
+              "き",
+              "あぶ",
+              "く"
+            ],
+            "answer": "き",
+            "explain_ja": "危険（きけん）、危（あぶ）ない",
+            "explain_zh": "危険读きけん，危险的危读き"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「閣議」の「閣」の読みは？",
+            "q_zh": "「閣議」中「閣」怎么读？",
+            "answer": "かく",
+            "explain_ja": "閣議（かくぎ）、内閣（ないかく）",
+            "explain_zh": "閣議读かくぎ，閣读かく"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「革命」の「革」の読みは？",
+            "q_zh": "「革命」中「革」怎么读？",
+            "options": [
+              "かく",
+              "かわ",
+              "かく・かわ両方",
+              "ひ"
+            ],
+            "answer": "かく・かわ両方",
+            "explain_ja": "革命（かくめい）、革（かわ）：両方の読みがある",
+            "explain_zh": "革命读かくめい，革还可以读かわ（皮革）"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「簡単」の「簡」の部首は？（漢字で）",
+            "q_zh": "「簡単」中「簡」的部首是什么？",
+            "answer": "竹",
+            "explain_ja": "簡はたけかんむり（竹）が部首",
+            "explain_zh": "簡的部首是竹字头"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「机」の読み方は？",
+            "q_zh": "「机」怎么读？",
+            "options": [
+              "き",
+              "つくえ",
+              "こう",
+              "きたい"
+            ],
+            "answer": "つくえ",
+            "explain_ja": "机（つくえ）、音読みはキ（机上）",
+            "explain_zh": "机读つくえ，音读是キ（机上）"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「揮発」の「揮」の音読みは？",
+            "q_zh": "「揮発」中「揮」的音读是？",
+            "options": [
+              "き",
+              "ひ",
+              "ふ",
+              "け"
+            ],
+            "answer": "き",
+            "explain_ja": "揮発（きはつ）、揮（ふる）う",
+            "explain_zh": "揮発读きはつ，揮的音读是き"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「遺言」の読みは？（ひらがな）",
+            "q_zh": "「遺言」怎么读？（平假名）",
+            "answer": "ゆいごん",
+            "explain_ja": "遺言（ゆいごん）、遺産（いさん）",
+            "explain_zh": "遺言读ゆいごん，遺的音读是イ"
+          }
+        ]
+      }
+    ],
+    "english": [
+      {
+        "id": "g6-en-1",
+        "subj": "english",
+        "icon": "💬",
+        "name": "英語で自己紹介・夢",
+        "nameZh": "英语自我介绍与梦想",
+        "lesson": {
+          "point": "自分の名前・好きなこと・将来の夢を英語で話せるようにしましょう。\n用英语介绍自己的名字、爱好和将来的梦想。",
+          "formula": "My name is ～. 私の名前は～です\nI like ～. 私は～が好きです\nI want to be a ～. 私は～になりたい\nI can ～. 私は～ができます",
+          "example": "Hi! My name is Hana.\nI like soccer and music.\nI'm good at cooking.\nI want to be a chef in the future.\n\n你好！我叫Hana，我喜欢足球和音乐，我将来想当厨师。",
+          "tip": "職業の英単語を覚えよう！\ndoctor（医者）/ teacher（先生）/ engineer（エンジニア）\npilot（パイロット）/ chef（料理人）/ athlete（スポーツ選手）\n记住职业单词！"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "「私は医者になりたい」を英語で？",
+            "q_zh": "「我想成为医生」用英语怎么说？",
+            "options": [
+              "I am a doctor.",
+              "I want to be a doctor.",
+              "I like doctor.",
+              "I can be doctor."
+            ],
+            "answer": "I want to be a doctor.",
+            "explain_ja": "want to be ～=～になりたい",
+            "explain_zh": "want to be ～=想成为～"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「先生」を英語で？（小文字1語）",
+            "q_zh": "「老师」用英语怎么说？",
+            "answer": "teacher",
+            "explain_ja": "先生はteacher",
+            "explain_zh": "老师是teacher"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「I'm good at swimming.」の意味は？",
+            "q_zh": "「I'm good at swimming.」是什么意思？",
+            "options": [
+              "水泳が嫌い",
+              "水泳が得意",
+              "水泳がしたい",
+              "水泳を習っている"
+            ],
+            "answer": "水泳が得意",
+            "explain_ja": "be good at ～=～が得意",
+            "explain_zh": "be good at ～=擅长～"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「パイロット」を英語で？",
+            "q_zh": "「飞行员」用英语怎么说？",
+            "options": [
+              "pilot",
+              "player",
+              "police",
+              "painter"
+            ],
+            "answer": "pilot",
+            "explain_ja": "パイロットはpilot",
+            "explain_zh": "飞行员是pilot"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「I like _____ and music.」（サッカーと音楽が好き）の空白は？",
+            "q_zh": "「I like _____ and music.」填什么（足球和音乐）？",
+            "answer": "soccer",
+            "explain_ja": "サッカーはsoccer（またはfootball）",
+            "explain_zh": "足球是soccer"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「What do you want to be?」への答えは？",
+            "q_zh": "「What do you want to be?」怎么回答？",
+            "options": [
+              "I am fine.",
+              "I want to be an engineer.",
+              "I like sports.",
+              "I go to school."
+            ],
+            "answer": "I want to be an engineer.",
+            "explain_ja": "What do you want to be=将来何になりたい？",
+            "explain_zh": "What do you want to be=你将来想做什么？"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「料理人・シェフ」を英語で？",
+            "q_zh": "「厨师」用英语怎么说？",
+            "answer": "chef",
+            "explain_ja": "料理人・シェフはchef",
+            "explain_zh": "厨师是chef"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「I can speak Japanese.」の意味は？",
+            "q_zh": "「I can speak Japanese.」是什么意思？",
+            "options": [
+              "日本語が話したい",
+              "日本語が話せる",
+              "日本語を勉強中",
+              "日本語が好き"
+            ],
+            "answer": "日本語が話せる",
+            "explain_ja": "can ～=～ができる",
+            "explain_zh": "can ～=能够～、会～"
+          },
+          {
+            "type": "choice",
+            "q_ja": "「エンジニア」を英語で？",
+            "q_zh": "「工程师」用英语怎么说？",
+            "options": [
+              "engineer",
+              "manager",
+              "designer",
+              "programmer"
+            ],
+            "answer": "engineer",
+            "explain_ja": "エンジニアはengineer",
+            "explain_zh": "工程师是engineer"
+          },
+          {
+            "type": "fill",
+            "q_ja": "「スポーツ選手」を英語で？（1語）",
+            "q_zh": "「运动员」用英语怎么说？（1个词）",
+            "answer": "athlete",
+            "explain_ja": "スポーツ選手はathlete（またはplayer）",
+            "explain_zh": "运动员是athlete"
+          }
+        ]
+      }
+    ],
+    "science": [
+      {
+        "id": "g6-sc-1",
+        "subj": "science",
+        "icon": "🔥",
+        "name": "燃焼のしくみ",
+        "nameZh": "燃烧原理",
+        "lesson": {
+          "point": "物が燃えるには「燃える物・酸素・発火点以上の温度」の3つが必要です。\n物体燃烧需要「可燃物、氧气、达到燃点的温度」3个条件。",
+          "formula": "燃焼の3条件：燃える物・酸素・発火点以上の温度\n燃焼後：酸素→二酸化炭素・水（有機物の場合）\n燃烧3条件：可燃物+氧气+达到燃点温度\n燃烧后：有机物+氧气→二氧化碳+水",
+          "example": "【例】ろうそくが燃えるとき\n・酸素を使う\n・二酸化炭素と水が発生\n・石灰水→白く濁る（CO₂の確認）\n・塩化コバルト紙→赤くなる（水の確認）\n\n燃烧蜡烛：消耗氧气，产生二氧化碳和水",
+          "tip": "石灰水＋CO₂→白く濁る（CO₂の検出）\n塩化コバルト紙＋水→青→赤（水の検出）\n石灰水遇CO₂变白浊，氯化钴纸遇水变红！"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "物が燃えるために必要ないものは？",
+            "q_zh": "物体燃烧不需要的是？",
+            "options": [
+              "酸素",
+              "燃える物",
+              "適切な温度",
+              "水"
+            ],
+            "answer": "水",
+            "explain_ja": "燃焼に水は必要ない（むしろ消火になる）",
+            "explain_zh": "燃烧不需要水（水反而能灭火）"
+          },
+          {
+            "type": "fill",
+            "q_ja": "二酸化炭素が発生したことを確認する液体は？",
+            "q_zh": "用什么液体检验二氧化碳的产生？",
+            "answer": "石灰水",
+            "explain_ja": "石灰水（せっかいすい）に通すと白く濁る",
+            "explain_zh": "让气体通过石灰水，变白浊就说明有二氧化碳"
+          },
+          {
+            "type": "choice",
+            "q_ja": "ろうそくが燃えると何が発生する？",
+            "q_zh": "蜡烛燃烧会产生什么？",
+            "options": [
+              "酸素と水素",
+              "二酸化炭素と水",
+              "窒素と酸素",
+              "水素のみ"
+            ],
+            "answer": "二酸化炭素と水",
+            "explain_ja": "有機物が燃えると二酸化炭素と水が発生",
+            "explain_zh": "有机物燃烧产生二氧化碳和水"
+          },
+          {
+            "type": "choice",
+            "q_ja": "燃焼後、空気中の酸素の割合はどうなる？",
+            "q_zh": "燃烧后空气中氧气的比例会怎样？",
+            "options": [
+              "増える",
+              "減る",
+              "変わらない",
+              "なくなる"
+            ],
+            "answer": "減る",
+            "explain_ja": "燃焼で酸素が使われるため減少する",
+            "explain_zh": "燃烧消耗氧气，所以比例降低"
+          },
+          {
+            "type": "fill",
+            "q_ja": "塩化コバルト紙が水にふれると何色になる？",
+            "q_zh": "氯化钴纸遇水会变成什么颜色？",
+            "answer": "赤",
+            "explain_ja": "塩化コバルト紙：青→赤（水があるとき）",
+            "explain_zh": "氯化钴纸遇水从蓝色变成红色"
+          },
+          {
+            "type": "choice",
+            "q_ja": "空気中の酸素の割合は約何%？",
+            "q_zh": "空气中氧气的比例约是多少？",
+            "options": [
+              "10%",
+              "21%",
+              "50%",
+              "78%"
+            ],
+            "answer": "21%",
+            "explain_ja": "空気の約21%が酸素、約78%が窒素",
+            "explain_zh": "空气中约21%是氧气，约78%是氮气"
+          },
+          {
+            "type": "choice",
+            "q_ja": "燃焼の3条件のうち、消火に使えない方法は？",
+            "q_zh": "燃烧3个条件中，以下哪种灭火方法无效？",
+            "options": [
+              "酸素を断つ",
+              "温度を下げる",
+              "燃えるものを取り除く",
+              "二酸化炭素を増やす"
+            ],
+            "answer": "二酸化炭素を増やす",
+            "explain_ja": "CO₂を「増やす」のではなく「酸素を断つ」のが正しい",
+            "explain_zh": "应该是「隔绝氧气」，不是「增加二氧化碳」"
+          },
+          {
+            "type": "fill",
+            "q_ja": "物が燃えるのに十分な温度を何という？（2文字＋点）",
+            "q_zh": "物体燃烧需要达到的温度叫什么？",
+            "answer": "発火点",
+            "explain_ja": "発火点（はっかてん）以上の温度が必要",
+            "explain_zh": "需要达到燃点（発火点）以上的温度"
+          },
+          {
+            "type": "choice",
+            "q_ja": "酸素中でろうそくを燃やすと、空気中より？",
+            "q_zh": "在纯氧中燃烧蜡烛与在空气中相比？",
+            "options": [
+              "同じように燃える",
+              "弱く燃える",
+              "激しく燃える",
+              "燃えない"
+            ],
+            "answer": "激しく燃える",
+            "explain_ja": "酸素濃度が高いほど激しく燃える",
+            "explain_zh": "氧气浓度越高燃烧越剧烈"
+          },
+          {
+            "type": "fill",
+            "q_ja": "木が燃えた後に残る黒いものを何という？",
+            "q_zh": "木头燃烧后剩下的黑色物质叫什么？",
+            "answer": "炭",
+            "explain_ja": "炭（すみ）、炭素が残ったもの",
+            "explain_zh": "木炭（炭，すみ），是碳残留物"
+          }
+        ]
+      }
+    ],
+    "social": [
+      {
+        "id": "g6-so-1",
+        "subj": "social",
+        "icon": "🏯",
+        "name": "日本の歴史（江戸〜明治）",
+        "nameZh": "日本历史（江户~明治）",
+        "lesson": {
+          "point": "江戸時代（1603〜1867）は徳川幕府が約260年間支配しました。明治維新で近代国家になりました。\n江户时代（1603~1867）德川幕府统治约260年，明治维新后日本走向近代化。",
+          "formula": "江戸時代：鎖国政策・身分制度（武士・農民・職人・商人）\n明治維新（1868）：廃藩置県・学制・富国強兵\n江户时代：闭关锁国・身份制度\n明治维新（1868）：废藩置县・学制・富国强兵",
+          "example": "【重要人物】\n・徳川家康：江戸幕府の初代将軍\n・ペリー：黒船来航（1853）、開国を要求\n・坂本龍馬：薩長同盟・大政奉還に尽力\n・明治天皇：明治維新をリード",
+          "tip": "年号の覚え方：\n1603 江戸幕府（ひとむさんびゃくさん）\n1868 明治維新（いやろくやはとわ）\n记忆年号的方法！"
+        },
+        "questions": [
+          {
+            "type": "choice",
+            "q_ja": "江戸幕府を開いたのは誰？",
+            "q_zh": "谁开创了江户幕府？",
+            "options": [
+              "豊臣秀吉",
+              "織田信長",
+              "徳川家康",
+              "徳川家光"
+            ],
+            "answer": "徳川家康",
+            "explain_ja": "徳川家康が1603年に江戸幕府を開いた",
+            "explain_zh": "德川家康于1603年开创江户幕府"
+          },
+          {
+            "type": "fill",
+            "q_ja": "江戸時代に外国との交流を制限した政策を何という？（3文字）",
+            "q_zh": "江户时代限制与外国往来的政策叫什么？",
+            "answer": "鎖国",
+            "explain_ja": "鎖国（さこく）政策で交流を制限",
+            "explain_zh": "闭关锁国（鎖国，さこく）政策"
+          },
+          {
+            "type": "choice",
+            "q_ja": "黒船来航（1853年）は誰が率いた？",
+            "q_zh": "1853年黑船来航是谁率领的？",
+            "options": [
+              "マッカーサー",
+              "ペリー",
+              "ワシントン",
+              "コロンブス"
+            ],
+            "answer": "ペリー",
+            "explain_ja": "アメリカのペリーが浦賀に来航",
+            "explain_zh": "美国的培里（ペリー）来到浦贺"
+          },
+          {
+            "type": "fill",
+            "q_ja": "1868年の政変を何という？（4文字）",
+            "q_zh": "1868年的政治变革叫什么？",
+            "answer": "明治維新",
+            "explain_ja": "明治維新（めいじいしん）で近代国家へ",
+            "explain_zh": "明治维新（めいじいしん）使日本走向近代化"
+          },
+          {
+            "type": "choice",
+            "q_ja": "明治維新の「廃藩置県」とは？",
+            "q_zh": "明治维新的「废藩置县」是什么意思？",
+            "options": [
+              "藩を増やした",
+              "藩を廃止して県を置いた",
+              "外国から県を作った",
+              "将軍が復活した"
+            ],
+            "answer": "藩を廃止して県を置いた",
+            "explain_ja": "藩（はん）を廃止して中央集権の県を設置",
+            "explain_zh": "废除藩国，设立县，实现中央集权"
+          },
+          {
+            "type": "choice",
+            "q_ja": "江戸時代の身分で最も多かったのは？",
+            "q_zh": "江户时代哪个身份阶层人数最多？",
+            "options": [
+              "武士",
+              "農民",
+              "職人",
+              "商人"
+            ],
+            "answer": "農民",
+            "explain_ja": "人口の約80%が農民（農村に住んでいた）",
+            "explain_zh": "约80%的人口是农民"
+          },
+          {
+            "type": "fill",
+            "q_ja": "薩長同盟の成立に尽力した人物は？",
+            "q_zh": "为薩長同盟的成立而尽力的人物是谁？",
+            "answer": "坂本龍馬",
+            "explain_ja": "坂本龍馬（さかもとりょうま）が薩摩・長州を結んだ",
+            "explain_zh": "坂本龍馬（坂本龙马）促成了萨长同盟"
+          },
+          {
+            "type": "choice",
+            "q_ja": "明治時代の「富国強兵」の意味は？",
+            "q_zh": "明治时代「富国強兵」是什么意思？",
+            "options": [
+              "国を豊かにし軍事力を強化する",
+              "農業を発展させる",
+              "外国と友好関係を結ぶ",
+              "文化を発展させる"
+            ],
+            "answer": "国を豊かにし軍事力を強化する",
+            "explain_ja": "富国（経済発展）強兵（軍事強化）が明治の目標",
+            "explain_zh": "富国（经济发展）强兵（军事强化）是明治的目标"
+          },
+          {
+            "type": "fill",
+            "q_ja": "明治時代に学校制度を作った法律を何という？（2文字）",
+            "q_zh": "明治时代创立学校制度的法律叫什么？",
+            "answer": "学制",
+            "explain_ja": "学制（がくせい）1872年に公布、全国に学校を設置",
+            "explain_zh": "学制（がくせい）1872年颁布，全国建立学校"
+          },
+          {
+            "type": "choice",
+            "q_ja": "江戸時代に発達した庶民文化で正しいのは？",
+            "q_zh": "以下哪项是江户时代发展起来的平民文化？",
+            "options": [
+              "茶道（室町時代）",
+              "歌舞伎・浮世絵",
+              "能楽（室町時代）",
+              "仏教（奈良時代）"
+            ],
+            "answer": "歌舞伎・浮世絵",
+            "explain_ja": "歌舞伎・浮世絵・落語が江戸時代の庶民文化",
+            "explain_zh": "歌舞伎、浮世绘、落语是江户时代的平民文化"
+          }
+        ]
+      }
+    ]
+  }
+};
+
+async function loadExternalCurriculum() {
+  const files = [
+    { subj: 'math', file: 'math.json' },
+    { subj: 'japanese', file: 'japanese.json' },
+    { subj: 'english', file: 'english.json' },
+    { subj: 'science', file: 'science.json' },
+    { subj: 'social', file: 'social.json' }
+  ];
+
+  const next = JSON.parse(JSON.stringify(CURRICULUM));
+  let loadedCount = 0;
+
+  for (const item of files) {
+    try {
+      const res = await fetch(item.file, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+
+      ['grade4', 'grade5', 'grade6'].forEach((gradeKey) => {
+        if (!next[gradeKey]) next[gradeKey] = {};
+        next[gradeKey][item.subj] = Array.isArray(data[gradeKey]) ? data[gradeKey] : [];
+      });
+      loadedCount++;
+    } catch (err) {
+      console.warn(`[CURRICULUM] failed to load ${item.file}, fallback to embedded data.`, err);
+    }
+  }
+
+  if (loadedCount > 0) {
+    CURRICULUM = next;
+    console.info(`[CURRICULUM] loaded external json files: ${loadedCount}/${files.length}`);
+  } else {
+    console.warn('[CURRICULUM] no external json loaded, using embedded data.');
+  }
+}
+
+function getTopicsByGradeSubj(grade, subj) {
+  const gradeKey = 'grade' + grade;
+  if (!CURRICULUM[gradeKey]) return [];
+  if (subj === 'all') {
+    const all = [];
+    for (const s of ['math','japanese','english','science','social']) {
+      (CURRICULUM[gradeKey][s] || []).forEach(t => all.push(t));
+    }
+    return all;
+  }
+  return CURRICULUM[gradeKey][subj] || [];
+}
+
+// Static topic lists per grade (based on actual Japan curriculum)
+const STATIC_TOPICS = {
+  4: {
+    math: [
+      {subj:'math',icon:'➗',name:'わり算のひっ算',nameZh:'除法笔算'},
+      {subj:'math',icon:'📐',name:'角の大きさ',nameZh:'角的大小'},
+      {subj:'math',icon:'🔢',name:'大きな数',nameZh:'大数'},
+      {subj:'math',icon:'💯',name:'小数のしくみ',nameZh:'小数的结构'},
+      {subj:'math',icon:'½',name:'分数の意味',nameZh:'分数的含义'},
+      {subj:'math',icon:'📊',name:'折れ線グラフ',nameZh:'折线图'},
+      {subj:'math',icon:'⬛',name:'面積',nameZh:'面积'},
+      {subj:'math',icon:'⏱️',name:'時刻と時間',nameZh:'时刻与时间'},
+      {subj:'math',icon:'🔷',name:'垂直・平行・四角形',nameZh:'垂直平行与四边形'},
+      {subj:'math',icon:'📦',name:'直方体と立方体',nameZh:'长方体与正方体'},
+      {subj:'math',icon:'🔀',name:'計算のきまり・式',nameZh:'计算规律与算式'},
+      {subj:'math',icon:'📝',name:'算数 文章問題',nameZh:'应用题'},
+    ],
+    japanese: [
+      {subj:'japanese',icon:'🈷️',name:'漢字（4年生・202字）',nameZh:'汉字（4年级·202字）'},
+      {subj:'japanese',icon:'📝',name:'文章読解',nameZh:'阅读理解'},
+      {subj:'japanese',icon:'🗣️',name:'慣用句',nameZh:'惯用语'},
+      {subj:'japanese',icon:'📖',name:'ことわざ',nameZh:'谚语'},
+      {subj:'japanese',icon:'🔤',name:'ローマ字',nameZh:'罗马字'},
+      {subj:'japanese',icon:'✍️',name:'文法・語彙',nameZh:'语法与词汇'},
+    ],
+    english: [
+      {subj:'english',icon:'🔤',name:'アルファベット',nameZh:'字母'},
+      {subj:'english',icon:'👋',name:'あいさつ',nameZh:'问候'},
+      {subj:'english',icon:'🌍',name:'国の名前',nameZh:'国家名称'},
+      {subj:'english',icon:'🍎',name:'身近な英単語',nameZh:'生活英单词'},
+    ],
+    science: [
+      {subj:'science',icon:'🌱',name:'植物の成長',nameZh:'植物生长'},
+      {subj:'science',icon:'⚡',name:'電気のはたらき',nameZh:'电的作用'},
+      {subj:'science',icon:'🌡️',name:'天気の変化',nameZh:'天气变化'},
+      {subj:'science',icon:'🌊',name:'水のすがた（三態）',nameZh:'水的状态变化'},
+      {subj:'science',icon:'🪨',name:'土地のようす',nameZh:'地面的状况'},
+      {subj:'science',icon:'🌙',name:'月・星の動き',nameZh:'月亮与星星的运动'},
+    ],
+    social: [
+      {subj:'social',icon:'🗾',name:'都道府県',nameZh:'都道府县'},
+      {subj:'social',icon:'🌾',name:'農業',nameZh:'农业'},
+      {subj:'social',icon:'🏭',name:'工業',nameZh:'工业'},
+      {subj:'social',icon:'🗺️',name:'地図記号',nameZh:'地图符号'},
+      {subj:'social',icon:'🚰',name:'水道・ごみ・リサイクル',nameZh:'自来水与垃圾回收'},
+      {subj:'social',icon:'🚒',name:'安全・防災',nameZh:'安全与防灾'},
+    ]
+  },
+  5: {
+    math: [
+      {subj:'math',icon:'➗',name:'整数と小数',nameZh:'整数与小数'},
+      {subj:'math',icon:'💯',name:'小数のかけ算・わり算',nameZh:'小数乘除法'},
+      {subj:'math',icon:'½',name:'分数のたし算・ひき算',nameZh:'分数加减法'},
+      {subj:'math',icon:'🔢',name:'約数と倍数',nameZh:'因数与倍数'},
+      {subj:'math',icon:'📐',name:'図形の合同',nameZh:'图形全等'},
+      {subj:'math',icon:'🔺',name:'三角形・四角形の面積',nameZh:'三角形与四边形的面积'},
+      {subj:'math',icon:'📦',name:'体積',nameZh:'体积'},
+      {subj:'math',icon:'📊',name:'割合とグラフ（帯・円）',nameZh:'比例与图表（条形·圆形）'},
+      {subj:'math',icon:'🚀',name:'速さ・時間・道のり',nameZh:'速度时间路程'},
+      {subj:'math',icon:'📈',name:'変化と関係・比例',nameZh:'变化关系与比例'},
+      {subj:'math',icon:'📉',name:'データの活用・平均',nameZh:'数据活用与平均数'},
+      {subj:'math',icon:'📝',name:'算数 文章問題',nameZh:'应用题'},
+    ],
+    japanese: [
+      {subj:'japanese',icon:'🈷️',name:'漢字（5年生・193字）',nameZh:'汉字（5年级·193字）'},
+      {subj:'japanese',icon:'📝',name:'文章読解（説明文）',nameZh:'阅读理解（说明文）'},
+      {subj:'japanese',icon:'📖',name:'文章読解（物語文）',nameZh:'阅读理解（故事文）'},
+      {subj:'japanese',icon:'🗣️',name:'慣用句',nameZh:'惯用语'},
+      {subj:'japanese',icon:'📜',name:'四字熟語',nameZh:'四字成语'},
+      {subj:'japanese',icon:'✍️',name:'作文の書き方',nameZh:'作文写法'},
+      {subj:'japanese',icon:'🔤',name:'文法・語彙',nameZh:'语法与词汇'},
+    ],
+    english: [
+      {subj:'english',icon:'🔤',name:'アルファベット・単語',nameZh:'字母与单词'},
+      {subj:'english',icon:'💬',name:'基本的な会話',nameZh:'基础会话'},
+      {subj:'english',icon:'🌏',name:'国・言語・食べ物',nameZh:'国家语言食物'},
+      {subj:'english',icon:'📅',name:'時間・曜日・月',nameZh:'时间星期与月份'},
+      {subj:'english',icon:'🏫',name:'学校・教科・活動',nameZh:'学校科目与活动'},
+    ],
+    science: [
+      {subj:'science',icon:'🌱',name:'植物の発芽と成長',nameZh:'植物发芽与生长'},
+      {subj:'science',icon:'⚡',name:'電流と電磁石',nameZh:'电流与电磁铁'},
+      {subj:'science',icon:'🌊',name:'もののとけ方',nameZh:'物质的溶解'},
+      {subj:'science',icon:'🔭',name:'天気の変化',nameZh:'天气变化'},
+      {subj:'science',icon:'🫀',name:'人のたんじょう',nameZh:'人的诞生'},
+      {subj:'science',icon:'🌿',name:'花のつくりとはたらき',nameZh:'花的结构与作用'},
+      {subj:'science',icon:'🌊',name:'川の流れと土地',nameZh:'河流与地形变化'},
+    ],
+    social: [
+      {subj:'social',icon:'🗾',name:'日本の地形・気候',nameZh:'日本地形与气候'},
+      {subj:'social',icon:'🌾',name:'農業・食料生産',nameZh:'农业与粮食生产'},
+      {subj:'social',icon:'🐟',name:'水産業',nameZh:'渔业'},
+      {subj:'social',icon:'🏭',name:'工業・工業地帯',nameZh:'工业与工业地带'},
+      {subj:'social',icon:'🚢',name:'輸送・貿易',nameZh:'运输与贸易'},
+      {subj:'social',icon:'📺',name:'情報産業・メディア',nameZh:'信息产业与媒体'},
+      {subj:'social',icon:'🌏',name:'国際社会・環境',nameZh:'国际社会与环境'},
+    ]
+  },
+  6: {
+    math: [
+      {subj:'math',icon:'✖️',name:'分数のかけ算',nameZh:'分数乘法'},
+      {subj:'math',icon:'➗',name:'分数のわり算',nameZh:'分数除法'},
+      {subj:'math',icon:'🔵',name:'円の面積',nameZh:'圆的面积'},
+      {subj:'math',icon:'📐',name:'拡大図・縮小図',nameZh:'放大图与缩小图'},
+      {subj:'math',icon:'📊',name:'比とその利用',nameZh:'比及其应用'},
+      {subj:'math',icon:'📈',name:'比例と反比例',nameZh:'正比例与反比例'},
+      {subj:'math',icon:'📦',name:'角柱・円柱の体積',nameZh:'棱柱与圆柱的体积'},
+      {subj:'math',icon:'🔺',name:'対称な図形',nameZh:'对称图形'},
+      {subj:'math',icon:'🔢',name:'文字を使った式',nameZh:'含字母的算式'},
+      {subj:'math',icon:'📉',name:'データの活用・度数分布',nameZh:'数据整理与频率分布'},
+      {subj:'math',icon:'🔀',name:'場合の数・並べ方',nameZh:'排列与组合'},
+      {subj:'math',icon:'📝',name:'算数 文章問題',nameZh:'综合应用题'},
+    ],
+    japanese: [
+      {subj:'japanese',icon:'🈷️',name:'漢字（6年生・191字）',nameZh:'汉字（6年级·191字）'},
+      {subj:'japanese',icon:'📚',name:'漢字の組み立て・部首',nameZh:'汉字结构与偏旁'},
+      {subj:'japanese',icon:'📝',name:'文章読解（説明文）',nameZh:'阅读理解（说明文）'},
+      {subj:'japanese',icon:'📖',name:'文章読解（物語文）',nameZh:'阅读理解（故事文）'},
+      {subj:'japanese',icon:'🖊️',name:'作文の書き方',nameZh:'作文写法'},
+      {subj:'japanese',icon:'🗣️',name:'敬語の使い方',nameZh:'敬语的用法'},
+      {subj:'japanese',icon:'💬',name:'慣用句',nameZh:'惯用语'},
+      {subj:'japanese',icon:'📜',name:'ことわざ・四字熟語',nameZh:'谚语与四字成语'},
+      {subj:'japanese',icon:'🏛️',name:'古典（百人一首・古文入門）',nameZh:'古典文学入门'},
+      {subj:'japanese',icon:'🔤',name:'ローマ字・キーボード',nameZh:'罗马字与键盘'},
+    ],
+    english: [
+      {subj:'english',icon:'🔤',name:'小学英単語700語',nameZh:'小学英语700词'},
+      {subj:'english',icon:'👋',name:'英語のあいさつ・自己紹介',nameZh:'英语问候与自我介绍'},
+      {subj:'english',icon:'📅',name:'時間・曜日・月・季節',nameZh:'时间日期月份季节'},
+      {subj:'english',icon:'🌍',name:'国の名前・言語',nameZh:'国家名称与语言'},
+      {subj:'english',icon:'🍎',name:'身近な英単語（食べ物・動物）',nameZh:'生活英单词（食物动物）'},
+      {subj:'english',icon:'💬',name:'基本英会話フレーズ',nameZh:'基础英语会话'},
+      {subj:'english',icon:'📝',name:'英語の読み書き・アルファベット',nameZh:'英语读写与字母'},
+      {subj:'english',icon:'🔢',name:'英語の数・序数',nameZh:'英语数字与序数'},
+    ],
+    science: [
+      {subj:'science',icon:'🔥',name:'燃焼のしくみ',nameZh:'燃烧的原理'},
+      {subj:'science',icon:'⚗️',name:'水よう液の性質',nameZh:'水溶液的性质'},
+      {subj:'science',icon:'🫀',name:'人の体のつくりと働き',nameZh:'人体的结构与功能'},
+      {subj:'science',icon:'🌱',name:'植物のつくりと働き',nameZh:'植物的结构与功能'},
+      {subj:'science',icon:'🌙',name:'月と太陽',nameZh:'月球与太阳'},
+      {subj:'science',icon:'🔌',name:'電気の利用',nameZh:'电能的利用'},
+      {subj:'science',icon:'⚖️',name:'てこのしくみ',nameZh:'杠杆原理'},
+      {subj:'science',icon:'🌍',name:'土地のつくりと変化',nameZh:'地层的构成与变化'},
+    ],
+    social: [
+      {subj:'social',icon:'🏯',name:'日本の歴史①（縄文〜江戸）',nameZh:'日本历史①（绳文至江户）'},
+      {subj:'social',icon:'🗾',name:'日本の歴史②（明治〜現代）',nameZh:'日本历史②（明治至现代）'},
+      {subj:'social',icon:'🗳️',name:'政治のしくみ・憲法',nameZh:'政治体制与宪法'},
+      {subj:'social',icon:'⚖️',name:'国会・内閣・裁判所',nameZh:'国会·内阁·法院'},
+      {subj:'social',icon:'🌏',name:'世界の国々・国際社会',nameZh:'世界各国与国际社会'},
+      {subj:'social',icon:'🕊️',name:'世界平和と日本の役割',nameZh:'世界和平与日本的作用'},
+      {subj:'social',icon:'🗺️',name:'日本の地理・地図記号',nameZh:'日本地理与地图符号'},
+      {subj:'social',icon:'📊',name:'産業・貿易・環境問題',nameZh:'产业贸易与环境问题'},
+    ]
+  }
+};
+
+// ===== NAV =====
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'mistakes') renderMistakes();
+}
+
+function setGrade(v) {
+  currentGrade = parseInt(v);
+  if (document.getElementById('lessonPanel').style.display === 'block') backToTopics();
+  loadTopics();
+}
+
+// ===== LEARN PAGE =====
+function filterLearnSubj(s, btn) {
+  currentLearnSubj = s;
+  document.querySelectorAll('#learnSubjRow .subj-pill').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  loadTopics();
+}
+
+function loadTopics() {
+  let list = [];
+  const subjsToShow = currentLearnSubj === 'all'
+    ? ['math','japanese','english','science','social']
+    : [currentLearnSubj];
+
+  subjsToShow.forEach(s => {
+    getTopicsByGradeSubj(currentGrade, s).forEach(t => {
+      list.push(t);
+    });
+  });
+
+  renderTopicGrid(list);
+  renderDrillLinks();
+}
+
+function renderTopicGrid(list) {
+  const grid = document.getElementById('topicGrid');
+  if (!list.length) {
+    grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:var(--muted);font-size:.85rem">単元が見つかりません / 未找到单元</p>`;
+    return;
+  }
+  grid.innerHTML = list.map(t => `
+    <div class="topic-card" onclick='openLesson(${JSON.stringify(JSON.stringify(t))})'>
+      <div class="t-icon">${t.icon}</div>
+      <div class="t-name">${t.name}</div>
+      <div class="t-ja">${t.nameZh}</div>
+      <span class="t-grade">${currentGrade}年生</span>
+    </div>
+  `).join('');
+}
+
+function renderDrillLinks() {
+  const wrap = document.getElementById('drillSection');
+  const linksDiv = document.getElementById('drillLinks');
+  const subjsToShow = currentLearnSubj === 'all'
+    ? ['math','japanese','english','science','social']
+    : [currentLearnSubj];
+
+  let links = [];
+  subjsToShow.forEach(s => {
+    const gradeLinks = (DRILL_LINKS[s] || {})[currentGrade] || (DRILL_LINKS[s] || {})[5] || [];
+    links.push(...gradeLinks.slice(0, currentLearnSubj === 'all' ? 2 : 5));
+  });
+
+  if (!links.length) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  linksDiv.innerHTML = links.map(l => `
+    <a href="${l.url}" target="_blank" class="drill-link">
+      <span class="dl-badge ${l.badge}">${subjNames[l.badge]?.ja || l.badge}</span>
+      <span style="flex:1">${l.name}</span>
+      <span style="font-size:.7rem;opacity:.6">↗</span>
+    </a>
+  `).join('');
+}
+
+function openLesson(topicJson) {
+  const t = JSON.parse(topicJson);
+  currentLessonTopic = t;
+  document.getElementById('lessonTitle').textContent = `${t.icon} ${t.name} · ${t.nameZh}`;
+  document.getElementById('lessonBody').innerHTML = `<div class="loading-inline"><div class="spinner-sm"></div><br>読み込み中… / 加载中…</div>`;
+  document.getElementById('topicList').style.display = 'none';
+  document.getElementById('lessonPanel').style.display = 'block';
+
+  // Show drill link for this topic's subject
+  const drillsForSubj = (DRILL_LINKS[t.subj] || {})[currentGrade] || [];
+  const lessonDrillWrap = document.getElementById('lessonDrillWrap');
+  if (drillsForSubj.length) {
+    const relevantDrill = drillsForSubj[0];
+    lessonDrillWrap.innerHTML = `
+      <div class="drill-link-box">
+        <div class="dl-icon">📄</div>
+        <div class="dl-info">
+          <div class="dl-title">ちびむすドリル練習プリント</div>
+          <div class="dl-sub">この単元の本物の練習問題を印刷できます</div>
+        </div>
+        <a href="${relevantDrill.url}" target="_blank">印刷 ↗</a>
+      </div>`;
+  } else {
+    lessonDrillWrap.innerHTML = '';
+  }
+
+  // Track study
+  if (!stats.topicsStudied.includes(t.id)) {
+    stats.topicsStudied.push(t.id);
+    saveStats();
+    updateStreakBar();
+  }
+
+  fetchLesson(t);
+}
+
+function backToTopics() {
+  document.getElementById('topicList').style.display = 'block';
+  document.getElementById('lessonPanel').style.display = 'none';
+  currentLessonTopic = null;
+}
+
+async function fetchLesson(topic) {
+  // Try offline curriculum data first
+  const gradeKey = 'grade' + currentGrade;
+  const subjTopics = (CURRICULUM[gradeKey] || {})[topic.subj] || [];
+  const found = subjTopics.find(t => t.id === topic.id);
+  
+  if (found && found.lesson) {
+    const L = found.lesson;
+    const html = `
+      <h4>🎯 ポイント · 重点</h4>
+      <p>${L.point.replace(/\n/g,'<br>')}</p>
+      <div class="formula-box">${L.formula.replace(/\n/g,'<br>')}</div>
+      <h4>📝 例題 · 例题</h4>
+      <div class="example-box">${L.example.replace(/\n/g,'<br>')}</div>
+      <h4>💡 覚え方のコツ · 记忆技巧</h4>
+      <div class="tip-box">${L.tip.replace(/\n/g,'<br>')}</div>`;
+    document.getElementById('lessonBody').innerHTML = `<div class="lesson-content">${html}</div>`;
+    return;
+  }
+
+  // Fallback to API
+  const prompt = `あなたは小学${currentGrade}年生の${topic.name}（${topic.nameZh}）を教える先生です。
+以下の形式でわかりやすい授業ノートを作ってください。HTMLで返してください（他のテキスト不要）：
+<h4>🎯 ポイント · 重点</h4><p>説明</p>
+<div class="formula-box">公式</div>
+<h4>📝 例題 · 例题</h4><div class="example-box">例</div>
+<h4>💡 覚え方のコツ · 记忆技巧</h4><div class="tip-box">ヒント</div>
+やさしい言葉で。`;
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 2000,
+        messages: [{role:"user",content:prompt}]
+      })
+    });
+    const data = await res.json();
+    const lessonHtml = data.content.map(i => i.text||'').join('');
+    document.getElementById('lessonBody').innerHTML = `<div class="lesson-content">${lessonHtml}</div>`;
+  } catch(e) {
+    document.getElementById('lessonBody').innerHTML = `<p style="color:var(--red);font-size:.85rem">読み込みに失敗しました / 加载失败：${e.message}</p>`;
+  }
+}
+
+function goToPracticeFromLesson() {
+  if (currentLessonTopic) {
+    practSubj = currentLessonTopic.subj;
+    practTopic = currentLessonTopic;
+    document.querySelectorAll('#practSubjRow .subj-pill').forEach(b => {
+      b.classList.toggle('selected', b.dataset.s === practSubj);
+    });
+    document.getElementById('genBtn').disabled = false;
+    populateTopicPicker(practSubj);
+  }
+  const practTab = document.querySelector('.tab-btn:nth-child(2)');
+  showPage('practice', practTab);
+}
+
+// ===== PRACTICE PAGE =====
+function selectPractSubj(s, btn) {
+  practSubj = s;
+  practTopic = null;
+  document.querySelectorAll('#practSubjRow .subj-pill').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('genBtn').disabled = false;
+  populateTopicPicker(s);
+}
+
+function populateTopicPicker(s) {
+  const topics = getTopicsByGradeSubj(currentGrade, s);
+  const row = document.getElementById('topicPickRow');
+  row.innerHTML = `<button class="subj-pill selected" onclick="selectPractTopic(null,this)">すべて</button>` +
+    topics.map(t => `<button class="subj-pill" onclick='selectPractTopic(${JSON.stringify(JSON.stringify(t))},this)'>${t.icon} ${t.name}</button>`).join('');
+  document.getElementById('topicPickWrap').style.display = 'block';
+}
+
+function selectPractTopic(topicJson, btn) {
+  practTopic = topicJson ? JSON.parse(topicJson) : null;
+  document.querySelectorAll('#topicPickRow .subj-pill').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function selectQCount(n, btn) {
+  practQCount = n;
+  document.querySelectorAll('#qcountRow .subj-pill').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function selectDiff(d, btn) {
+  practDiff = d;
+  document.querySelectorAll('#diffRow .subj-pill').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+async function generateQuiz() {
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('quizScoreArea').style.display = 'none';
+  document.getElementById('quizArea').innerHTML = `<div class="loading-inline"><div class="spinner-sm"></div><br>問題を作っています… / 出题中…</div>`;
+  document.getElementById('quizArea').style.display = 'block';
+
+  const sn = subjNames[practSubj] || {ja:practSubj,zh:practSubj};
+
+  // Try to load from offline curriculum first
+  const gradeKey = 'grade' + currentGrade;
+  const subjTopics = (CURRICULUM[gradeKey] || {})[practSubj] || [];
+  
+  let pool = [];
+  if (practTopic) {
+    // Use questions from specific topic
+    const found = subjTopics.find(t => t.id === practTopic.id);
+    if (found) pool = [...found.questions];
+  } else {
+    // Combine all questions from all topics in this subject/grade
+    subjTopics.forEach(t => pool.push(...t.questions));
+  }
+
+  if (pool.length >= practQCount) {
+    // Offline mode: randomly pick from pool
+    document.getElementById('quizArea').innerHTML = '';
+    // Shuffle pool
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    // Apply difficulty filter
+    let filtered = pool;
+    if (practDiff === 'easy') filtered = pool.filter(q => q.type === 'choice');
+    else if (practDiff === 'hard') filtered = pool.filter(q => q.type === 'fill');
+    if (filtered.length < practQCount) filtered = pool;
+    
+    quizData = filtered.slice(0, practQCount).map((q, i) => ({...q, num:`問${i+1}`}));
+    quizAnswers = new Array(quizData.length).fill(null);
+    quizChecked = new Array(quizData.length).fill(false);
+    renderQuiz();
+    return;
+  }
+
+  // Fallback to API if offline data insufficient
+  const topicStr = practTopic ? `単元「${practTopic.name}（${practTopic.nameZh}）」` : '';
+  const diffStr = {easy:'やさしい（基礎レベル）',normal:'ふつう（標準レベル）',hard:'むずかしい（応用レベル）'}[practDiff] || 'ふつう';
+
+  const prompt = `小学${currentGrade}年生の${sn.ja}${topicStr}の練習問題を${practQCount}問、難易度${diffStr}で出題してください。JSONのみで返してください。余分なテキスト不要。
+形式：[{"num":"問1","type":"choice","q_ja":"問題","q_zh":"题目","options":["A","B","C","D"],"answer":"A","explain_ja":"解説20字以内","explain_zh":"解析20字以内"}]
+typeはchoice(選択肢4つ)またはfill(穴埋め、optionsなし)。fill問題は短い答えのみ。`;
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 2000,
+        messages: [{role:"user",content:prompt}]
+      })
+    });
+    const data = await res.json();
+    const raw = data.content.map(i => i.text||'').join('');
+    const clean = raw.replace(/```json|```/g,'').trim();
+    quizData = JSON.parse(clean);
+    quizAnswers = new Array(quizData.length).fill(null);
+    quizChecked = new Array(quizData.length).fill(false);
+    renderQuiz();
+  } catch(e) {
+    document.getElementById('quizArea').innerHTML = `<p style="color:var(--red);font-size:.85rem;text-align:center">エラー / 出错：${e.message}</p>`;
+  }
+}
+
+function renderQuiz() {
+  const area = document.getElementById('quizArea');
+  area.innerHTML = quizData.map((q, i) => {
+    const progressPct = Math.round((i / quizData.length) * 100);
+    const numBar = `<div class="quiz-num">問 ${i+1} / ${quizData.length}
+      <div class="quiz-progress"><div class="quiz-progress-bar" style="width:${progressPct}%"></div></div>
+    </div>`;
+
+    if (q.type === 'choice') {
+      const opts = (q.options || []).map((o, j) => `
+        <button class="quiz-opt" id="opt_${i}_${j}" onclick="selectOpt(${i},${j},${JSON.stringify(o)})">
+          ${o}
+        </button>`).join('');
+      return `<div class="quiz-card">
+        ${numBar}
+        <div class="quiz-q">🇯🇵 ${q.q_ja}<br><span style="font-size:.8rem;color:var(--muted)">🇨🇳 ${q.q_zh}</span></div>
+        <div class="quiz-options">${opts}</div>
+        <div id="fb_${i}"></div>
+      </div>`;
+    } else {
+      return `<div class="quiz-card">
+        ${numBar}
+        <div class="quiz-q">🇯🇵 ${q.q_ja}<br><span style="font-size:.8rem;color:var(--muted)">🇨🇳 ${q.q_zh}</span></div>
+        <input class="quiz-input" id="fill_${i}" placeholder="答えを入力 · 填写答案" onkeydown="if(event.key==='Enter')checkFill(${i})"/>
+        <br><button class="check-btn" onclick="checkFill(${i})">確認 · 确认</button>
+        <div id="fb_${i}"></div>
+      </div>`;
+    }
+  }).join('') + `<button class="gen-btn" onclick="showScore()" style="margin-top:6px">
+    📊 結果を見る · 查看结果
+  </button>`;
+}
+
+function selectOpt(qi, oi, val) {
+  if (quizChecked[qi]) return;
+  quizAnswers[qi] = val;
+  quizChecked[qi] = true;
+  const q = quizData[qi];
+  const correct = val === q.answer;
+  (q.options || []).forEach((o, j) => {
+    const btn = document.getElementById(`opt_${qi}_${j}`);
+    btn.disabled = true;
+    if (o === q.answer) btn.classList.add('correct');
+    else if (o === val && !correct) btn.classList.add('wrong');
+  });
+  document.getElementById(`fb_${qi}`).innerHTML = `
+    <div class="feedback-box ${correct?'ok':'ng'}">
+      ${correct ? '⭕ 正解！· 正确！' : '❌ 不正解 · 不对哦'}<br>
+      🇯🇵 ${q.explain_ja}<br>🇨🇳 ${q.explain_zh}
+    </div>`;
+  if (correct) { stats.totalCorrect++; saveStats(); updateStreakBar(); }
+  else saveMistake(q, qi);
+}
+
+function checkFill(qi) {
+  const input = document.getElementById(`fill_${qi}`);
+  if (quizChecked[qi]) return;
+  const val = input.value.trim();
+  if (!val) return;
+  quizAnswers[qi] = val;
+  quizChecked[qi] = true;
+  const q = quizData[qi];
+  const correct = val === q.answer || val.includes(q.answer) || q.answer.includes(val);
+  input.disabled = true;
+  input.classList.add(correct ? 'correct' : 'wrong');
+  document.getElementById(`fb_${qi}`).innerHTML = `
+    <div class="feedback-box ${correct?'ok':'ng'}">
+      ${correct ? '⭕ 正解！· 正确！' : `❌ 正しくは：${q.answer} · 正确答案：${q.answer}`}<br>
+      🇯🇵 ${q.explain_ja}<br>🇨🇳 ${q.explain_zh}
+    </div>`;
+  if (correct) { stats.totalCorrect++; saveStats(); updateStreakBar(); }
+  else saveMistake(q, qi);
+}
+
+function showScore() {
+  const correct = quizData.filter((q,i) => quizChecked[i] && quizAnswers[i] === q.answer).length;
+  const total = quizData.length;
+  const ratio = correct / total;
+  const emoji = ratio >= 0.8 ? '🌟' : ratio >= 0.5 ? '💪' : '📚';
+  const stars = '⭐'.repeat(Math.round(ratio * 5));
+  const scoreArea = document.getElementById('quizScoreArea');
+  scoreArea.innerHTML = `
+    <div class="score-banner">
+      <div style="font-size:2rem">${emoji}</div>
+      <div class="score-stars">${stars || '⭐'}</div>
+      <div class="big-score">${correct} / ${total}</div>
+      <p>${correct === total ? 'パーフェクト！全部正解 🎉' : correct >= total*0.8 ? 'よくできました！/ 很棒！' : 'もう少し！また練習しよう / 继续加油！'}</p>
+    </div>
+    <button class="gen-btn" onclick="generateQuiz()">🔄 もう一度 · 再来一次</button>`;
+  scoreArea.style.display = 'block';
+  scoreArea.scrollIntoView({behavior:'smooth'});
+
+  // Update streak
+  const today = new Date().toDateString();
+  if (stats.lastStudyDate !== today) {
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    stats.streak = stats.lastStudyDate === yesterday ? stats.streak + 1 : 1;
+    stats.lastStudyDate = today;
+  }
+  saveStats();
+  updateStreakBar();
+}
+
+function saveMistake(q, qi) {
+  const entry = {
+    id: Date.now() + qi,
+    subj: practSubj,
+    q_ja: q.q_ja,
+    q_zh: q.q_zh,
+    answer: q.answer,
+    explain_ja: q.explain_ja,
+    explain_zh: q.explain_zh,
+    date: new Date().toLocaleDateString('ja-JP')
+  };
+  mistakes.unshift(entry);
+  if (mistakes.length > 50) mistakes = mistakes.slice(0, 50);
+  localStorage.setItem('manabi_mistakes', JSON.stringify(mistakes));
+}
+
+// ===== HOMEWORK PAGE =====
+function selectHwSubj(s, btn) {
+  hwSubj = s;
+  document.querySelectorAll('.hw-step .subj-pill').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  checkHwReady();
+}
+
+function handleHwFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    hwImageBase64 = ev.target.result.split(',')[1];
+    document.getElementById('hwPreviewImg').src = ev.target.result;
+    document.getElementById('hwPreviewWrap').style.display = 'block';
+    checkHwReady();
+  };
+  reader.readAsDataURL(file);
+}
+
+function checkHwReady() {
+  document.getElementById('hwSubmit').disabled = !(hwSubj && hwImageBase64);
+}
+
+async function submitHw() {
+  const notes = document.getElementById('hwNotes').value.trim();
+  const sn = subjNames[hwSubj] || {ja:hwSubj,zh:hwSubj};
+  document.getElementById('hwSubmit').style.display = 'none';
+  document.getElementById('hwLoading').style.display = 'block';
+  document.getElementById('hwError').style.display = 'none';
+  document.getElementById('hwResult').style.display = 'none';
+
+  const prompt = `あなたは小学${currentGrade}年生の${sn.ja}の先生です。
+この答案用紙を見て、各問題の正誤を判定し、間違いを丁寧に解説してください。
+${notes ? `生徒のメモ：${notes}` : ''}
+
+以下のJSON形式のみで返してください：
+{
+  "score": "8/10",
+  "verdict_ja": "よくできました！",
+  "verdict_zh": "做得很好！",
+  "summary_ja": "全体コメント",
+  "summary_zh": "整体评语",
+  "problems": [
+    {
+      "num": "問1",
+      "correct": true,
+      "question_ja": "問題内容",
+      "answer_ja": "正しい答え",
+      "explain_ja": "解説",
+      "explain_zh": "解析"
+    }
+  ],
+  "cheer_ja": "応援メッセージ",
+  "cheer_zh": "鼓励语",
+  "study_tip_ja": "復習ヒント",
+  "study_tip_zh": "学习建议"
+}`;
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 3000,
+        messages: [{role:"user",content:[
+          {type:"image",source:{type:"base64",media_type:"image/jpeg",data:hwImageBase64}},
+          {type:"text",text:prompt}
+        ]}]
+      })
+    });
+    const data = await res.json();
+    const raw = data.content.map(i => i.text||'').join('');
+    const result = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    renderHwResult(result);
+    (result.problems||[]).filter(p=>!p.correct).forEach((p,i) => {
+      mistakes.unshift({
+        id: Date.now()+i,
+        subj: hwSubj,
+        q_ja: p.question_ja,
+        q_zh: '',
+        answer: p.answer_ja,
+        explain_ja: p.explain_ja,
+        explain_zh: p.explain_zh,
+        date: new Date().toLocaleDateString('ja-JP')
+      });
+    });
+    if (mistakes.length > 50) mistakes = mistakes.slice(0,50);
+    localStorage.setItem('manabi_mistakes', JSON.stringify(mistakes));
+  } catch(e) {
+    document.getElementById('hwLoading').style.display = 'none';
+    document.getElementById('hwSubmit').style.display = 'flex';
+    document.getElementById('hwError').style.display = 'block';
+    document.getElementById('hwErrorMsg').textContent = `エラー / 出错：${e.message}`;
+  }
+}
+
+function renderHwResult(r) {
+  document.getElementById('hwLoading').style.display = 'none';
+  const ratio = parseFloat(r.score) / (parseFloat((r.score||'10/10').split('/')[1])||10);
+  const cls = ratio>=0.8?'ok':ratio>=0.5?'mid':'ng';
+  const emoji = ratio>=0.8?'🌟':ratio>=0.5?'💪':'📚';
+  const wrong = (r.problems||[]).filter(p=>!p.correct);
+  const right = (r.problems||[]).filter(p=>p.correct);
+
+  let html = `<div class="result-head ${cls}">
+    <div class="result-emoji">${emoji}</div>
+    <div><div class="result-score">${r.score||'—'}</div><div class="result-verdict">${r.verdict_ja||''} · ${r.verdict_zh||''}</div></div>
+  </div>
+  <div class="result-body">
+    <div class="r-block">
+      <div class="r-label">📋 先生のコメント · 老师评语</div>
+      <div class="r-content">🇯🇵 ${r.summary_ja||''}<br><br>🇨🇳 ${r.summary_zh||''}</div>
+    </div>`;
+
+  if (wrong.length) {
+    html += `<div class="r-block"><div class="r-label">❌ 間違えた問題 · 错题</div>`;
+    wrong.forEach(p => {
+      html += `<div class="prob-item wrong">
+        <span class="prob-tag w">✗ 不正解 · 错</span>
+        <div class="prob-text"><strong>${p.question_ja||''}</strong></div>
+        <div class="prob-ans"><strong>✅ 正解 · 答：</strong>${p.answer_ja||''}<br>🇯🇵 ${p.explain_ja||''}<br>🇨🇳 ${p.explain_zh||''}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+  if (right.length) {
+    html += `<div class="r-block"><div class="r-label">✅ 正解 · 答对</div>`;
+    right.forEach(p => {
+      html += `<div class="prob-item right"><span class="prob-tag r">✓ 正解 · 对</span><div class="prob-text">${p.question_ja||''}</div></div>`;
+    });
+    html += `</div>`;
+  }
+  if (r.study_tip_ja) {
+    html += `<div class="r-block"><div class="r-label">💡 復習ヒント · 学习建议</div>
+      <div class="r-content">🇯🇵 ${r.study_tip_ja}<br><br>🇨🇳 ${r.study_tip_zh||''}</div></div>`;
+  }
+  if (r.cheer_ja) {
+    html += `<div class="cheer-wrap"><div class="cheer-icon">⭐</div>
+      <div class="cheer-text">${r.cheer_ja}<br>${r.cheer_zh||''}</div></div>`;
+  }
+  html += `</div>`;
+
+  const wrap = document.getElementById('hwResult');
+  wrap.innerHTML = html + `<button class="retry-btn" onclick="resetHw()">🔄 別の宿題 · 再批改一份</button>`;
+  wrap.style.display = 'block';
+  wrap.scrollIntoView({behavior:'smooth'});
+}
+
+function resetHw() {
+  hwSubj = null; hwImageBase64 = null;
+  document.querySelectorAll('.hw-step .subj-pill').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('hwFile').value = '';
+  document.getElementById('hwPreviewWrap').style.display = 'none';
+  document.getElementById('hwNotes').value = '';
+  document.getElementById('hwResult').style.display = 'none';
+  document.getElementById('hwSubmit').style.display = 'flex';
+  document.getElementById('hwSubmit').disabled = true;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ===== MISTAKES PAGE =====
+function renderMistakes() {
+  const c = document.getElementById('mistakesContainer');
+  const statsWrap = document.getElementById('mistakesStats');
+
+  if (!mistakes.length) {
+    statsWrap.style.display = 'none';
+    c.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">🎉</div>
+      <div class="empty-text">間違いノートは空です！· 错题本是空的！</div>
+      <div class="empty-sub">練習や採点で間違えた問題が自動で追加されます<br>练习和批改中的错题会自动保存在这里</div>
+    </div>`;
+    return;
+  }
+
+  // Stats
+  const today = new Date().toLocaleDateString('ja-JP');
+  const todayCount = mistakes.filter(m => m.date === today).length;
+  const subjSet = new Set(mistakes.map(m => m.subj));
+  statsWrap.style.display = 'flex';
+  document.getElementById('statTotal').textContent = mistakes.length;
+  document.getElementById('statToday').textContent = todayCount;
+  document.getElementById('statSubjs').textContent = subjSet.size;
+
+  c.innerHTML = mistakes.map((m, idx) => `
+    <div class="mistake-card" id="mc_${idx}">
+      <button class="mistake-del" onclick="deleteMistake(${idx})" title="削除">✕</button>
+      <div class="mistake-meta">
+        <span class="mistake-tag tag-subj">${subjNames[m.subj]?.ja||m.subj}</span>
+        <span class="mistake-tag tag-date">${m.date}</span>
+      </div>
+      <div class="mistake-q">🇯🇵 ${m.q_ja||''}${m.q_zh?`<br><span style="font-size:.76rem;color:var(--muted)">🇨🇳 ${m.q_zh}</span>`:''}</div>
+      <div class="mistake-ans">
+        <strong>正解 · 答：</strong>${m.answer||''}<br>
+        🇯🇵 ${m.explain_ja||''}<br>
+        ${m.explain_zh?`🇨🇳 ${m.explain_zh}`:''}
+      </div>
+    </div>`).join('');
+}
+
+function deleteMistake(idx) {
+  mistakes.splice(idx, 1);
+  localStorage.setItem('manabi_mistakes', JSON.stringify(mistakes));
+  renderMistakes();
+}
+
+function clearMistakes() {
+  if (confirm('間違いノートをすべて削除しますか？/ 确认清空错题本？')) {
+    mistakes = [];
+    localStorage.setItem('manabi_mistakes', JSON.stringify(mistakes));
+    renderMistakes();
+  }
+}
+
+// ===== STATS & STREAK =====
+function saveStats() {
+  localStorage.setItem('manabi_stats', JSON.stringify(stats));
+}
+
+function updateStreakBar() {
+  document.getElementById('streakCount').textContent = stats.streak || 0;
+  document.getElementById('totalCorrect').textContent = stats.totalCorrect || 0;
+  document.getElementById('topicsStudied').textContent = (stats.topicsStudied || []).length;
+}
+
+// ===== INIT =====
+(async function initApp() {
+  await loadExternalCurriculum();
+  loadTopics();
+  updateStreakBar();
+})();
+
+// drag & drop for homework
+const ua = document.getElementById('hwUpload');
+ua.addEventListener('dragover', e => {e.preventDefault();ua.classList.add('drag-over')});
+ua.addEventListener('dragleave', () => ua.classList.remove('drag-over'));
+ua.addEventListener('drop', e => {
+  e.preventDefault();ua.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file&&file.type.startsWith('image/')) handleHwFile({target:{files:[file]}});
+});
+</script>
+</body>
+</html>
